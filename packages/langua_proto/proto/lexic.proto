@@ -1,0 +1,194 @@
+syntax = "proto3";
+
+package lexic;
+
+service LexicService{
+    rpc CreateWord (CreateWordRequest) returns (CreateWordResponse) {}
+    rpc FindOneWordById (FindOneWordByIdRequest) returns (FindOneWordByIdResponse) {}
+    rpc FindManyWordsByVocabularyId (FindManyWordsByVocabularyIdRequest) returns (FindManyWordsByVocabularyIdResponse) {}
+    rpc FindManyWordsByLexicCategoryId (FindManyWordsByLexicCategoryIdRequest) returns (FindManyWordsByLexicCategoryIdResponse) {}
+
+    rpc CreateWordToVocabulary (CreateWordToVocabularyRequest) returns (CreateWordToVocabularyResponse) {}
+    rpc UpdateWordToVocabulary (UpdateWordToVocabularyRequest) returns (UpdateWordToVocabularyResponse) {}
+
+    rpc CreateLexicCategory (CreateLexicCategoryRequest) returns (CreateLexicCategoryResponse) {}
+    rpc FindManyLexicCategoriesByCreatorId (FindManyLexicCategoriesByCreatorIdRequest) returns (FindManyLexicCategoriesByCreatorIdResponse) {}
+
+    rpc CreateVocabulary (CreateVocabularyRequest) returns (CreateVocabularyResponse) {}
+    rpc FindManyVocabulariesByUserId (FindManyVocabulariesByUserIdRequest) returns (FindManyVocabulariesByUserIdResponse) {}
+}
+
+message PageFilters{
+    int32 page = 1;
+    int32 limit = 2;
+}
+
+/// ------------------------ Word ------------------------
+
+//| CreateWord
+message CreateWordRequest{
+    string word = 1;
+    optional string transcription = 2;
+    string language = 3;
+    optional string lexic_category_id = 4;
+}
+
+message CreateWordResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    int32 id = 3;
+}
+
+//| FindOneWordById
+message FindOneWordByIdRequest{
+    string id = 1;
+}
+
+message FindOneWordByIdResponse {
+    message Word{
+        message LexicCategory{
+            string id = 1;
+            string lexic_category_name = 2;
+            string creator_user_id = 3;
+        }
+        string word = 1;
+        optional string transcription = 2;
+        string language = 3;
+        LexicCategory lexic_category = 4; 
+    }
+    int32 status = 1;
+    repeated string error = 2;
+    Word word = 3;
+}
+
+//| FindManyWordsByVocabularyId
+message FindManyWordsByVocabularyIdData {
+    int32 count = 1;
+    repeated FindOneWordByIdResponse.Word rows = 2;
+}
+
+message FindManyWordsByVocabularyIdRequest{
+    string vocabulary_id = 1;
+    PageFilters page_filters = 2;
+}
+
+message FindManyWordsByVocabularyIdResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    FindManyWordsByVocabularyIdData data = 3;
+}
+
+//| FindManyWordsByLexicCategoryId
+message FindManyWordsByLexicCategoryIdData {
+    int32 count = 1;
+    repeated FindOneWordByIdResponse.Word rows = 2;
+}
+
+message FindManyWordsByLexicCategoryIdRequest{
+    string lexic_category_id = 1;
+    PageFilters page_filters = 2;
+}
+
+message FindManyWordsByLexicCategoryIdResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    FindManyWordsByLexicCategoryIdData data = 3;
+}
+
+/// ------------------------ WordToVocabulary ------------------------
+
+//| CreateWordToVocabulary
+message CreateWordToVocabularyRequest{
+    string vocabulary_id = 1;
+    string word_id = 2;
+}
+
+message CreateWordToVocabularyResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    int32 id = 3;
+}
+
+//| UpdateWordToVocabulary
+message UpdateWordToVocabularyRequest{
+    bool is_finished = 1;
+}
+
+message UpdateWordToVocabularyResponse {
+    int32 status = 1;
+    repeated string error = 2;
+}
+
+/// ------------------------ LexicCategory ------------------------
+
+//| CreateLexicCategory
+message CreateLexicCategoryRequest{
+    string lexic_category_name = 1;
+    string creator_user_id = 2;
+}
+
+message CreateLexicCategoryResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    int32 id = 3;
+}
+
+//| FindManyLexicCategoriesByCreatorId
+message FindManyLexicCategoriesByCreatorIdData{
+    message LexicCategory{
+        string id = 1;
+        string lexic_category_name = 2;
+        string creator_user_id = 3;
+    }
+    int32 count = 1;
+    repeated LexicCategory rows = 2;  
+}
+
+message FindManyLexicCategoriesByCreatorIdRequest{
+    bool creator_id = 1;
+    PageFilters page_filters = 2;
+}
+
+message FindManyLexicCategoriesByCreatorIdResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    FindManyLexicCategoriesByCreatorIdData data = 3;
+}
+
+/// ------------------------ Vocabulary ------------------------
+
+//| CreateVocabulary
+message CreateVocabularyRequest{
+    string user_id = 1;
+    string language = 2;
+    string vocabulary_native_language = 3;
+}
+
+message CreateVocabularyResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    int32 id = 3;
+}
+
+//| FindManyVocabulariesByUserId
+message FindManyVocabulariesByUserIdData{
+    message Vocabulary{
+        string id = 1;
+        string user_id = 2;
+        string language = 3;
+        string vocabulary_native_language = 4;
+    }
+    int32 count = 1;
+    repeated Vocabulary rows = 2;  
+}
+
+message FindManyVocabulariesByUserIdRequest{
+    bool user_id = 1;
+    PageFilters page_filters = 2;
+}
+
+message FindManyVocabulariesByUserIdResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    FindManyLexicCategoriesByCreatorIdData data = 3;
+}
