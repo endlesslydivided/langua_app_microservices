@@ -1,30 +1,44 @@
-import { Injectable } from "@nestjs/common";
-import { Vocabulary } from "../schema/vocabulary.schema";
-import { Model } from "mongoose";
-import { InjectModel } from "@nestjs/mongoose";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
-
+import { PageFilters } from '../../share/types/common.types';
+import { CreateVocabularyRequestDto } from '../dto/vocabulary.dto';
+import { Vocabulary, VocabularyDocument } from '../schema/vocabulary.schema';
 
 @Injectable()
-export class VocabularyRepository{  
-    
-    @InjectModel(Vocabulary.name) 
-    private vocabularyModel: Model<Vocabulary>
+export class VocabularyRepository {
+  @InjectModel(Vocabulary.name)
+  private vocabularyModel: Model<Vocabulary>;
 
+  async create(dto: CreateVocabularyRequestDto): Promise<VocabularyDocument> {
+    const vocabulary = new this.vocabularyModel(dto);
+    return vocabulary.save();
+  }
 
-    async create(dto: void): Promise<void> {
-        // const vocabulary = new this.vocabularyModel(dto);
-        // return vocabulary.save();
-    }
+  async findOneById(id: string): Promise<VocabularyDocument> {
+    return await this.vocabularyModel.findById(id).exec();
+  }
 
-      
+  async findManyAndCountByUserId(
+    userId: string,
+    filters: PageFilters,
+  ): Promise<[VocabularyDocument[], number]> {
+    const clause = { userId };
 
-    async findOneById(id: string): Promise<void> {
-     
-    }
+    const vocabularies = await this.vocabularyModel
+      .find(
+        clause,
+        {},
+        {
+          skip: filters.limit * filters.page,
+          limit: filters.limit,
+        },
+      )
+      .exec();
 
+    const count = await this.vocabularyModel.count(clause).exec();
 
-
-    async softDeleteUser(id: string): Promise<void> {
-    }
+    return [vocabularies, count];
+  }
 }

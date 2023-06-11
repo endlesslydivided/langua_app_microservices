@@ -4,13 +4,13 @@ package material;
 
 service MaterialService {
     rpc CreateMaterial (CreateMaterialRequest) returns (CreateMaterialResponse) {}
-    rpc FindOneMaterial (FindOneMaterialRequest) returns (FindOneMaterialResponse) {}
+    rpc FindOneMaterialById (FindOneMaterialByIdRequest) returns (FindOneMaterialByIdResponse) {}
     rpc FindManyMaterialsByVocabularyId (FindManyMaterialsByVocabularyIdRequest) returns (FindManyMaterialsByVocabularyIdResponse) {}
     rpc FindManyMaterialsByCreatorId (FindManyMaterialsByCreatorIdRequest) returns (FindManyMaterialsByCreatorIdResponse) {}
 
     rpc CreateMaterialToVocabulary (CreateMaterialToVocabularyRequest) returns (CreateMaterialToVocabularyResponse) {}
     rpc UpdateMaterialToVocabulary (UpdateMaterialToVocabularyRequest) returns (UpdateMaterialToVocabularyResponse) {}
-    rpc DeleteMaterialToVocabulary (DeleteMaterialToVocabulary) returns (DeleteMaterialToVocabularyResponse) {}
+    rpc DeleteMaterialToVocabulary (DeleteMaterialToVocabularyRequest) returns (DeleteMaterialToVocabularyResponse) {}
 }
 
 message PageFilters{
@@ -31,11 +31,11 @@ message CreateMaterialRequest {
 message CreateMaterialResponse {
     int32 status = 1;
     repeated string error = 2;
-    int32 id = 3;
+    string id = 3;
 }
 
-//| FindOneMaterial
-message FindOneMaterialData {
+//| FindOneMaterialById
+message Material {
     string id = 1;
     string name = 2;
     string language = 3;
@@ -43,14 +43,14 @@ message FindOneMaterialData {
     string creator_user_id = 5;
 }
   
-message FindOneMaterialRequest {
+message FindOneMaterialByIdRequest {
     string id = 1;
 }
 
-message FindOneMaterialResponse {
+message FindOneMaterialByIdResponse {
     int32 status = 1;
     repeated string error = 2;
-    FindOneMaterialData data = 3;
+    Material material = 3;
 }
 
 //| FindManyMaterialsByVocabularyId
@@ -61,13 +61,14 @@ message FindManyMaterialsByVocabularyIdData {
             string id = 1;
             string vocabulary_id = 2;
             string material_id = 3;
+            bool is_finished = 4;
         }
         string id = 1;
         string name = 2;
         string language = 3;
         string text_content = 4;
         string creator_user_id = 5;
-        MaterialToVocabulary material_to_vocabulary = 6;
+        repeated MaterialToVocabulary material_to_vocabulary = 6;
     }
 
     int32 count = 1;

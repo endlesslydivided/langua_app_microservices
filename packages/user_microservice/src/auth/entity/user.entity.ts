@@ -27,16 +27,16 @@ export class User extends SoftModelEntity {
   nativeLanguage: string;
 
   @OneToOne(() => UserCredentials, {
-    nullable: false,
+    nullable: true,
     deferrable: 'INITIALLY DEFERRED',
   })
   @JoinColumn()
-  credentials: UserCredentials;
+  userCredentials: UserCredentials;
 
   @OneToOne(() => UserContacts, {
-    nullable: false,
+    nullable: true,
     deferrable: 'INITIALLY DEFERRED',
   })
   @JoinColumn()
-  contacts: UserContacts;
+  userContacts: UserContacts;
 }

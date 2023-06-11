@@ -1,4 +1,5 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { InjectConnection, InjectDataSource } from '@nestjs/typeorm';
 import { DataSource, QueryRunner } from 'typeorm';
 
 import { auth } from '../auth.pb';
@@ -13,11 +14,13 @@ import { JwtService } from './jwt.service';
 
 @Injectable()
 export class AuthService {
-  
+  @Inject(UserRepository)
   private readonly userRepository: UserRepository;
+
   @Inject(JwtService)
   private readonly jwtService: JwtService;
 
+  @InjectDataSource()
   private readonly dataSource: DataSource;
 
   public async signUp(dto: SignUpRequestDto): Promise<auth.SignUpResponse> {
@@ -34,9 +37,27 @@ export class AuthService {
       }
 
       const passwordData = await this.jwtService.encodePassword(dto.password);
-      user = await this.userRepository.createUserEntity(dto, passwordData);
+
+      const userContacts = await this.userRepository.createUserContactsEntity(
+        dto,
+      );
+      await queryRunner.manager.save(userContacts);
+
+      const userCredentials =
+        await this.userRepository.createUserCredentialsEntity(
+          dto,
+          passwordData,
+        );
+      await queryRunner.manager.save(userCredentials);
+
+      user = await this.userRepository.createUserEntity(
+        dto,
+        userContacts,
+        userCredentials,
+      );
 
       await queryRunner.manager.save(user);
+      await queryRunner.commitTransaction();
 
       return { status: HttpStatus.CREATED, error: null };
     } catch (e: unknown) {
@@ -60,8 +81,8 @@ export class AuthService {
 
     const isPasswordValid: boolean = this.jwtService.isPasswordValid(
       dto.password,
-      user.credentials.passwordSalt,
-      user.credentials.passwordHash,
+      user.userCredentials.passwordSalt,
+      user.userCredentials.passwordHash,
     );
 
     if (!isPasswordValid) {
@@ -80,7 +101,7 @@ export class AuthService {
   public async validate({
     token,
   }: ValidateRequestDto): Promise<auth.ValidateResponse> {
-    const decoded: User = await this.jwtService.verify(token) as User;
+    const decoded: User = (await this.jwtService.verify(token)) as User;
 
     if (!decoded) {
       return {
@@ -100,6 +121,10 @@ export class AuthService {
       };
     }
 
-    return { status: HttpStatus.OK, error: null, userId: decoded.id };
+    return {
+      status: HttpStatus.OK,
+      userId: user.id,
+      error: null,
+    };
   }
 }

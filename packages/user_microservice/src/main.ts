@@ -4,8 +4,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
 import { AppModule } from './app.module';
-import { AUTH_SERVICE_NAME } from './auth/auth.pb';
-import { HttpExceptionFilter } from './auth/filter/http-exception.filter';
+import { HttpExceptionFilter } from './share/filter/http-exception.filter';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -13,15 +12,15 @@ async function bootstrap(): Promise<void> {
     {
       transport: Transport.GRPC,
       options: {
-        url: '0.0.0.0:50051',
-        package: AUTH_SERVICE_NAME,
-        protoPath: join('node_modules/langua_proto/proto/auth.proto'),
+        url: `0.0.0.0:${process.env.PORT}`,
+        package: 'auth',
+        protoPath: join(__dirname, '..', '..', 'langua_proto/proto/auth.proto'),
       },
     },
   );
 
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   await app.listen();
 }

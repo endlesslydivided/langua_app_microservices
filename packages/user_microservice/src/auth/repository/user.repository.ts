@@ -5,22 +5,25 @@ import { Repository, UpdateResult } from 'typeorm';
 import { SignUpRequestDto } from '../dto/auth.dto';
 import { PageFilters } from '../dto/user.dto';
 import { User } from '../entity/user.entity';
+import { UserCredentials } from '../entity/userContacts.entity';
+import { UserContacts } from '../entity/userCredentials.entity';
 
 @Injectable()
 export class UserRepository {
-
   @InjectRepository(User)
-  private readonly userRepository: Repository<User>
+  private readonly userRepository: Repository<User>;
 
+  @InjectRepository(UserContacts)
+  private readonly userContactsRepository: Repository<UserContacts>;
+
+  @InjectRepository(UserCredentials)
+  private readonly userCredentialsRepository: Repository<UserCredentials>;
 
   createUserEntity(
     dto: SignUpRequestDto,
-    passwordData: { salt: string; password: string },
+    userContacts: UserContacts,
+    userCredentials: UserCredentials,
   ): User {
-    const contacts = {
-      email: dto.email,
-      phoneNumber: dto.phoneNumber,
-    };
     const user = {
       birthday: new Date(dto.birthday),
       city: dto.city,
@@ -31,31 +34,53 @@ export class UserRepository {
       nativeLanguage: dto.nativeLanguage,
     };
 
+    return this.userRepository.create({
+      ...user,
+      userContacts,
+      userCredentials,
+    });
+  }
+
+  createUserContactsEntity(dto: SignUpRequestDto): UserContacts {
+    const contacts = {
+      email: dto.email,
+      phoneNumber: dto.phoneNumber,
+    };
+
+    return this.userContactsRepository.create({ ...contacts });
+  }
+
+  createUserCredentialsEntity(
+    dto: SignUpRequestDto,
+    passwordData: { salt: string; password: string },
+  ): UserCredentials {
     const credentials = {
       nickname: dto.nickname,
       passwordHash: passwordData.password,
       passwordSalt: passwordData.salt,
     };
-    return this.userRepository.create({ ...user, credentials, contacts });
+
+    return this.userCredentialsRepository.create({ ...credentials });
   }
 
   async findOneById(id: string): Promise<User> {
     return await this.userRepository.findOne({
       where: { id },
-      relations: { contacts: true, credentials: true },
+      relations: { userContacts: true, userCredentials: true },
       select: {
         id: true,
         firstname: true,
         surname: true,
         city: true,
+        birthday: true,
         country: true,
         sex: true,
         createdAt: true,
-        contacts: {
+        userContacts: {
           phoneNumber: true,
           email: true,
         },
-        credentials: {
+        userCredentials: {
           nickname: true,
         },
       },
@@ -64,22 +89,25 @@ export class UserRepository {
 
   async findOneByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({
-      where: { contacts: { email } },
-      relations: { contacts: true, credentials: true },
+      where: { userContacts: { email } },
+      relations: { userContacts: true, userCredentials: true },
       select: {
         id: true,
         firstname: true,
         surname: true,
         city: true,
+        birthday: true,
         country: true,
         sex: true,
         createdAt: true,
-        contacts: {
+        userContacts: {
           phoneNumber: true,
           email: true,
         },
-        credentials: {
+        userCredentials: {
           nickname: true,
+          passwordHash: true,
+          passwordSalt: true,
         },
       },
     });
@@ -93,20 +121,21 @@ export class UserRepository {
     return await this.userRepository.findAndCount({
       take: filters.limit,
       skip: filters.limit * filters.page,
-      relations: { contacts: true, credentials: true },
+      relations: { userContacts: true, userCredentials: true },
       select: {
         id: true,
         firstname: true,
         surname: true,
         city: true,
         country: true,
+        birthday: true,
         sex: true,
         createdAt: true,
-        contacts: {
+        userContacts: {
           phoneNumber: true,
           email: true,
         },
-        credentials: {
+        userCredentials: {
           nickname: true,
         },
       },

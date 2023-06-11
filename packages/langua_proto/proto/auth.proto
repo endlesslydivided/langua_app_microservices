@@ -12,8 +12,8 @@ service AuthService {
 }
 
 message PageFilters{
-    int32 page = 1;
-    int32 limit = 2;
+  int32 page = 1;
+  int32 limit = 2;
 }
 
 /// ---------------------- Auth -----------------------
@@ -52,7 +52,7 @@ message SignInResponse {
   string token = 3;
 }
 
-// Validate
+//| Validate
 
 message ValidateRequest {
   string token = 1;
@@ -61,7 +61,7 @@ message ValidateRequest {
 message ValidateResponse {
   int32 status = 1;
   repeated string error = 2;
-  int32 userId = 3;
+  string user_id = 3;
 }
 
 /// ---------------------- User -----------------------
@@ -80,6 +80,9 @@ message FindUserByIdResponse {
       string email = 1;
       string phone_number = 2;
     }
+    message UserCredentials{
+      string nickname = 1;
+    }
     string id = 1;
     string firstname = 2;
     string surname = 3;
@@ -89,6 +92,7 @@ message FindUserByIdResponse {
     string city = 7;
     string native_language = 8;
     UserContacts user_contacts = 9;
+    UserCredentials user_credentials = 10;
   }
   int32 status = 1;
   repeated string error = 2;

@@ -3,19 +3,16 @@ import { HydratedDocument } from 'mongoose';
 
 export type VocabularyDocument = HydratedDocument<Vocabulary>;
 
-@Schema()
+@Schema({ timestamps: true, collection: 'vocabularies' })
 export class Vocabulary {
+  @Prop()
+  userId: string;
 
-    @Prop()
-    userId: string;
+  @Prop()
+  language: string;
 
-    @Prop()
-    language: string;
-
-    @Prop()
-    vocabularyNativeLanguage: string;
+  @Prop()
+  vocabularyNativeLanguage: string;
 }
-
-
 
 export const VocabularySchema = SchemaFactory.createForClass(Vocabulary);

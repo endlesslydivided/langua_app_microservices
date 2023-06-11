@@ -8,6 +8,9 @@ import { UserCredentials } from '../../auth/entity/userContacts.entity';
 import { UserContacts } from '../../auth/entity/userCredentials.entity';
 import { PostgresMigrations1686044428288 } from './1686044428288-postgresMigrations';
 import { PostgresMigrations1686049870201 } from './1686049870201-postgresMigrations';
+import { PostgresMigrations1686324477797 } from './1686324477797-postgresMigrations';
+import { PostgresMigrations1686325585902 } from './1686325585902-postgresMigrations';
+import { PostgresMigrations1686326689438 } from './1686326689438-postgresMigrations';
 
 config();
 
@@ -24,6 +27,9 @@ export const typeOrmPostgresConfig: TypeOrmModuleOptions = {
   migrations: [
     PostgresMigrations1686044428288,
     PostgresMigrations1686049870201,
+    PostgresMigrations1686324477797,
+    PostgresMigrations1686325585902,
+    PostgresMigrations1686326689438,
   ],
 };
 

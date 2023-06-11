@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService as Jwt } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { Repository } from 'typeorm';
 
 import { User } from '../entity/user.entity';
 import { UserRepository } from '../repository/user.repository';
 
+type EncodedJWTData = { id: string; email: string };
+
 @Injectable()
 export class JwtService {
+  @Inject(UserRepository)
   private readonly userRepository: UserRepository;
 
   private readonly jwt: Jwt;
@@ -17,16 +18,16 @@ export class JwtService {
     this.jwt = jwt;
   }
 
-  public async decode(token: string): Promise<unknown> {
-    return this.jwt.decode(token, null);
+  public async decode(token: string): Promise<EncodedJWTData> {
+    return this.jwt.decode(token, null) as EncodedJWTData;
   }
 
-  public async validateUser(decoded: { id: string }): Promise<User> {
+  public async validateUser(decoded: EncodedJWTData | User): Promise<User> {
     return this.userRepository.findOneById(decoded.id);
   }
 
   public generateToken(user: User): string {
-    return this.jwt.sign({ id: user.id, email: user.contacts.email });
+    return this.jwt.sign({ id: user.id, email: user.userContacts.email });
   }
 
   public isPasswordValid(
@@ -35,7 +36,7 @@ export class JwtService {
     userPassword: string,
   ): boolean {
     const saltedPassword = bcrypt.hashSync(password, salt);
-    return bcrypt.compareSync(saltedPassword, userPassword);
+    return saltedPassword === userPassword;
   }
 
   public encodePassword(password: string): { salt: string; password: string } {

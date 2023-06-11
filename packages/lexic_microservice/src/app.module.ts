@@ -1,16 +1,22 @@
 import { Module } from '@nestjs/common';
-import { WordModule } from './word/word.module';
-import { VocabularyModule } from './vocabulary/vocabulary.module';
-import { LexicCategoryModule } from './lexic-category/lexic-category.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
+import { DatabaseModule } from './database/database.module';
+import { LexicCategoryModule } from './lexic-category/lexic-category.module';
+import { VocabularyModule } from './vocabulary/vocabulary.module';
+import { WordModule } from './word/word.module';
 
 @Module({
   imports: [
-    WordModule, 
-    VocabularyModule, 
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
+    VocabularyModule,
+    WordModule,
     LexicCategoryModule,
-    MongooseModule.forRoot('mongodb://localhost/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.9.1')],
+    DatabaseModule,
+  ],
   controllers: [],
   providers: [],
 })

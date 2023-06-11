@@ -18,7 +18,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  private validate(token: string): Promise<User | never> {
-    return this.jwtService.validateUser(token);
+  private async validate(token: string): Promise<User | never> {
+    const decoded = await this.jwtService.decode(token);
+    return this.jwtService.validateUser(decoded);
   }
 }

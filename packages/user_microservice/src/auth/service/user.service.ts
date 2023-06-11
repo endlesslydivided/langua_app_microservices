@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 
 import { auth } from '../auth.pb';
 import {
@@ -10,6 +10,7 @@ import { UserRepository } from '../repository/user.repository';
 
 @Injectable()
 export class UserService {
+  @Inject(UserRepository)
   private readonly userRepository: UserRepository;
 
   public async findOneById(
@@ -26,16 +27,16 @@ export class UserService {
   public async findMany(
     dto: FindManyUsersRequestDto,
   ): Promise<auth.FindManyUsersResponse> {
-    const users = await this.userRepository.findManyAndCount(dto.pageFilters);
+    const data = await this.userRepository.findManyAndCount(dto.pageFilters);
     return {
       status: HttpStatus.OK,
       error: null,
       data: {
-        rows: users[0].map((u: User) => ({
+        rows: data[0].map((u: User) => ({
           ...u,
           birthday: u.birthday.toISOString(),
         })),
-        count: users[1],
+        count: data[1],
       },
     };
   }

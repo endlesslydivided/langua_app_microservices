@@ -36,6 +36,7 @@ export class SignUpRequestDto implements auth.SignUpRequest {
   @IsString()
   public readonly sex: string;
 
+  @IsString()
   public readonly birthday: string;
 
   @IsString()

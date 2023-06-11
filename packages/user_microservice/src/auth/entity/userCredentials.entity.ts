@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
 import { SoftModelEntity } from '../../share/entity/softModel.entity';
 import { User } from './user.entity';
@@ -11,6 +11,6 @@ export class UserContacts extends SoftModelEntity {
   @Column({ name: 'phone_number' })
   phoneNumber: string;
 
-  @OneToOne(() => User, (user) => user.contacts)
+  @OneToOne(() => User, (user) => user.userCredentials)
   user: User;
 }
