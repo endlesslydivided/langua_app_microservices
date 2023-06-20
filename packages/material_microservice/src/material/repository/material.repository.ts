@@ -24,7 +24,7 @@ export class MaterialRepository {
     vocabularyId: string,
     filters: PageFilters,
   ): Promise<[MaterialDocument[], number]> {
-    const materials = (await this.materialModel
+    const materials = await this.materialModel
       .aggregate([
         {
           $addFields: {
@@ -75,7 +75,7 @@ export class MaterialRepository {
           },
         },
       ])
-      .exec()) as unknown as {
+      .exec() as unknown as {
       data: MaterialDocument[];
       metadata: { count: number; page: number };
     }[];

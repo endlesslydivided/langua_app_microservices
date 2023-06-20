@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package user-stats;
+package userStats;
 
 service UserStatsService{
     rpc CreateOrUpdateVocabularyStats (CreateOrUpdateVocabularyStatsRequest) returns (CreateOrUpdateVocabularyStatsResponse) {}
@@ -17,16 +17,16 @@ message PageFilters{
 /// ------------------------ VocabularyStats ------------------------
 
 //|CreateOrUpdateVocabulartStats
-message CreateOrUpdateVocabulartStatsRequest{
+message CreateOrUpdateVocabularyStatsRequest{
     optional string id = 1;
     string user_id = 2;
-    string started_materials_count = 3;
-    string learned_materials_count = 4;
-    string started_word_count = 5;
-    string learned_word_count = 6;
+    int32 started_materials_count = 3;
+    int32 learned_materials_count = 4;
+    int32 started_words_count = 5;
+    int32 learned_words_count = 6;
 }
 
-message CreateOrUpdateVocabulartStatsResponse{
+message CreateOrUpdateVocabularyStatsResponse{
     int32 status = 1;
     repeated string error = 2;
 }
@@ -40,10 +40,10 @@ message GetOverallVocabularyStatsResponse{
 
     message OverallVocabularyStats{
         string user_id = 1;
-        string started_materials_count = 2;
-        string learned_materials_count = 3;
-        string started_word_count = 4;
-        string learned_word_count = 5;
+        int32 total_started_materials = 2;
+        int32 total_learned_materials = 3;
+        int32 total_started_words = 4;
+        int32 total_learned_words = 5;
     }
     int32 status = 1;
     repeated string error = 2;
@@ -54,10 +54,12 @@ message GetOverallVocabularyStatsResponse{
 message FindManyVocabularyStatsData{
     message VocabularyStats{
         string user_id = 1;
-        string started_materials_count = 2;
-        string learned_materials_count = 3;
-        string started_word_count = 4;
-        string learned_word_count = 5;
+        int32 started_materials_count = 2;
+        int32 learned_materials_count = 3;
+        int32 started_words_count = 4;
+        int32 learned_words_count = 5;
+        string createdAt = 6;
+        string updatedAt = 7;
     }
     int32 count = 1;
     repeated VocabularyStats rows = 2;
