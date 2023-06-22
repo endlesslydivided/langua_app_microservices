@@ -1,11 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-
+import { HydratedDocument } from 'mongoose';
 
 export type VocabularyStatsDocument = HydratedDocument<VocabularyStats>;
 
-
-@Schema({timestamps: true,collection: 'vocubulary_stats'})
+@Schema({ timestamps: true, collection: 'vocubulary_stats' })
 export class VocabularyStats {
   @Prop()
   userId: string;
@@ -21,7 +19,7 @@ export class VocabularyStats {
 
   @Prop()
   learnedWordsCount: number;
-
 }
 
-export const VocabularyStatsSchema = SchemaFactory.createForClass(VocabularyStats);
+export const VocabularyStatsSchema =
+  SchemaFactory.createForClass(VocabularyStats);

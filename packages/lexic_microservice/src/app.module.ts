@@ -18,6 +18,5 @@ import { WordModule } from './word/word.module';
     DatabaseModule,
   ],
   controllers: [],
-  providers: [],
 })
 export class AppModule {}

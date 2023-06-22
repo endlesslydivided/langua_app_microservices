@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { WordController } from './controller/word.controller';
-import { WordRepository } from './repository/word.repository';
 import { WordToVocabularyRepository } from './repository/word-to-vocabulary.repository';
-import { Word, WordSchema } from './schema/word.schema';
+import { WordRepository } from './repository/word.repository';
 import {
   WordToVocabulary,
   WordToVocabularySchema,
 } from './schema/word-to-vocabulary.schema';
+import { Word, WordSchema } from './schema/word.schema';
 import { WordService } from './service/word.service';
+
+export const USER_STATS_PACKAGE = 'USER_STATS_PACKAGE';
 
 @Module({
   imports: [

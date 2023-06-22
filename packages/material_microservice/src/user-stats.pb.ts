@@ -5,9 +5,6 @@
 import { Observable } from 'rxjs';
 import { Metadata } from '@grpc/grpc-js';
 
-export const USER_STATS_PACKAGE_NAME = 'userStats'
-export const USER_STATS_SERVICE_NAME = 'UserStatsService'
-
 export namespace userStats {
     export interface UserStatsService {
         createOrUpdateVocabularyStats(

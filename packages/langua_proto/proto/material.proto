@@ -128,7 +128,8 @@ message CreateMaterialToVocabularyResponse {
 //| UpdateMaterialToVocabulary
 message UpdateMaterialToVocabularyRequest {
     string id = 1;
-    bool isFinished = 2;
+    string user_id = 2;
+    bool is_finished = 3;
 }
 
 message UpdateMaterialToVocabularyResponse {

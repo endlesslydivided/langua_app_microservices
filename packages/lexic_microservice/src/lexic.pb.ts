@@ -150,6 +150,7 @@ export namespace lexic {
     // | UpdateWordToVocabulary
     export interface UpdateWordToVocabularyRequest {
         id?: string;
+        userId?: string;
         isFinished?: boolean;
     }
     export interface UpdateWordToVocabularyResponse {

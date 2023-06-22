@@ -77,6 +77,9 @@ export class UpdateMaterialToVocabularyRequestDto
   @IsString()
   id: string;
 
+  @IsString()
+  userId: string;
+
   @IsBoolean()
   isFinished: boolean;
 }

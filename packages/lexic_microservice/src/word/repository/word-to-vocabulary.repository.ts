@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 import { CreateWordToVocabularyRequestDto } from '../dto/word.dto';
 import {
@@ -23,13 +23,15 @@ export class WordToVocabularyRepository {
   async updateWordToVocabulary(
     wordToVocabulary: WordToVocabularyDocument,
     isFinished: boolean,
+    session: mongoose.mongo.ClientSession
   ): Promise<WordToVocabularyDocument> {
     return wordToVocabulary
       .updateOne({
         $set: {
           isFinished,
         },
-      })
+      },
+      {session})
       .exec();
   }
 

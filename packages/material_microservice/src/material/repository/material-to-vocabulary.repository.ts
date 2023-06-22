@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { DeleteResult } from 'mongodb';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 import { CreateMaterialToVocabularyRequestDto } from '../dto/material.dto';
 import {
@@ -15,7 +15,7 @@ export class MaterialToVocabularyRepository {
   private materialToVocabularyModel: Model<MaterialToVocabulary>;
 
   async create(
-    dto: CreateMaterialToVocabularyRequestDto,
+    dto: CreateMaterialToVocabularyRequestDto
   ): Promise<MaterialToVocabularyDocument> {
     const materialToVocabulary = new this.materialToVocabularyModel(dto);
     return materialToVocabulary.save();
@@ -28,12 +28,16 @@ export class MaterialToVocabularyRepository {
   async updateMaterialToVocabulary(
     materialToVocabulary: MaterialToVocabularyDocument,
     isFinished: boolean,
+    session:mongoose.mongo.ClientSession
   ): Promise<MaterialToVocabularyDocument> {
     return materialToVocabulary
       .updateOne({
         $set: {
           isFinished,
         },
+      },
+      {
+        session
       })
       .exec();
   }

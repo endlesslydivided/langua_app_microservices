@@ -1,4 +1,4 @@
-import { IsInt, IsNumber, IsPositive, Min } from 'class-validator';
+import { IsNumber, Min } from 'class-validator';
 
 import { userStats } from '../../user-stats.pb';
 

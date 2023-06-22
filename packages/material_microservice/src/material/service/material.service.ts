@@ -12,6 +12,11 @@ import {
 } from '../dto/material.dto';
 import { MaterialRepository } from '../repository/material.repository';
 import { MaterialToVocabularyRepository } from '../repository/material-to-vocabulary.repository';
+import mongoose from 'mongoose';
+import { USER_STATS_PACKAGE } from '../material.module';
+import { userStats } from '../../user-stats.pb';
+import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Injectable()
 export class MaterialService {
@@ -20,6 +25,29 @@ export class MaterialService {
 
   @Inject(MaterialToVocabularyRepository)
   private readonly materialToVocabularyRepository: MaterialToVocabularyRepository;
+
+  private userStatsService: userStats.UserStatsService;
+
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'userStats',
+      protoPath: join(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        '..',
+        'langua_proto/proto/user-stats.proto',
+      ),
+    },
+  })
+  private userStatsClient: ClientGrpc;
+
+  onModuleInit() {
+    this.userStatsService = this.userStatsClient.getService<userStats.UserStatsService>('UserStatsService');
+  }
+  
 
   public async createMaterial(
     dto: CreateMaterialRequestDto,
@@ -80,8 +108,10 @@ export class MaterialService {
   public async createMaterialToVocabulary(
     dto: CreateMaterialToVocabularyRequestDto,
   ): Promise<material.CreateMaterialToVocabularyResponse> {
+
     const materialToVocabulary =
       await this.materialToVocabularyRepository.create(dto);
+
     return {
       status: HttpStatus.OK,
       error: null,
@@ -102,10 +132,45 @@ export class MaterialService {
       };
     }
 
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    
     await this.materialToVocabularyRepository.updateMaterialToVocabulary(
       materialToVocabulary,
       dto.isFinished,
+      session
     );
+    
+    const updateVocabularyStatsBody ={
+      userId: dto.userId,
+      startedMaterialsCount: !materialToVocabulary.isFinished && dto.isFinished ? -1 : 1,
+      learnedMaterialsCount: !materialToVocabulary.isFinished && dto.isFinished ? 1 : -1,
+      startedWordsCount: 0,
+      learnedWordsCount: 0,
+    }
+
+    const observableResultUserStats = await this.userStatsService.createOrUpdateVocabularyStats(updateVocabularyStatsBody);
+  
+    await observableResultUserStats.subscribe((userStats)=>
+    {
+      let result;
+      if(userStats.error.length === 0)
+      {
+        session.commitTransaction();
+        result = {
+          status: HttpStatus.NO_CONTENT,
+          error: null,
+        };
+      }
+      else
+      {
+        session.abortTransaction();
+        result = userStats;
+      }
+
+      session.endSession();
+      return result;
+    });
 
     return {
       status: HttpStatus.NO_CONTENT,

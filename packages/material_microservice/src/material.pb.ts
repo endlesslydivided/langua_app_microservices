@@ -148,6 +148,7 @@ export namespace material {
     // | UpdateMaterialToVocabulary
     export interface UpdateMaterialToVocabularyRequest {
         id?: string;
+        userId?: string;
         isFinished?: boolean;
     }
     export interface UpdateMaterialToVocabularyResponse {

@@ -1,5 +1,6 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 
+import mongoose from 'mongoose';
 import { lexic } from '../../lexic.pb';
 import {
   CreateWordRequestDto,
@@ -9,8 +10,12 @@ import {
   FindOneWordByIdRequestDto,
   UpdateWordToVocabularyRequestDto,
 } from '../dto/word.dto';
-import { WordRepository } from '../repository/word.repository';
 import { WordToVocabularyRepository } from '../repository/word-to-vocabulary.repository';
+import { WordRepository } from '../repository/word.repository';
+import { userStats } from 'src/user-stats.pb';
+import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
+import { USER_STATS_PACKAGE } from '../word.module';
+import { join } from 'path';
 
 @Injectable()
 export class WordService {
@@ -19,6 +24,28 @@ export class WordService {
 
   @Inject(WordToVocabularyRepository)
   private readonly wordToVocabularyRepository: WordToVocabularyRepository;
+
+  private userStatsService: userStats.UserStatsService;
+
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'userStats',
+      protoPath: join(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        '..',
+        'langua_proto/proto/user-stats.proto',
+      ),
+    },
+  }) 
+  private userStatsClient: ClientGrpc;
+
+  onModuleInit() {
+    this.userStatsService = this.userStatsClient.getService<userStats.UserStatsService>('UserStatsService');
+  }
 
   public async create(
     dto: CreateWordRequestDto,
@@ -102,14 +129,44 @@ export class WordService {
       };
     }
 
+    const session = await mongoose.startSession();
+    session.startTransaction();
     await this.wordToVocabularyRepository.updateWordToVocabulary(
       wordToVocabulary,
       dto.isFinished,
+      session
     );
 
-    return {
-      status: HttpStatus.NO_CONTENT,
-      error: null,
-    };
+    const updateVocabularyStatsBody ={
+      userId: dto.userId,
+      startedMaterialsCount: 0,
+      learnedMaterialsCount: 0,
+      startedWordsCount: !wordToVocabulary.isFinished && dto.isFinished ? -1 : 1,
+      learnedWordsCount: !wordToVocabulary.isFinished && dto.isFinished ? 1 : -1,
+    }
+
+    const observableResultUserStats = await this.userStatsService.createOrUpdateVocabularyStats(updateVocabularyStatsBody);
+  
+    await observableResultUserStats.subscribe((userStats)=>
+    {
+      let result;
+      if(userStats.error.length === 0)
+      {
+        session.commitTransaction();
+        result = {
+          status: HttpStatus.NO_CONTENT,
+          error: null,
+        };
+      }
+      else
+      {
+        session.abortTransaction();
+        result = userStats;
+      }
+
+      session.endSession();
+      return result;
+    });
+   
   }
 }

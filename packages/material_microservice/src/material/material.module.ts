@@ -10,6 +10,10 @@ import {
   MaterialToVocabularySchema,
 } from './schema/material-to-vocabulary.schema';
 import { MaterialService } from './service/material.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
+
+export const USER_STATS_PACKAGE = 'USER_STATS_PACKAGE';
 
 @Module({
   imports: [

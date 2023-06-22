@@ -120,7 +120,8 @@ message CreateWordToVocabularyResponse {
 //| UpdateWordToVocabulary
 message UpdateWordToVocabularyRequest{
     string id = 1;
-    bool is_finished = 2;
+    string user_id = 2;
+    bool is_finished = 3;
 }
 
 message UpdateWordToVocabularyResponse {

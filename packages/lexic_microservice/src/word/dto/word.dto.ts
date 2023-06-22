@@ -79,6 +79,9 @@ export class UpdateWordToVocabularyRequestDto
   implements lexic.UpdateWordToVocabularyRequest
 {
   @IsString()
+  public readonly userId: string;
+
+  @IsString()
   public readonly id: string;
 
   @IsBoolean()
