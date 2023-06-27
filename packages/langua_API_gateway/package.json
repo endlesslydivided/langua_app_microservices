@@ -17,12 +17,19 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "proto:lexic": "tsproto --path ../langua_proto/proto --target lexic.proto --output ./src",
+    "proto:auth": "tsproto --path ../langua_proto/proto --target auth.proto --output ./src",
+    "proto:material": "tsproto --path ../langua_proto/proto --target material.proto --output ./src",
+    "proto:user-stats": "tsproto --path ../langua_proto/proto --target user-stats.proto --output ./src",
+    "proto:all": "npm run proto:lexic && npm run proto:auth && npm run proto:material && npm run proto:user-stats"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "dotenv": "^16.3.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },

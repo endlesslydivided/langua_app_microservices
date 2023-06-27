@@ -28,7 +28,9 @@ export class WordController {
   private findOneWordById(
     payload: FindOneWordByIdRequestDto,
   ): Promise<lexic.FindOneWordByIdResponse> {
-    return this.service.findOneById(payload);
+
+      return this.service.findOneById(payload);
+
   }
 
   @GrpcMethod(LEXIC_SERVICE_NAME, 'findManyWordsByVocabularyId')

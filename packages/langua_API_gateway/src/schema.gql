@@ -1,0 +1,86 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateWordInput {
+  language: String!
+  lexicCategoryId: String!
+  transcription: String!
+  word: String!
+}
+
+input CreateWordToVocabularyInput {
+  vocabularyId: String!
+  wordId: String!
+}
+
+type LexicCategory {
+  categoryName: String!
+  creatorUserId: String!
+}
+
+type ModifyWordResponse {
+  data: String
+  error: [String!]
+  status: Int
+}
+
+type ModifyWordToVocabularyResponse {
+  data: String
+  error: [String!]
+  status: Int
+}
+
+type Mutation {
+  createWord(createWord: CreateWordInput!): ModifyWordResponse!
+  createWordToVocabulary(createWordToVocabulary: CreateWordToVocabularyInput!): ModifyWordToVocabularyResponse!
+  updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): ModifyWordToVocabularyResponse!
+}
+
+type PaginatedLexicCategory {
+  count: Int!
+  rows: LexicCategory!
+}
+
+type PaginatedWord {
+  count: Int!
+  rows: Word!
+}
+
+type PaginatedWordResponse {
+  data: PaginatedWord
+  error: [String!]
+  status: Int
+}
+
+type Query {
+  findManyByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWordResponse!
+  findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0): PaginatedWordResponse!
+  findOneWordById(id: String!): WordResponse!
+}
+
+input UpdateWordToVocabularyInput {
+  id: String!
+  isFinished: Boolean!
+  userId: String!
+}
+
+type Word {
+  language: String!
+  lexicCategories: [LexicCategory!]!
+  transcription: String!
+  word: String!
+  wordToVocabulary: WordToVocabulary!
+}
+
+type WordResponse {
+  data: Word
+  error: [String!]
+  status: Int
+}
+
+type WordToVocabulary {
+  isFinished: Boolean!
+  vocabularyId: String!
+  wordId: String!
+}
