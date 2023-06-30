@@ -34,12 +34,25 @@ type ModifyWordToVocabularyResponse {
 type Mutation {
   createWord(createWord: CreateWordInput!): ModifyWordResponse!
   createWordToVocabulary(createWordToVocabulary: CreateWordToVocabularyInput!): ModifyWordToVocabularyResponse!
+  signIn(signIn: SingInInput!): SignInResponse!
+  signUp(signUp: SingUpInput!): SignUpResponse!
   updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): ModifyWordToVocabularyResponse!
 }
 
 type PaginatedLexicCategory {
   count: Int!
   rows: LexicCategory!
+}
+
+type PaginatedUser {
+  count: Int!
+  rows: User!
+}
+
+type PaginatedUserResponse {
+  data: PaginatedUser
+  error: [String!]
+  status: Int
 }
 
 type PaginatedWord {
@@ -55,14 +68,75 @@ type PaginatedWordResponse {
 
 type Query {
   findManyByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWordResponse!
+  findManyUsers(limit: Int! = 10, page: Int! = 0): PaginatedUserResponse!
   findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0): PaginatedWordResponse!
   findOneWordById(id: String!): WordResponse!
+  findUserById(id: String!): UserResponse!
+}
+
+type SignInResponse {
+  data: String
+  error: [String!]
+  status: Int
+}
+
+type SignUpResponse {
+  data: String
+  error: [String!]
+  status: Int
+}
+
+input SingInInput {
+  email: String!
+  password: String!
+}
+
+input SingUpInput {
+  birthday: String!
+  city: String!
+  country: String!
+  email: String!
+  firstname: String!
+  nativeLanguage: String!
+  nickname: String!
+  password: String!
+  phoneNumber: String!
+  sex: String!
+  surname: String!
 }
 
 input UpdateWordToVocabularyInput {
   id: String!
   isFinished: Boolean!
   userId: String!
+}
+
+type User {
+  birthday: String!
+  city: String!
+  country: String!
+  firstname: String!
+  nativeLanguage: String!
+  password: String!
+  sex: String!
+  surname: String!
+  userContacts: UserContacts!
+  userCredentials: UserCredentials!
+}
+
+type UserContacts {
+  email: String!
+  phoneNumber: String!
+}
+
+type UserCredentials {
+  nickname: String!
+}
+
+type UserResponse {
+  data: User
+  error: [String!]
+  status: Int
 }
 
 type Word {

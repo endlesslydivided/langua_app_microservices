@@ -1,5 +1,7 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../../auth/guard/auth.guard';
 import {
   CreateWordToVocabularyInput,
   UpdateWordToVocabularyInput,
@@ -15,6 +17,7 @@ export class WordToVocabularyResolver {
   constructor(private wordService: WordService) {}
 
   @Mutation((returns) => ModifyWordToVocabularyResponse)
+  @UseGuards(AuthGuard)
   async createWordToVocabulary(@Args('createWordToVocabulary') input: CreateWordToVocabularyInput) {
     const result = await this.wordService.createWordToVocabulary(input);
     return {
@@ -25,6 +28,7 @@ export class WordToVocabularyResolver {
   }
 
   @Mutation((returns) => ModifyWordToVocabularyResponse)
+  @UseGuards(AuthGuard)
   async updateWordToVocabulary(@Args('updateWordToVocabulary') input: UpdateWordToVocabularyInput) {
     return this.wordService.updateWordToVocabulary(input);
   }

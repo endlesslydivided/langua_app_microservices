@@ -8,12 +8,15 @@ import {
 import { VocabularyService } from '../service/vocabulary.service';
 import { CreateVocabularyInput } from '../inputs/vocabulary.inputs';
 import { FindManyVocabulariesByUserIdArgs } from '../args/vocabulary.args';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../../auth/guard/auth.guard';
 
 @Resolver((of) => VocabularyResolver)
 export class VocabularyResolver {
   constructor(private vocabularyService: VocabularyService) {}
 
   @Mutation((returns) => ModifyWordToVocabularyResponse)
+  @UseGuards(AuthGuard)
   async createVocabulary(@Args('createVocabulary') input: CreateVocabularyInput) {
     const result = await this.vocabularyService.createVocabulary(input);
     return {
@@ -24,6 +27,7 @@ export class VocabularyResolver {
   }
 
   @Query((type) => PaginatedVocabularyResponse, { name: `findManyVocabulariesByUserId` })
+  @UseGuards(AuthGuard)
   async findManyVocabulariesByUserId(@Args() args: FindManyVocabulariesByUserIdArgs) {
     const { userId, page, limit } = args;
     const data = {

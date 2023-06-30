@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { auth, AUTH_SERVICE_NAME } from '../../langua_proto/auth.pb';
 
 @Injectable()
-export class AuthService {
+export class UserService {
   private authServiceClient: auth.AuthService;
 
   @Inject(AUTH_SERVICE_NAME)
@@ -16,16 +16,11 @@ export class AuthService {
       this.client.getService<auth.AuthService>(AUTH_SERVICE_NAME);
   }
 
-  public async validate(token: string): Promise<auth.ValidateResponse> {
-    return firstValueFrom(this.authServiceClient.validate({ token }));
+  public async findUserById(data: auth.FindUserByIdRequest): Promise<auth.FindUserByIdResponse> {
+    return firstValueFrom(this.authServiceClient.findUserById(data));
   }
 
-  public async signUp(data: auth.SignUpRequest): Promise<auth.SignUpResponse> {
-    return firstValueFrom(this.authServiceClient.signUp(data));
+  public async findManyUsers(data: auth.FindManyUsersRequest): Promise<auth.FindManyUsersResponse> {
+    return firstValueFrom(this.authServiceClient.findManyUsers(data));
   }
-
-  public async singIn(data: auth.SignInRequest): Promise<auth.SignInResponse> {
-    return firstValueFrom(this.authServiceClient.signIn(data));
-  }
-
 }

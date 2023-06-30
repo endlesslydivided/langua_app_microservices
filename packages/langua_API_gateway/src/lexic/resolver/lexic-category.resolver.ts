@@ -7,12 +7,15 @@ import {
     ModifyWordToVocabularyResponse
 } from '../model/word-to-vocabulary.model';
 import { LexicCategoryService } from '../service/lexic-category.service';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../../auth/guard/auth.guard';
 
 @Resolver((of) => LexicCategoryResolver)
 export class LexicCategoryResolver {
   constructor(private lexicCategoryService: LexicCategoryService) {}
 
   @Mutation((returns) => ModifyWordToVocabularyResponse)
+  @UseGuards(AuthGuard)
   async createLexicCategory(@Args('createLexicCategory') input: CreateLexicCategoryInput) {
     const result = await this.lexicCategoryService.createLexicCategory(input);
     return {
@@ -23,6 +26,7 @@ export class LexicCategoryResolver {
   }
 
   @Query((type) => PaginatedLexicCategoryResponse, { name: `findManyLexicCategoriesByCreatorId` })
+  @UseGuards(AuthGuard)
   async findManyLexicCategoriesByCreatorId(@Args() args: FindManyLexicCategoriesByCreatorIdArgs) {
     const { creatorId, page, limit } = args;
     const data = {

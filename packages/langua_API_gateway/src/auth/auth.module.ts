@@ -3,8 +3,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
 import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from '../langua_proto/auth.pb';
-import { AuthController } from './controller/auth.controller';
 import { AuthService } from './service/auth.service';
+import { UserService } from './service/user.service';
+import { AuthResolver } from './resolver/auth.resolver';
+import { UserResolver } from './resolver/user.resolver';
 
 @Global()
 @Module({
@@ -28,8 +30,7 @@ import { AuthService } from './service/auth.service';
       },
     ]),
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService,UserService,AuthResolver,UserResolver],
   exports: [AuthService],
 })
 export class AuthModule {}

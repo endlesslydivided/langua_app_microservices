@@ -13,13 +13,15 @@ import {
   WordResponse,
 } from '../model/word.model';
 import { WordService } from '../service/word.service';
-import { BadRequestException } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../../auth/guard/auth.guard';
 
 @Resolver((of) => Word)
 export class WordResolver {
   constructor(private wordService: WordService) {}
 
   @Mutation((returns) => ModifyWordResponse,{name:'createWord'})
+  @UseGuards(AuthGuard)
   async createWord(@Args('createWord') input: CreateWordInput) {
     const result = await this.wordService.createWord(input);
     
@@ -31,6 +33,7 @@ export class WordResolver {
   }
 
   @Query((returns) => WordResponse,{name:'findOneWordById'})
+  @UseGuards(AuthGuard)
   async findOneWordById(@Args('id', { type: () => GraphQLString }) id: string) {
     const result = await this.wordService.findOneWordById({ id });
     return {
@@ -42,6 +45,7 @@ export class WordResolver {
   }
 
   @Query((type) => PaginatedWordResponse, { name: `findManyByVocabularyId` })
+  @UseGuards(AuthGuard)
   async findManyByVocabularyId(@Args() args: FindManyWordsByVocabularyIdArgs) {
     const { vocabularyId, page, limit } = args;
     const data = {
@@ -55,6 +59,7 @@ export class WordResolver {
   }
 
   @Query((type) => PaginatedWordResponse, { name: `findManyWordsByLexicCategoryId` })
+  @UseGuards(AuthGuard)
   async findManyWordsByLexicCategoryId(
     @Args() args: FindManyWordsByLexicCategoryIdArgs,
   ) {
