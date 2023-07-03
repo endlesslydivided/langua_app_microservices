@@ -8,6 +8,8 @@ import { MATERIAL_SERVICE_NAME, MATERIAL_PACKAGE_NAME } from 'src/langua_proto/m
 import { WordToVocabularyResolver } from 'src/lexic/resolver/word-to-vocabulary.resolver';
 import { WordResolver } from 'src/lexic/resolver/word.resolver';
 import { MaterialService } from './service/material.service';
+import { MaterialResolver } from './resolver/material.resolver';
+import { MaterialToVocabularyResolver } from './resolver/material-to-vocabulary.resolver';
 
 
 
@@ -36,6 +38,6 @@ const configService = new ConfigService();
           },
         ]),
       ],
-      providers: [MaterialService],
+      providers: [MaterialService,MaterialResolver,MaterialToVocabularyResolver],
 })
 export class MaterialModule {}

@@ -13,11 +13,12 @@ import { AuthService } from '../service/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+
   @Inject(AuthService)
   public readonly service: AuthService;
 
   public async canActivate(ctx: ExecutionContext): Promise<boolean> | never {
-    const req: Request = ctx.switchToHttp().getRequest();
+    const req: Request = ctx.switchToHttp().getNext().req;
     const authorization: string = req.headers['authorization'];
 
     if (!authorization) {
@@ -32,8 +33,7 @@ export class AuthGuard implements CanActivate {
 
     const token: string = bearer[1];
 
-    const { status, userId }: auth.ValidateResponse =
-      await this.service.validate(token);
+    const { status, userId }: auth.ValidateResponse = await this.service.validate(token);
 
     req.user = userId;
 

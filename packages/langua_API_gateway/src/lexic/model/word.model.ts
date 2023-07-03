@@ -2,37 +2,29 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql';
 import { IdentifiedModel } from 'src/share/model/identified.model';
 
-import { LexicCategory } from './lexic-category.model';
 import { PaginatedModel } from '../../share/model/paginated.model';
-import { ResponseModel } from '../../share/model/status.model';
+import { LexicCategory } from './lexic-category.model';
 import { WordToVocabulary } from './word-to-vocabulary.model';
 
 @ObjectType()
 export class Word extends IdentifiedModel {
-  @Field((type) => GraphQLString, { nullable: false })
+  @Field((type) => GraphQLString, { nullable: true })
   word: string;
 
-  @Field((type) => GraphQLString, { nullable: false })
+  @Field((type) => GraphQLString, { nullable: true })
   transcription: string;
 
-  @Field((type) => GraphQLString, { nullable: false })
+  @Field((type) => GraphQLString, { nullable: true })
   language: string;
 
-  @Field((type) => WordToVocabulary)
-  wordToVocabulary?: WordToVocabulary;
+  @Field((type) => [WordToVocabulary],{ nullable: true })
+  wordToVocabulary?: WordToVocabulary[];
 
-  @Field((type) => [LexicCategory])
+  @Field((type) => [LexicCategory],{ nullable: true })
   lexicCategories: LexicCategory[];
 }
 
 @ObjectType()
-export class PaginatedWord extends PaginatedModel(Word) {}
+export class PaginatedWord extends PaginatedModel<Word>(Word) {}
 
-@ObjectType()
-export class PaginatedWordResponse extends ResponseModel(PaginatedWord) {}
 
-@ObjectType()
-export class WordResponse extends ResponseModel(Word) {}
-
-@ObjectType()
-export class ModifyWordResponse extends ResponseModel(String) {}

@@ -1,52 +1,53 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql';
 
+import { BadRequestException, HttpStatus, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../../auth/guard/auth.guard';
 import {
   FindManyWordsByLexicCategoryIdArgs,
   FindManyWordsByVocabularyIdArgs,
 } from '../args/word.args';
 import { CreateWordInput } from '../inputs/word.inputs';
 import {
-  ModifyWordResponse,
-  PaginatedWordResponse,
-  Word,
-  WordResponse,
+  PaginatedWord,
+  Word
 } from '../model/word.model';
 import { WordService } from '../service/word.service';
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../auth/guard/auth.guard';
 
 @Resolver((of) => Word)
 export class WordResolver {
   constructor(private wordService: WordService) {}
 
-  @Mutation((returns) => ModifyWordResponse,{name:'createWord'})
+  @Mutation((returns) => String,{name:'createWord'})
   @UseGuards(AuthGuard)
   async createWord(@Args('createWord') input: CreateWordInput) {
     const result = await this.wordService.createWord(input);
     
-    return {
-      status: result.status,
-      error: result.error,
-      data: result.id,
-    };
+    if(result.status !== HttpStatus.OK)
+    {
+      throw new BadRequestException(result.error)
+    }
+
+    return result.id;
   }
 
-  @Query((returns) => WordResponse,{name:'findOneWordById'})
+  @Query((returns) => Word,{name:'findOneWordById'})
   @UseGuards(AuthGuard)
   async findOneWordById(@Args('id', { type: () => GraphQLString }) id: string) {
     const result = await this.wordService.findOneWordById({ id });
-    return {
-      status: result.status,
-      error: result.error,
-      data: result.word,
-    };
+
+    if(result.status !== HttpStatus.OK)
+    {
+      throw new BadRequestException(result.error)
+    }
+
+    return result.word;
 
   }
 
-  @Query((type) => PaginatedWordResponse, { name: `findManyByVocabularyId` })
+  @Query((type) => PaginatedWord, { name: `findManyWordsByVocabularyId` })
   @UseGuards(AuthGuard)
-  async findManyByVocabularyId(@Args() args: FindManyWordsByVocabularyIdArgs) {
+  async findManyWordsByVocabularyId(@Args() args: FindManyWordsByVocabularyIdArgs) {
     const { vocabularyId, page, limit } = args;
     const data = {
       vocabularyId,
@@ -55,10 +56,21 @@ export class WordResolver {
         limit,
       },
     };
-    return this.wordService.findManyWordsByVocabularyId(data);
+
+    const result = await this.wordService.findManyWordsByVocabularyId(data);
+
+    if(result.status !== HttpStatus.OK)
+    {
+      throw new BadRequestException(result.error)
+    }
+
+    return { 
+      rows: result?.data?.rows,
+      count: result?.data?.count
+    };
   }
 
-  @Query((type) => PaginatedWordResponse, { name: `findManyWordsByLexicCategoryId` })
+  @Query((type) => PaginatedWord, { name: `findManyWordsByLexicCategoryId` })
   @UseGuards(AuthGuard)
   async findManyWordsByLexicCategoryId(
     @Args() args: FindManyWordsByLexicCategoryIdArgs,
@@ -71,6 +83,18 @@ export class WordResolver {
         limit,
       },
     };
-    return this.wordService.findManyWordsByLexicCategoryId(data);
+
+    const result = await this.wordService.findManyWordsByLexicCategoryId(data);
+
+    if(result.status !== HttpStatus.OK)
+    {
+      throw new BadRequestException(result.error)
+    }
+
+    return { 
+      rows: result?.data?.rows,
+      count: result?.data?.count
+    };
+   
   }
 }

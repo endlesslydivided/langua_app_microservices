@@ -7,6 +7,10 @@ import { WordToVocabularyResolver } from './resolver/word-to-vocabulary.resolver
 import { WordResolver } from './resolver/word.resolver';
 import { config } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
+import { VocabularyResolver } from './resolver/vocabulary.resolver';
+import { LexicCategoryResolver } from './resolver/lexic-category.resolver';
+import { VocabularyService } from './service/vocabulary.service';
+import { LexicCategoryService } from './service/lexic-category.service';
 
 
 config();
@@ -34,6 +38,6 @@ const configService = new ConfigService();
           },
         ]),
       ],
-      providers: [WordService,WordToVocabularyResolver,WordResolver],
+      providers: [WordService,VocabularyService,LexicCategoryService,WordToVocabularyResolver,WordResolver,VocabularyResolver,LexicCategoryResolver],
 })
 export class LexicModule {}

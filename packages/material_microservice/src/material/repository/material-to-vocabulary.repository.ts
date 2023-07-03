@@ -27,17 +27,13 @@ export class MaterialToVocabularyRepository {
 
   async updateMaterialToVocabulary(
     materialToVocabulary: MaterialToVocabularyDocument,
-    isFinished: boolean,
-    session:mongoose.mongo.ClientSession
+    isFinished: boolean
   ): Promise<MaterialToVocabularyDocument> {
     return materialToVocabulary
       .updateOne({
         $set: {
           isFinished,
         },
-      },
-      {
-        session
       })
       .exec();
   }

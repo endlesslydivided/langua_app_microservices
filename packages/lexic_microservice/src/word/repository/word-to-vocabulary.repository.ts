@@ -22,16 +22,14 @@ export class WordToVocabularyRepository {
 
   async updateWordToVocabulary(
     wordToVocabulary: WordToVocabularyDocument,
-    isFinished: boolean,
-    session: mongoose.mongo.ClientSession
+    isFinished: boolean
   ): Promise<WordToVocabularyDocument> {
     return wordToVocabulary
       .updateOne({
         $set: {
           isFinished,
         },
-      },
-      {session})
+      })
       .exec();
   }
 

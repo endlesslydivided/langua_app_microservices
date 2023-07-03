@@ -1,28 +1,20 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql';
 
 import { IdentifiedModel } from '../../share/model/identified.model';
 import { PaginatedModel } from '../../share/model/paginated.model';
-import { ResponseModel } from '../../share/model/status.model';
 
 @ObjectType()
 export class LexicCategory extends IdentifiedModel {
-  @Field((type) => GraphQLString, { nullable: false })
+  @Field((type) => GraphQLString, { nullable: true })
   categoryName: string;
 
-  @Field((type) => GraphQLString, { nullable: false })
+  @Field((type) => GraphQLString, { nullable: true })
   creatorUserId: string;
 
 }
 
 @ObjectType()
-export class PaginatedLexicCategory extends PaginatedModel(LexicCategory) {}
+export class PaginatedLexicCategory extends PaginatedModel<LexicCategory>(LexicCategory) {}
 
-@ObjectType()
-export class PaginatedLexicCategoryResponse extends ResponseModel(PaginatedLexicCategory) {}
 
-@ObjectType()
-export class LexicCategoryResponse extends ResponseModel(LexicCategory) {}
-
-@ObjectType()
-export class ModifyLexicCategoryResponse extends ResponseModel(String) {}

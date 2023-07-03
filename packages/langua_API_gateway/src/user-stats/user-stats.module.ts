@@ -5,6 +5,7 @@ import { config } from 'dotenv';
 import { join } from 'path';
 import { USER_STATS_SERVICE_NAME, USER_STATS_PACKAGE_NAME} from '../langua_proto/user-stats.pb';
 import { VocabularyStatsService } from './service/vocabulary-stats.service';
+import { VocabularyStatsResolver } from './resolver/vocabulary-stats.resolver';
 
 
 
@@ -19,7 +20,7 @@ const configService = new ConfigService();
             name: USER_STATS_SERVICE_NAME,
             transport: Transport.GRPC,
             options: {
-              url: `0.0.0.0:${configService.get('_MICRO_PORT')}`,
+              url: `0.0.0.0:${configService.get('USER_STATS_MICRO_PORT')}`,
               package:  USER_STATS_PACKAGE_NAME,
               protoPath: join(
                 __dirname,
@@ -33,6 +34,6 @@ const configService = new ConfigService();
           },
         ]),
       ],
-      providers: [VocabularyStatsService],
+      providers: [VocabularyStatsService,VocabularyStatsResolver],
 })
 export class UserStatsModule {}

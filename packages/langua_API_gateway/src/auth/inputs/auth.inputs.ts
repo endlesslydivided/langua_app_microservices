@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql';
 
 @InputType()
-export class SingUpInput {
+export class SignUpInput {
   @Field((type) => GraphQLString,{nullable:false})
   email:string;
 
@@ -38,7 +38,7 @@ export class SingUpInput {
 }
 
 @InputType()
-export class SingInInput {
+export class SignInInput {
   @Field((type) => GraphQLString,{nullable:false})
   email:string;
 

@@ -102,5 +102,25 @@ services:
    - langua_user_micro_db
   restart: always  
   network_mode: host
+
+  langua_api_gateway:
+   container_name: langua_api_gateway
+   build:
+    context: ./packages/langua_api_gateway
+   env_file:
+    - ./packages/langua_api_gateway/.env
+   volumes:
+    - ./packages/langua_api_gateway:/packages/user_microservice
+    - /packages/langua_api_gateway/node_modules
+   ports:
+    - 3000:3000
+   command: npm run start
+   depends_on:
+    - user_microservice
+    - user-stats_microservice
+    - material_microservice
+    - lexic_microservice
+   restart: always  
+   network_mode: host
 volumes:
  pgdata:

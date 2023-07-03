@@ -70,6 +70,7 @@ export class UserRepository {
       select: {
         id: true,
         firstname: true,
+        nativeLanguage:true,
         surname: true,
         city: true,
         birthday: true,

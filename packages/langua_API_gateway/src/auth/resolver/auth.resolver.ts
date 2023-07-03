@@ -1,35 +1,40 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../auth/guard/auth.guard';
-import { AuthService } from '../service/auth.service';
-import { SignInResponse, SignUpResponse } from '../model/auth.model';
-import { SingInInput, SingUpInput } from '../inputs/auth.inputs';
+import { BadRequestException, HttpStatus } from '@nestjs/common';
+import { SignInInput, SignUpInput } from '../inputs/auth.inputs';
+import { SignInResponse } from '../model/auth.model';
 import { User } from '../model/user.model';
+import { AuthService } from '../service/auth.service';
+import { Void } from '../../share/scalar/void.scalar';
 
 @Resolver((of) => User)
 export class AuthResolver {
   constructor(private authService: AuthService) {}
 
-  @Mutation((returns) => SignUpResponse,{name:'signUp'})
-  @UseGuards(AuthGuard)
-  async signUp(@Args('signUp') input: SingUpInput) {
+  @Mutation((returns) => Void,{name:'signUp'})
+  async signUp(@Args('signUp') input: SignUpInput) {
     const result = await this.authService.signUp(input);
-    return {
-      status: result.status,
-      error: result.error
-    };
+
+    if(result.status !== HttpStatus.OK && result.status !== HttpStatus.CREATED)
+    {
+      throw new BadRequestException(result.error)
+    }
+    
+    return;
   }
 
   @Mutation((returns) => SignInResponse,{name:'signIn'})
-  @UseGuards(AuthGuard)
-  async signIn(@Args('signIn') input: SingInInput)
+  async signIn(@Args('signIn') input: SignInInput)
   {
     const result = await this.authService.singIn(input);
+
+    if(result.status !== HttpStatus.OK)
+    {
+      throw new BadRequestException(result.error)
+    }
+
     return {
-      status: result.status,
-      error: result.error,
-      data: result.token
+      accessToken: result.token
     }
   }
 }

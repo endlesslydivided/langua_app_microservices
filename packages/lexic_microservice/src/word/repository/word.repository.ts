@@ -23,6 +23,17 @@ const wordWithLexicCategoryProject = {
     },
     language: true,
     transcription: true,
+    wordsToVocabularies:{
+      $map: {
+        input: '$wordToVocabularies',
+        as: 'wtv',
+        in: {
+          id: '$$wtv._id',
+          wordId: '$$wtv.wordId',
+          vocabularyId: '$$wtv.vocabularyId',
+        },
+      },
+    }
   },
 };
 const wordWithLexicCategoryLookup = {
@@ -127,11 +138,24 @@ export class WordRepository {
     const words = (await this.wordModel
       .aggregate([
         {
+          $addFields: {
+            id: { $toString: '$_id' },
+          },
+        },
+        {
           $match: {
             lexicCategories: new mongoose.Types.ObjectId(lexicCategoryId),
           },
         },
         wordWithLexicCategoryLookup,
+        {
+          $lookup: {
+            from: 'words_to_vocabularies',
+            localField: 'id',
+            foreignField: 'wordId',
+            as: 'wordsToVocabularies',
+          },
+        },
         {
           $facet: {
             metadata: [{ $count: 'count' }],

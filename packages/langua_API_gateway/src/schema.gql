@@ -2,6 +2,29 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateLexicCategoryInput {
+  categoryName: String!
+  creatorUserId: String!
+}
+
+input CreateMaterialInput {
+  creatorUserId: String!
+  language: String!
+  name: String!
+  textContent: String!
+}
+
+input CreateMaterialToVocabularyInput {
+  materialId: String!
+  vocabularyId: String!
+}
+
+input CreateVocabularyInput {
+  language: String!
+  userId: String!
+  vocabularyNativeLanguage: String!
+}
+
 input CreateWordInput {
   language: String!
   lexicCategoryId: String!
@@ -15,83 +38,103 @@ input CreateWordToVocabularyInput {
 }
 
 type LexicCategory {
-  categoryName: String!
-  creatorUserId: String!
+  categoryName: String
+  createdAt: Timestamp
+  creatorUserId: String
+  id: ID
+  updatedAt: Timestamp
 }
 
-type ModifyWordResponse {
-  data: String
-  error: [String!]
-  status: Int
-}
-
-type ModifyWordToVocabularyResponse {
-  data: String
-  error: [String!]
-  status: Int
+type Material {
+  createdAt: Timestamp
+  creatorUserId: String
+  id: ID
+  language: String
+  name: String
+  textContent: String
+  updatedAt: Timestamp
 }
 
 type Mutation {
-  createWord(createWord: CreateWordInput!): ModifyWordResponse!
-  createWordToVocabulary(createWordToVocabulary: CreateWordToVocabularyInput!): ModifyWordToVocabularyResponse!
-  signIn(signIn: SingInInput!): SignInResponse!
-  signUp(signUp: SingUpInput!): SignUpResponse!
-  updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): ModifyWordToVocabularyResponse!
+  createLexicCategory(createLexicCategory: CreateLexicCategoryInput!): String!
+  createMaterial(createMaterial: CreateMaterialInput!): String!
+  createMaterialToVocabulary(createMaterialToVocabulary: CreateMaterialToVocabularyInput!): String!
+  createVocabulary(createVocabulary: CreateVocabularyInput!): String!
+  createWord(createWord: CreateWordInput!): String!
+  createWordToVocabulary(createWordToVocabulary: CreateWordToVocabularyInput!): String!
+  deleteMaterialToVocabulary(id: String!): Void!
+  signIn(signIn: SignInInput!): SignInResponse!
+  signUp(signUp: SignUpInput!): Void!
+  updateMaterialToVocabulary(updateMaterialToVocabulary: UpdateMaterialToVocabularyInput!): Void!
+  updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): Void!
+}
+
+type OverallVocabularyStats {
+  createdAt: Timestamp
+  id: ID
+  totalLearnedMaterials: Int
+  totalLearnedWords: Int
+  totalStartedMaterials: Int
+  totalStartedWords: Int
+  updatedAt: Timestamp
+  userId: String!
 }
 
 type PaginatedLexicCategory {
-  count: Int!
-  rows: LexicCategory!
+  count: Int
+  rows: [LexicCategory!]
+}
+
+type PaginatedMaterial {
+  count: Int
+  rows: [Material!]
 }
 
 type PaginatedUser {
-  count: Int!
-  rows: User!
+  count: Int
+  rows: [User!]
 }
 
-type PaginatedUserResponse {
-  data: PaginatedUser
-  error: [String!]
-  status: Int
+type PaginatedVocabulary {
+  count: Int
+  rows: [Vocabulary!]
+}
+
+type PaginatedVocabularyStats {
+  count: Int
+  rows: [VocabularyStats!]
 }
 
 type PaginatedWord {
-  count: Int!
-  rows: Word!
-}
-
-type PaginatedWordResponse {
-  data: PaginatedWord
-  error: [String!]
-  status: Int
+  count: Int
+  rows: [Word!]
 }
 
 type Query {
-  findManyByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWordResponse!
-  findManyUsers(limit: Int! = 10, page: Int! = 0): PaginatedUserResponse!
-  findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0): PaginatedWordResponse!
-  findOneWordById(id: String!): WordResponse!
-  findUserById(id: String!): UserResponse!
+  findManyLexicCategoriesByCreatorId(creatorId: String!, limit: Int! = 10, page: Int! = 0): PaginatedLexicCategory!
+  findManyMaterialsByCreatorId(creatorId: String!, limit: Int! = 10, page: Int! = 0): PaginatedMaterial!
+  findManyMaterialsByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedMaterial!
+  findManyUsers(limit: Int! = 10, page: Int! = 0): PaginatedUser!
+  findManyVocabulariesByUserId(limit: Int! = 10, page: Int! = 0, userId: String!): PaginatedVocabulary!
+  findManyVocabularyStats(limit: Int! = 10, page: Int! = 0, userId: String!): PaginatedVocabularyStats!
+  findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0): PaginatedWord!
+  findManyWordsByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWord!
+  findOneMaterialById(id: String!): Material!
+  findOneWordById(id: String!): Word!
+  findUserById(id: String!): User!
+  getOverallVocabularyStats(userId: String!): OverallVocabularyStats!
 }
 
-type SignInResponse {
-  data: String
-  error: [String!]
-  status: Int
-}
-
-type SignUpResponse {
-  data: String
-  error: [String!]
-  status: Int
-}
-
-input SingInInput {
+input SignInInput {
   email: String!
   password: String!
 }
 
-input SingUpInput {
+type SignInResponse {
+  accessToken: String!
+}
+
+input SignUpInput {
   birthday: String!
   city: String!
   country: String!
@@ -103,6 +146,17 @@ input SingUpInput {
   phoneNumber: String!
   sex: String!
   surname: String!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+input UpdateMaterialToVocabularyInput {
+  id: String!
+  isFinished: Boolean!
+  userId: String!
 }
 
 input UpdateWordToVocabularyInput {
@@ -112,49 +166,75 @@ input UpdateWordToVocabularyInput {
 }
 
 type User {
-  birthday: String!
-  city: String!
-  country: String!
-  firstname: String!
-  nativeLanguage: String!
-  password: String!
-  sex: String!
-  surname: String!
-  userContacts: UserContacts!
-  userCredentials: UserCredentials!
+  birthday: String
+  city: String
+  country: String
+  createdAt: Timestamp
+  firstname: String
+  id: ID
+  nativeLanguage: String
+  password: String
+  sex: String
+  surname: String
+  updatedAt: Timestamp
+  userContacts: UserContacts
+  userCredentials: UserCredentials
 }
 
 type UserContacts {
-  email: String!
-  phoneNumber: String!
+  createdAt: Timestamp
+  email: String
+  id: ID
+  phoneNumber: String
+  updatedAt: Timestamp
 }
 
 type UserCredentials {
-  nickname: String!
+  createdAt: Timestamp
+  id: ID
+  nickname: String
+  updatedAt: Timestamp
 }
 
-type UserResponse {
-  data: User
-  error: [String!]
-  status: Int
+type Vocabulary {
+  createdAt: Timestamp
+  id: ID
+  language: String
+  updatedAt: Timestamp
+  userId: String
+  vocabularyNativeLanguage: String
 }
+
+type VocabularyStats {
+  createdAt: Timestamp
+  id: ID
+  learnedMaterialsCount: Int
+  learnedWordsCount: Int
+  startedMaterialsCount: Int
+  startedWordsCount: Int
+  updatedAt: Timestamp
+  userId: String
+}
+
+"""Represents NULL values"""
+scalar Void
 
 type Word {
-  language: String!
-  lexicCategories: [LexicCategory!]!
-  transcription: String!
-  word: String!
-  wordToVocabulary: WordToVocabulary!
-}
-
-type WordResponse {
-  data: Word
-  error: [String!]
-  status: Int
+  createdAt: Timestamp
+  id: ID
+  language: String
+  lexicCategories: [LexicCategory!]
+  transcription: String
+  updatedAt: Timestamp
+  word: String
+  wordToVocabulary: [WordToVocabulary!]
 }
 
 type WordToVocabulary {
-  isFinished: Boolean!
-  vocabularyId: String!
-  wordId: String!
+  createdAt: Timestamp
+  id: ID
+  isFinished: Boolean
+  updatedAt: Timestamp
+  vocabularyId: String
+  wordId: String
 }

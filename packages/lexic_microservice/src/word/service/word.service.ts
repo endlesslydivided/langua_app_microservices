@@ -1,6 +1,8 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 
-import mongoose from 'mongoose';
+import { ClientGrpc } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
+import { userStats } from 'src/user-stats.pb';
 import { lexic } from '../../lexic.pb';
 import {
   CreateWordRequestDto,
@@ -12,10 +14,6 @@ import {
 } from '../dto/word.dto';
 import { WordToVocabularyRepository } from '../repository/word-to-vocabulary.repository';
 import { WordRepository } from '../repository/word.repository';
-import { userStats } from 'src/user-stats.pb';
-import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
-import { USER_STATS_PACKAGE } from '../word.module';
-import { join } from 'path';
 
 @Injectable()
 export class WordService {
@@ -27,21 +25,10 @@ export class WordService {
 
   private userStatsService: userStats.UserStatsService;
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'userStats',
-      protoPath: join(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'langua_proto/proto/user-stats.proto',
-      ),
-    },
-  }) 
-  private userStatsClient: ClientGrpc;
+
+
+  @Inject('USER_STATS_PACKAGE')
+  private readonly userStatsClient: ClientGrpc;
 
   onModuleInit() {
     this.userStatsService = this.userStatsClient.getService<userStats.UserStatsService>('UserStatsService');
@@ -129,12 +116,11 @@ export class WordService {
       };
     }
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
+
     await this.wordToVocabularyRepository.updateWordToVocabulary(
       wordToVocabulary,
       dto.isFinished,
-      session
+      
     );
 
     const updateVocabularyStatsBody ={
@@ -145,28 +131,12 @@ export class WordService {
       learnedWordsCount: !wordToVocabulary.isFinished && dto.isFinished ? 1 : -1,
     }
 
-    const observableResultUserStats = await this.userStatsService.createOrUpdateVocabularyStats(updateVocabularyStatsBody);
+    const observableResultUserStats = await firstValueFrom(await this.userStatsService.createOrUpdateVocabularyStats(updateVocabularyStatsBody));
   
-    await observableResultUserStats.subscribe((userStats)=>
-    {
-      let result;
-      if(userStats.error.length === 0)
-      {
-        session.commitTransaction();
-        result = {
-          status: HttpStatus.NO_CONTENT,
-          error: null,
-        };
-      }
-      else
-      {
-        session.abortTransaction();
-        result = userStats;
-      }
-
-      session.endSession();
-      return result;
-    });
+    return{
+      status: HttpStatus.NO_CONTENT,
+      error: null,
+    };
    
   }
 }

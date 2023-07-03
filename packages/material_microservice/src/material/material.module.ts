@@ -12,11 +12,34 @@ import {
 import { MaterialService } from './service/material.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { config } from 'dotenv';
+import { ConfigService } from '@nestjs/config';
 
 export const USER_STATS_PACKAGE = 'USER_STATS_PACKAGE';
 
+config();
+
+const configService = new ConfigService();
+
 @Module({
   imports: [
+    ClientsModule.register([
+      {
+        name: 'USER_STATS_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          url: `0.0.0.0:${configService.get('USER_STATS_MICRO_PORT')}`,
+          package: 'userStats',
+          protoPath: join(
+            __dirname,
+            '..',
+            '..',
+            '..',
+            'langua_proto/proto/user-stats.proto',
+          ),
+        },
+      },
+    ]),
     MongooseModule.forFeature([
       { name: Material.name, schema: MaterialSchema },
       { name: MaterialToVocabulary.name, schema: MaterialToVocabularySchema },

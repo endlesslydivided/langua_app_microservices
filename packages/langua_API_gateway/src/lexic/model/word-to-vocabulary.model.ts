@@ -1,19 +1,16 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 import { IdentifiedModel } from '../../share/model/identified.model';
-import { ResponseModel } from '../../share/model/status.model';
 
 @ObjectType()
 export class WordToVocabulary extends IdentifiedModel {
-  @Field((type) => String, { nullable: false })
+  @Field((type) => String, { nullable: true })
   vocabularyId: string;
 
-  @Field((type) => String, { nullable: false })
+  @Field((type) => String, { nullable: true })
   wordId: string;
 
-  @Field((type) => Boolean, { nullable: false })
+  @Field((type) => Boolean, { nullable: true })
   isFinished: boolean;
 }
 
-@ObjectType()
-export class ModifyWordToVocabularyResponse extends ResponseModel(String) {}

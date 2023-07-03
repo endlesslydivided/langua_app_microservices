@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+ name: mongo-config
+data:
+ MONGO_DB_NAME: langua_lexic_micro
+ MONGO_CONNECTION_STRING: mongodb://localhost/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.9.1/

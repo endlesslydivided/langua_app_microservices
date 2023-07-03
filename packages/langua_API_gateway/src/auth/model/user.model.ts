@@ -1,52 +1,16 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { GraphQLString } from 'graphql';
 
-import { IdentifiedModel } from '../../share/model/identified.model';
-import { ResponseModel } from '../../share/model/status.model';
 import { PaginatedModel } from 'src/share/model/paginated.model';
-
-@ObjectType()
-export class User extends IdentifiedModel {
-
-  @Field((type) => GraphQLString,{nullable:false})
-  password:string;
-
-  @Field((type) => GraphQLString,{nullable:false})
-  firstname:string;
-
-  @Field((type) => GraphQLString,{nullable:false})
-  surname:string;
-
-  @Field((type) => GraphQLString,{nullable:false})
-  sex:string;
-
-  @Field((type) => GraphQLString,{nullable:false})
-  birthday:string;
-
-  @Field((type) => GraphQLString,{nullable:false})
-  country:string;
-
-  @Field((type) => GraphQLString,{nullable:false})
-  city:string;
-
-  @Field((type) => GraphQLString,{nullable:false})
-  nativeLanguage:string;
-
-  @Field((type) => UserCredentials,{nullable:false})
-  userCredentials:string;
-
-  @Field((type) => UserContacts,{nullable:false})
-  userContacts:string;
-
-}
+import { IdentifiedModel } from '../../share/model/identified.model';
 
 @ObjectType()
 export class UserContacts extends IdentifiedModel {
 
-  @Field((type) => GraphQLString,{nullable:false})
+  @Field((type) => GraphQLString,{nullable:true})
   email:string;
 
-  @Field((type) => GraphQLString,{nullable:false})
+  @Field((type) => GraphQLString,{nullable:true})
   phoneNumber:string;
 
 }
@@ -54,16 +18,49 @@ export class UserContacts extends IdentifiedModel {
 @ObjectType()
 export class UserCredentials extends IdentifiedModel {
 
-  @Field((type) => GraphQLString,{nullable:false})
+  @Field((type) => GraphQLString,{nullable:true})
   nickname:string;
 
 }
 
 @ObjectType()
-export class UserResponse extends ResponseModel(User) {}
+export class User extends IdentifiedModel {
+
+  @Field((type) => GraphQLString,{nullable:true})
+  password:string;
+
+  @Field((type) => GraphQLString,{nullable:true})
+  firstname:string;
+
+  @Field((type) => GraphQLString,{nullable:true})
+  surname:string;
+
+  @Field((type) => GraphQLString,{nullable:true})
+  sex:string;
+
+  @Field((type) => GraphQLString,{nullable:true})
+  birthday:string;
+
+  @Field((type) => GraphQLString,{nullable:true})
+  country:string;
+
+  @Field((type) => GraphQLString,{nullable:true})
+  city:string;
+
+  @Field((type) => GraphQLString,{nullable:true})
+  nativeLanguage:string;
+
+  @Field((type) => UserCredentials,{nullable:true})
+  userCredentials:UserCredentials;
+
+  @Field((type) => UserContacts,{nullable:true})
+  userContacts:UserContacts;
+
+}
+
+
+
 
 @ObjectType()
-export class PaginatedUser extends PaginatedModel(User){}
+export class PaginatedUser extends PaginatedModel<User>(User){}
 
-@ObjectType()
-export class PaginatedUserResponse extends ResponseModel(PaginatedUser) {}

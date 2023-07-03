@@ -1,9 +1,10 @@
-import { Field, GraphQLTimestamp } from '@nestjs/graphql';
+import { Field, GraphQLTimestamp, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 export class Timestamps {
-  @Field((type) => GraphQLTimestamp)
+  @Field((type) => GraphQLTimestamp,{nullable:true})
   createdAt: string;
 
-  @Field((type) => GraphQLTimestamp)
+  @Field((type) => GraphQLTimestamp,{nullable:true})
   updatedAt: string;
 }

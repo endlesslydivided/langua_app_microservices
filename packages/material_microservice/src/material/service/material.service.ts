@@ -1,6 +1,10 @@
 import { HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { material } from 'src/material.pb';
 
+import { ClientGrpc } from '@nestjs/microservices';
+import mongoose from 'mongoose';
+import { firstValueFrom } from 'rxjs';
+import { userStats } from '../../user-stats.pb';
 import {
   CreateMaterialRequestDto,
   CreateMaterialToVocabularyRequestDto,
@@ -10,13 +14,8 @@ import {
   FindOneMaterialRequestByIdDto,
   UpdateMaterialToVocabularyRequestDto,
 } from '../dto/material.dto';
-import { MaterialRepository } from '../repository/material.repository';
 import { MaterialToVocabularyRepository } from '../repository/material-to-vocabulary.repository';
-import mongoose from 'mongoose';
-import { USER_STATS_PACKAGE } from '../material.module';
-import { userStats } from '../../user-stats.pb';
-import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
-import { join } from 'path';
+import { MaterialRepository } from '../repository/material.repository';
 
 @Injectable()
 export class MaterialService {
@@ -28,20 +27,7 @@ export class MaterialService {
 
   private userStatsService: userStats.UserStatsService;
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'userStats',
-      protoPath: join(
-        __dirname,
-        '..',
-        '..',
-        '..',
-        '..',
-        'langua_proto/proto/user-stats.proto',
-      ),
-    },
-  })
+  @Inject("USER_STATS_PACKAGE")
   private userStatsClient: ClientGrpc;
 
   onModuleInit() {
@@ -132,13 +118,11 @@ export class MaterialService {
       };
     }
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
+
     
     await this.materialToVocabularyRepository.updateMaterialToVocabulary(
       materialToVocabulary,
-      dto.isFinished,
-      session
+      dto.isFinished
     );
     
     const updateVocabularyStatsBody ={
@@ -149,30 +133,9 @@ export class MaterialService {
       learnedWordsCount: 0,
     }
 
-    const observableResultUserStats = await this.userStatsService.createOrUpdateVocabularyStats(updateVocabularyStatsBody);
+    const observableResultUserStats = await firstValueFrom(await this.userStatsService.createOrUpdateVocabularyStats(updateVocabularyStatsBody));
   
-    await observableResultUserStats.subscribe((userStats)=>
-    {
-      let result;
-      if(userStats.error.length === 0)
-      {
-        session.commitTransaction();
-        result = {
-          status: HttpStatus.NO_CONTENT,
-          error: null,
-        };
-      }
-      else
-      {
-        session.abortTransaction();
-        result = userStats;
-      }
-
-      session.endSession();
-      return result;
-    });
-
-    return {
+    return{
       status: HttpStatus.NO_CONTENT,
       error: null,
     };

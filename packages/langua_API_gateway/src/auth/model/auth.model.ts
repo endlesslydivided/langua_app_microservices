@@ -1,9 +1,9 @@
-import { ObjectType } from "@nestjs/graphql";
-import { ResponseModel } from "../../share/model/status.model";
+import { Field, ObjectType } from "@nestjs/graphql";
+import { GraphQLString } from "graphql";
 
 
 @ObjectType()
-export class SignInResponse extends ResponseModel(String) {}
-
-@ObjectType()
-export class SignUpResponse extends ResponseModel(String) {}
+export class SignInResponse{
+    @Field((type) => GraphQLString, { nullable: false })
+    accessToken: string;
+}
