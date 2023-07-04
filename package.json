@@ -1,0 +1,22 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "lerna": "^6.6.2",
+    "lerna-dockerize": "^1.0.9"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.7.4",
+    "@nestjs/apollo": "^12.0.1",
+    "@nestjs/graphql": "^12.0.1",
+    "class-validator": "^0.14.0",
+    "graphql": "^16.6.0"
+  },
+  "scripts": {
+    "lerna-dockerize": "lerna-dockerize"
+  }
+}
