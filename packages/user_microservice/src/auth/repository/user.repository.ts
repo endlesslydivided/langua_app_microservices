@@ -77,6 +77,7 @@ export class UserRepository {
         country: true,
         sex: true,
         createdAt: true,
+        updatedAt: true,
         userContacts: {
           phoneNumber: true,
           email: true,
@@ -101,6 +102,7 @@ export class UserRepository {
         country: true,
         sex: true,
         createdAt: true,
+        updatedAt:true,
         userContacts: {
           phoneNumber: true,
           email: true,

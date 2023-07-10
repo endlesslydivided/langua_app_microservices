@@ -24,7 +24,7 @@ const configService = new ConfigService();
             name: LEXIC_SERVICE_NAME,
             transport: Transport.GRPC,
             options: {
-              url: `0.0.0.0:${configService.get('LEXIC_MICRO_PORT')}`,
+              url: `${configService.get('LEXIC_MICRO_HOST') || '0.0.0.0'}:${configService.get('LEXIC_MICRO_PORT') || '50052'}`,
               package: LEXIC_PACKAGE_NAME,
               protoPath: join(
                 __dirname,

@@ -23,6 +23,8 @@ const wordWithLexicCategoryProject = {
     },
     language: true,
     transcription: true,
+    createdAt:true,
+    updatedAt:true,
     wordsToVocabularies:{
       $map: {
         input: '$wordToVocabularies',
@@ -116,6 +118,8 @@ export class WordRepository {
                     },
                   },
                   language: true,
+                  createdAt:true,
+                  updatedAt:true,
                   transcription: true,
                 },
               },

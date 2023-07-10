@@ -7,6 +7,12 @@ import { AuthService } from './service/auth.service';
 import { UserService } from './service/user.service';
 import { AuthResolver } from './resolver/auth.resolver';
 import { UserResolver } from './resolver/user.resolver';
+import { config } from 'dotenv';
+import { ConfigService } from '@nestjs/config';
+
+config();
+
+const configService = new ConfigService();
 
 @Global()
 @Module({
@@ -16,7 +22,8 @@ import { UserResolver } from './resolver/user.resolver';
         name: AUTH_SERVICE_NAME,
         transport: Transport.GRPC,
         options: {
-          url: `0.0.0.0:${process.env.AUTH_MICRO_PORT}`,
+          
+          url: `${configService.get('AUTH_MICRO_HOST') || '0.0.0.0'}:${configService.get('AUTH_MICRO_PORT') || '50051'}`,
           package: AUTH_PACKAGE_NAME,
           protoPath: join(
             __dirname,

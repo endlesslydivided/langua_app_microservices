@@ -23,6 +23,8 @@ export const typeOrmPostgresConfig: TypeOrmModuleOptions = {
   username: configService.get('POSTGRES_USER'),
   password: configService.get('POSTGRES_PASSWORD'),
   database: configService.get('POSTGRES_DB'),
+  migrationsRun: true,
+  autoLoadEntities: true,
   entities: [User, UserContacts, UserCredentials],
   migrations: [
     PostgresMigrations1686044428288,

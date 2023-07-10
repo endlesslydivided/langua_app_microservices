@@ -6,10 +6,10 @@ COPY package*.json .
 
 RUN npm install
 
-RUN npm ci
-
 COPY . .
 
 COPY ./dist ./dist
+
+COPY ./proto ../langua_proto/proto
 
 ENTRYPOINT npm run start

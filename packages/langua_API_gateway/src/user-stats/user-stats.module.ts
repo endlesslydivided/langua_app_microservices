@@ -20,7 +20,7 @@ const configService = new ConfigService();
             name: USER_STATS_SERVICE_NAME,
             transport: Transport.GRPC,
             options: {
-              url: `0.0.0.0:${configService.get('USER_STATS_MICRO_PORT')}`,
+              url: `${configService.get('USER_STATS_MICRO_HOST') || '0.0.0.0'}:${configService.get('USER_STATS_MICRO_PORT') || '50054'}`,
               package:  USER_STATS_PACKAGE_NAME,
               protoPath: join(
                 __dirname,

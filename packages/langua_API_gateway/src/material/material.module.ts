@@ -24,7 +24,7 @@ const configService = new ConfigService();
             name: MATERIAL_SERVICE_NAME,
             transport: Transport.GRPC,
             options: {
-              url: `0.0.0.0:${configService.get('MATERIAL_MICRO_PORT')}`,
+              url: `${configService.get('MATERIAL_MICRO_HOST') || '0.0.0.0'}:${configService.get('MATERIAL_MICRO_PORT') || '50053'}`,
               package: MATERIAL_PACKAGE_NAME,
               protoPath: join(
                 __dirname,

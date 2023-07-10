@@ -57,6 +57,8 @@ export class MaterialRepository {
                   textContent: true,
                   name: true,
                   language: true,
+                  createdAt:true,
+                  updatedAt:true,
                   materialToVocabulary: {
                     $map: {
                       input: '$materialsToVocabularies',
