@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-microservice-deployment
+  labels:
+    app: user-microservice
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: user-microservice
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        app: user-microservice
+        tier: service
+    spec:
+      containers:
+      - name: user-microservice
+        image: "endlesslydivided/langua_user_microservice:latest"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 50051
+        envFrom:
+        - configMapRef:
+           name: user-microservice.config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-microservice
+  labels:
+    app: user-microservice
+    tier: service
+spec:
+  type: NodePort
+  ports:
+  - port: 50051
+    targetPort: 50051
+  clusterIP: 10.96.0.6
+  selector:
+    app: user-microservice

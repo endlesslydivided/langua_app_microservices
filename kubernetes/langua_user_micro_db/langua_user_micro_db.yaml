@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
- name: postgres-deployment
+ name: langua-user-micro-db-deployment
  labels:
   app: postgres
 spec:
@@ -15,18 +15,22 @@ spec:
     app: postgres
   spec:
    containers:
-   - name: lexic_postgres
+   - name: langua-user-micro-db
      image: postgres:latest
      ports:
      - containerPort: 5432
+     envFrom:
+     - configMapRef:
+        name: langua-user-micro-db.config
 ---
 apiVersion: v1
 kind: Service
 metadata:
- name: postgres-service
+ name: langua-user-micro-db-service
 spec:
  selector: 
   app: postgres
+ clusterIP: 10.96.0.2
  ports:
   - protocol: TCP
     port: 5432
