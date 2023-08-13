@@ -51,17 +51,23 @@ lerna-debug.log*
 
 # next.js
 <<<<<<< HEAD
+<<<<<<< HEAD
 */.next/
 */out/
 
 # production
 */build
 =======
+=======
+>>>>>>> feeb9bae261845e11c655ec2325f578e068468c9
 /.next/
 /out/
 
 # production
 /build
+<<<<<<< HEAD
+>>>>>>> feeb9bae261845e11c655ec2325f578e068468c9
+=======
 >>>>>>> feeb9bae261845e11c655ec2325f578e068468c9
 
 # misc
