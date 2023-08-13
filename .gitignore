@@ -38,3 +38,47 @@ lerna-debug.log*
 .env
 .env.*
 !.env.sample
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+<<<<<<< HEAD
+*/.next/
+*/out/
+
+# production
+*/build
+=======
+/.next/
+/out/
+
+# production
+/build
+>>>>>>> feeb9bae261845e11c655ec2325f578e068468c9
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

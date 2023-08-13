@@ -11,6 +11,9 @@ async function bootstrap() {
 
   const config = app.get(ConfigService);
 
-  await app.listen(config.get('PORT') || 3000);
+  await app.listen(config.get('PORT') || 3000,() =>
+  {
+    console.log(`Api gateway is listening on: http://localhost:3000/graphql`)
+  });
 }
 bootstrap();
