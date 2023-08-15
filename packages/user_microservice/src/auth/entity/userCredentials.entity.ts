@@ -8,7 +8,7 @@ export class UserContacts extends SoftModelEntity {
   @Column()
   email: string;
 
-  @Column({ name: 'phone_number' })
+  @Column({ name: 'phone_number', nullable:true})
   phoneNumber: string;
 
   @OneToOne(() => User, (user) => user.userCredentials)

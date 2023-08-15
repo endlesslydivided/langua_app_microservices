@@ -11,6 +11,8 @@ import { PostgresMigrations1686049870201 } from './1686049870201-postgresMigrati
 import { PostgresMigrations1686324477797 } from './1686324477797-postgresMigrations';
 import { PostgresMigrations1686325585902 } from './1686325585902-postgresMigrations';
 import { PostgresMigrations1686326689438 } from './1686326689438-postgresMigrations';
+import { PostgresMigrations1692103680638 } from './1692103680638-postgresMigrations';
+import { PostgresMigrations1692104334522 } from './1692104334522-postgresMigrations';
 
 config();
 
@@ -32,6 +34,9 @@ export const typeOrmPostgresConfig: TypeOrmModuleOptions = {
     PostgresMigrations1686324477797,
     PostgresMigrations1686325585902,
     PostgresMigrations1686326689438,
+    PostgresMigrations1692103680638,
+    PostgresMigrations1692104334522,
+    
   ],
 };
 

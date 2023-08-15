@@ -55,7 +55,7 @@ export class UserRepository {
     passwordData: { salt: string; password: string },
   ): UserCredentials {
     const credentials = {
-      nickname: dto.nickname,
+      nickname: dto.nickname  ?? null,
       passwordHash: passwordData.password,
       passwordSalt: passwordData.salt,
     };
@@ -75,7 +75,6 @@ export class UserRepository {
         city: true,
         birthday: true,
         country: true,
-        sex: true,
         createdAt: true,
         updatedAt: true,
         userContacts: {
@@ -100,7 +99,6 @@ export class UserRepository {
         city: true,
         birthday: true,
         country: true,
-        sex: true,
         createdAt: true,
         updatedAt:true,
         userContacts: {
@@ -132,7 +130,6 @@ export class UserRepository {
         city: true,
         country: true,
         birthday: true,
-        sex: true,
         createdAt: true,
         userContacts: {
           phoneNumber: true,

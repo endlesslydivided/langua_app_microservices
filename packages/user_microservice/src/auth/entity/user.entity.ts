@@ -11,16 +11,13 @@ export class User extends SoftModelEntity {
   @Column()
   surname: string;
 
-  @Column()
-  sex: string;
-
-  @Column()
+  @Column({nullable:true})
   birthday: Date;
 
-  @Column()
+  @Column({nullable:true})
   country: string;
 
-  @Column()
+  @Column({nullable:true})
   city: string;
 
   @Column({ name: 'native_language' })

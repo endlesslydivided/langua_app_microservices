@@ -1,23 +1,15 @@
-
-
-import { getServerSession } from 'next-auth';
-import { options } from '../api/auth/[...nextauth]/options';
-import MainHeader from './components/MainHeader/MainHeader';
+import { getServerSession } from "next-auth";
+import { options } from "../api/auth/[...nextauth]/options";
+import MainHeader from "./components/MainHeader/MainHeader";
 
 export const metadata = {
-  title: 'Langua',
-}
+  title: "Langua",
+};
 
 export default async function AuthorizedLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-
-
-  return (
-    <>
-        {children}
-    </>
-  )
+  return <>{children}</>;
 }

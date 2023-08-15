@@ -40,9 +40,14 @@ export class JwtService {
   }
 
   public encodePassword(password: string): { salt: string; password: string } {
-    const salt: string = bcrypt.genSaltSync(10);
 
-    return { salt, password: bcrypt.hashSync(password, salt) };
+    if(password)
+    {
+      const salt: string = bcrypt.genSaltSync(10);
+      return { salt, password: bcrypt.hashSync(password, salt) };
+    }
+
+    return {salt:null, password:null};
   }
 
   public async verify(token: string): Promise<unknown> {

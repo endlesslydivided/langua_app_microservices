@@ -1,0 +1,1 @@
+export const GATEWAY_URI = process.env.API_GATEWAY_URI;

@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "proto:install": "npm i langua_proto",
     "proto:create-description": "tsproto --path ../langua_proto/proto --target auth.proto --output ./src",
-    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "typeorm": "typeorm-ts-node-esm",
     "typeorm:run-migrations": "npm run typeorm -- migration:run  -d ./src/data-sources/postgresMigrations/typeOrm.postgres.config.ts",
     "typeorm:generate-migration": "npm run typeorm -- migration:generate ./src/data-sources/postgresMigrations/ -d ./src/data-sources/postgresMigrations/typeOrm.postgres.config.ts",
     "typeorm:create-migration": "npm run typeorm -- migration:create ./src/data-sources/postgresMigrations/$migration_name",
