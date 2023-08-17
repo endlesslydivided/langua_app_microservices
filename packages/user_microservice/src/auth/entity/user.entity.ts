@@ -20,7 +20,7 @@ export class User extends SoftModelEntity {
   @Column({nullable:true})
   city: string;
 
-  @Column({ name: 'native_language' })
+  @Column({ name: 'native_language', nullable:true })
   nativeLanguage: string;
 
   @OneToOne(() => UserCredentials, {

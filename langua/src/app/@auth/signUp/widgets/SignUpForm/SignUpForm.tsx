@@ -1,3 +1,4 @@
+import { MessageType, useNotify } from '@/hooks/useNotify';
 import signUpFetch from '@/lib/auth/signUp';
 import { registrationSchema } from '@/lib/validate';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
@@ -5,13 +6,31 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const SignUpForm = () => {
 
+    const {notify} = useNotify();
+    const router = useRouter();
+
+
     const onSubmit = async (values: SignUpForm) => {
-        const data = await signUpFetch(values);
-        console.log(data);
+        try
+        {
+            const data = await signUpFetch(values);
+            notify({
+                text: "You was registered successfully!",
+                type: "success",
+                messageType: MessageType.SUCCESS
+            });
+            router.push('/');
+        }
+        catch(error)
+        {
+            notify({messageType:MessageType.SERVER_ERROR,type:"error"})
+        }
+
     };
 
     const [showPassword, setShowPassword] = React.useState(false);

@@ -20,7 +20,8 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
-      name: "Credentials",
+      id: 'credentials',
+      name: "сredentials",
       credentials: {
         email: {
           label: "Email:",
@@ -33,13 +34,19 @@ export const options: NextAuthOptions = {
           placeholder: "Password",
         },
       },
-      async authorize(credentials: SignInInput | any) {
-        const { data } = await getClient().query<any, SignInInput>({
-          query: SIGN_IN,
+      async authorize(credentials: SignInInput | any,request) {
+        const { data } = await getClient().mutate<any, any>({
+          mutation: SIGN_IN,
           variables: {
-            ...credentials,
+            signIn: {
+              email: credentials.email,
+              password: credentials.password
+            },
           },
-        });
+        }).catch((error) =>
+        {
+          throw error;
+        })
 
         if (data.accessToken) {
           return data.accessToken;
@@ -52,7 +59,6 @@ export const options: NextAuthOptions = {
   pages: {
     signIn: "/auth/signIn",
     signOut: "/auth/signOut",
-    error: "/auth/error",
     verifyRequest: "/auth/verify-request", // (used for check email message)
     newUser: "/auth/new-user",
   },

@@ -3,6 +3,7 @@ import { GrpcMethod } from '@nestjs/microservices';
 
 import { auth, AUTH_SERVICE_NAME } from '../auth.pb';
 import {
+  RefreshRequestDto,
   SignInRequestDto,
   SignUpRequestDto,
   ValidateRequestDto,
@@ -29,5 +30,12 @@ export class AuthController {
     payload: ValidateRequestDto,
   ): Promise<auth.ValidateResponse> {
     return this.service.validate(payload);
+  }
+
+  @GrpcMethod(AUTH_SERVICE_NAME, 'Refresh')
+  private refresh(
+    payload: RefreshRequestDto,
+  ): Promise<auth.RefreshResponse> {
+    return this.service.refresh(payload);
   }
 }

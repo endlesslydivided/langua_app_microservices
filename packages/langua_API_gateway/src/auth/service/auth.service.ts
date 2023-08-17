@@ -16,8 +16,12 @@ export class AuthService {
       this.client.getService<auth.AuthService>(AUTH_SERVICE_NAME);
   }
 
-  public async validate(token: string): Promise<auth.ValidateResponse> {
-    return firstValueFrom(this.authServiceClient.validate({ token }));
+  public async validate(accessToken: string): Promise<auth.ValidateResponse> {
+    return firstValueFrom(this.authServiceClient.validate({ accessToken }));
+  }
+
+  public async refresh(refreshToken: string): Promise<auth.RefreshResponse> {
+    return firstValueFrom(this.authServiceClient.refresh({refreshToken}));
   }
 
   public async signUp(data: auth.SignUpRequest): Promise<auth.SignUpResponse> {

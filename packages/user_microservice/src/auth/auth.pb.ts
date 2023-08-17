@@ -24,6 +24,11 @@ export namespace auth {
             metadata?: Metadata,
             ...rest: any[]
         ): Observable<ValidateResponse>;
+        refresh(
+            data: RefreshRequest,
+            metadata?: Metadata,
+            ...rest: any[]
+        ): Observable<RefreshResponse>;
         findUserById(
             data: FindUserByIdRequest,
             metadata?: Metadata,
@@ -63,15 +68,25 @@ export namespace auth {
     export interface SignInResponse {
         status?: number;
         error?: string[];
-        token?: string;
+        accessToken?: string;
+        refreshToken?: string;
     }
     export interface ValidateRequest {
-        token?: string;
+        accessToken?: string;
     }
     export interface ValidateResponse {
         status?: number;
         error?: string[];
         userId?: string;
+    }
+    export interface RefreshRequest {
+        refreshToken?: string;
+    }
+    export interface RefreshResponse {
+        status?: number;
+        error?: string[];
+        accessToken?: string;
+        refreshToken?: string;
     }
     export interface FindUserByIdRequest {
         userId?: string;

@@ -4,6 +4,7 @@ import { DataSource, QueryRunner } from 'typeorm';
 
 import { auth } from '../auth.pb';
 import {
+  RefreshRequestDto,
   SignInRequestDto,
   SignUpRequestDto,
   ValidateRequestDto,
@@ -75,7 +76,7 @@ export class AuthService {
       return {
         status: HttpStatus.NOT_FOUND,
         error: ['User is not found'],
-        token: null,
+        accessToken: null,
       };
     }
 
@@ -87,21 +88,21 @@ export class AuthService {
 
     if (!isPasswordValid) {
       return {
-        status: HttpStatus.NOT_FOUND,
+        status: HttpStatus.BAD_REQUEST,
         error: ['Password is invalid'],
-        token: null,
+        accessToken: null,
       };
     }
 
-    const token: string = this.jwtService.generateToken(user);
+    const {accessToken,refreshToken} = await this.jwtService.generateToken(user);
 
-    return { token, status: HttpStatus.OK, error: null };
+    return { accessToken,refreshToken, status: HttpStatus.OK, error: null };
   }
 
   public async validate({
-    token,
+    accessToken,
   }: ValidateRequestDto): Promise<auth.ValidateResponse> {
-    const decoded: User = (await this.jwtService.verify(token)) as User;
+    const decoded: User = (await this.jwtService.verify(accessToken,'RS256',process.env.ACCESS_TOKEN_PUBLIC)) as User;
 
     if (!decoded) {
       return {
@@ -124,6 +125,42 @@ export class AuthService {
     return {
       status: HttpStatus.OK,
       userId: user.id,
+      error: null,
+    };
+  }
+  
+  public async refresh({
+    refreshToken,
+  }: RefreshRequestDto): Promise<auth.RefreshResponse> {
+    const decoded:User = await this.jwtService.verify(refreshToken,'RS256',process.env.REFRESH_TOKEN_PUBLIC) as User;
+
+
+    if (!decoded) {
+      return {
+        status: HttpStatus.FORBIDDEN,
+        error: ['Token is invalid'],
+        accessToken: null,
+        refreshToken: null
+      };
+    }
+
+    const user: User = await this.jwtService.validateUser(decoded);
+
+    if (!user) {
+      return {
+        status: HttpStatus.CONFLICT,
+        error: ['User is not found'],
+        accessToken: null,
+        refreshToken: null
+      };
+    }
+
+    const {accessToken: newAccessToken,refreshToken: newRefreshToken} = await this.jwtService.generateToken(user);
+
+    return {
+      status: HttpStatus.OK,
+      accessToken:newAccessToken,
+      refreshToken:newRefreshToken,
       error: null,
     };
   }

@@ -7,9 +7,22 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors({
+    origin: true,
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  });
+
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const config = app.get(ConfigService);
+
+  const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true
+  };
 
   await app.listen(config.get('PORT') || 3000,() =>
   {

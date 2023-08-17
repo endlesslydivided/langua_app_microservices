@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   MaxLength,
@@ -20,6 +21,7 @@ export class SignUpRequestDto implements auth.SignUpRequest {
   @IsEmail()
   public readonly email: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(8)
   @MaxLength(25)
@@ -33,33 +35,45 @@ export class SignUpRequestDto implements auth.SignUpRequest {
   @MaxLength(50)
   public readonly surname: string;
 
+  @IsOptional()
   @IsString()
   public readonly sex: string;
 
+  @IsOptional()
   @IsString()
   public readonly birthday: string;
 
+  @IsOptional()
   @IsString()
   public readonly country: string;
 
+  @IsOptional()
   @IsString()
   @MaxLength(50)
   public readonly city: string;
 
+  @IsOptional()
   @IsString()
   @MaxLength(50)
   public readonly nativeLanguage: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(8)
   @MaxLength(25)
   public readonly nickname: string;
 
+  @IsOptional()
   @IsPhoneNumber()
   public readonly phoneNumber: string;
 }
 
 export class ValidateRequestDto implements auth.ValidateRequest {
   @IsString()
-  public readonly token: string;
+  public readonly accessToken: string;
+}
+
+export class RefreshRequestDto implements auth.RefreshRequest {
+  @IsString()
+  public readonly refreshToken: string;
 }

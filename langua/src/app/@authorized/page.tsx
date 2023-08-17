@@ -7,25 +7,21 @@ import AuthorizedLayout from "./layout";
 import { Button } from "@mui/material";
 
 export default function ProfilePage() {
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect("/api/auth/?callbackUrl=/client");
-    },
-  });
+  const { data: session } = useSession(
+    //{
+    // required: true,
+    // onUnauthenticated() {
+    //   redirect("/api/auth/?callbackUrl=/");
+    // },
+    //}
+  );
 
   return (
-    <section className="flex flex-col gap-6">
-      <UserCard user={session?.user} pagetype={"Client"} />
-      {JSON.stringify(session, null, 2)}
-      <Button 
-        onClick={() => signOut()} 
-        className="p-3 rounded-lg !bg-gradient-to-r !from-purple-500 !to-violet-500"
-        variant="contained"
-        color='secondary'>
-            SignOut
-        </Button>
-    </section>
+    <AuthorizedLayout>
+      <section className="flex flex-col gap-6">
+        
+      </section>
+    </AuthorizedLayout>
   );
 }
 

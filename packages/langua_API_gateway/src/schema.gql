@@ -64,7 +64,7 @@ type Mutation {
   createWordToVocabulary(createWordToVocabulary: CreateWordToVocabularyInput!): String!
   deleteMaterialToVocabulary(id: String!): Void!
   signIn(signIn: SignInInput!): SignInResponse!
-  signUp(signUp: SignUpInput!): Void!
+  signUp(signUp: SignUpInput!): SignUpResponse!
   updateMaterialToVocabulary(updateMaterialToVocabulary: UpdateMaterialToVocabularyInput!): Void!
   updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): Void!
 }
@@ -135,17 +135,21 @@ type SignInResponse {
 }
 
 input SignUpInput {
-  birthday: String!
-  city: String!
-  country: String!
+  birthday: String
+  city: String
+  country: String
   email: String!
   firstname: String!
-  nativeLanguage: String!
-  nickname: String!
-  password: String!
-  phoneNumber: String!
-  sex: String!
+  nativeLanguage: String
+  nickname: String
+  password: String
+  phoneNumber: String
+  sex: String
   surname: String!
+}
+
+type SignUpResponse {
+  status: String!
 }
 
 """

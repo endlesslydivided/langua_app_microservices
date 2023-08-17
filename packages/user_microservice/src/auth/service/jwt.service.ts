@@ -5,6 +5,13 @@ import * as bcrypt from 'bcryptjs';
 import { User } from '../entity/user.entity';
 import { UserRepository } from '../repository/user.repository';
 
+type Algorithm =
+    "HS256" | "HS384" | "HS512" |
+    "RS256" | "RS384" | "RS512" |
+    "ES256" | "ES384" | "ES512" |
+    "PS256" | "PS384" | "PS512" |
+    "none";
+
 type EncodedJWTData = { id: string; email: string };
 
 @Injectable()
@@ -26,8 +33,32 @@ export class JwtService {
     return this.userRepository.findOneById(decoded.id);
   }
 
-  public generateToken(user: User): string {
-    return this.jwt.sign({ id: user.id, email: user.userContacts.email });
+  
+
+  public async generateToken(user: User):Promise<{accessToken:string, refreshToken:string}> {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwt.signAsync(
+          {
+              userId: user.id,
+          },
+          {
+              algorithm:'RS256',
+              privateKey:process.env.ACCESS_TOKEN_PRIVATE,
+              expiresIn: process.env.ACCESS_TOKEN_EXPIRE,
+          },
+      ),
+      this.jwt.signAsync(
+          {
+              userId: user.id,
+          },
+          {
+              algorithm:'RS256',
+              privateKey: process.env.REFRESH_TOKEN_PRIVATE,
+              expiresIn: process.env.REFRESH_TOKEN_EXPIRE,
+          },
+      ),
+      ]);
+      return {accessToken,refreshToken};;
   }
 
   public isPasswordValid(
@@ -50,9 +81,9 @@ export class JwtService {
     return {salt:null, password:null};
   }
 
-  public async verify(token: string): Promise<unknown> {
+  public async verify(token: string,algorithm:Algorithm ="RS256",publicKey:string): Promise<unknown> {
     try {
-      return this.jwt.verify(token);
+      return this.jwt.verifyAsync(token,{algorithms:[algorithm],publicKey});
     } catch (err) {}
   }
 }

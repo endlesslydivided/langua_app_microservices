@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import AuthLayout from "./layout";
-
 import SignInForm from "./widgets/SignInForm/SignInForm";
+
 
 export default function SignInPage(props: any) {
  

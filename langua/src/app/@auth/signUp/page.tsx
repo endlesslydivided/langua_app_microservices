@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import SignUpForm from "./widgets/SignUpForm/SignUpForm";
+import { ToastContainer } from "react-toastify";
 
 
 export default function SignUpPage(props: any) {

@@ -19,6 +19,7 @@ import { Void } from './share/scalar/void.scalar';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      
       playground: true,
       autoSchemaFile: {
         path: join(process.cwd(), 'src/schema.gql')

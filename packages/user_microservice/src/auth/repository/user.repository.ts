@@ -25,7 +25,7 @@ export class UserRepository {
     userCredentials: UserCredentials,
   ): User {
     const user = {
-      birthday: new Date(dto.birthday),
+      birthday: dto.birthday ? new Date(dto.birthday) : null,
       city: dto.city,
       country: dto.country,
       firstname: dto.firstname,

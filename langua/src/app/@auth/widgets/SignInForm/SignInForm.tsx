@@ -1,18 +1,24 @@
 
+import { MessageType, useNotify } from '@/hooks/useNotify';
 import { loginSchema } from '@/lib/validate';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 
 const SignInForm = () => {
 
-    const handleGoogleSignin = async () => {
-        signIn("google", { callbackUrl: "http://localhost:3000" });
+    const {notify} = useNotify();
+    const router = useRouter();
+
+
+    const handleGoogleSignIn = async () => {
+        signIn("google", { callbackUrl: "http://localhost:3001" });
     };
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -22,7 +28,27 @@ const SignInForm = () => {
     };
 
     const onSubmit = async (values: SignInForm) => {
-        console.log(values);
+        try
+        {
+            const callbackUrl = "http://localhost:3001";
+            const res = await signIn("credentials", {
+                redirect: true,
+                email: values.email,
+                password: values.password,
+                callbackUrl,
+              });
+              
+              if (!res?.error) {
+                router.push(callbackUrl);
+              } 
+                
+            
+        }
+        catch(error)
+        {
+            notify({messageType:MessageType.FORM_ERROR,text:JSON.stringify(error),type:"error"})
+        }
+       
     };
 
     const formik = useFormik({
@@ -81,6 +107,7 @@ const SignInForm = () => {
             <Button 
             className="p-3 rounded-lg !bg-gradient-to-r !from-purple-500 !to-violet-500"
             variant="contained"
+            type="submit"
             color='secondary'>
                 Login
             </Button>
@@ -88,6 +115,7 @@ const SignInForm = () => {
             <Button 
             className="border p-3 rounded-none bg-white text-black  border-neutral-900 hover:bg-gray-200"
             variant="outlined"
+            onClick={() => handleGoogleSignIn()}
             endIcon={<FcGoogle size={25} className="self-center" />}
             >
                 Sign In with Google
