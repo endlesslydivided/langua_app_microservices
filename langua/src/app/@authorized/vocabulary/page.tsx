@@ -5,6 +5,11 @@ import { getServerSession } from "next-auth/next";
 import { Word } from "./types";
 import { getClient } from "@/lib/apollo-client";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Langua | Vocabulary",
+};
 
 const FIND_MANY_WORDS_BY_VOCABULARY_ID = gql`
   query FindManyWordsByVocabularyId(

@@ -3,7 +3,11 @@
 import Link from "next/link";
 import AuthLayout from "./layout";
 import SignInForm from "./widgets/SignInForm/SignInForm";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Langua | Auth",
+};
 
 export default function SignInPage(props: any) {
  

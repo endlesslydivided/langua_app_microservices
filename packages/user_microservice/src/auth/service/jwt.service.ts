@@ -42,8 +42,6 @@ export class JwtService {
               userId: user.id,
           },
           {
-              algorithm:'RS256',
-              privateKey:process.env.ACCESS_TOKEN_PRIVATE,
               expiresIn: process.env.ACCESS_TOKEN_EXPIRE,
           },
       ),
@@ -52,8 +50,6 @@ export class JwtService {
               userId: user.id,
           },
           {
-              algorithm:'RS256',
-              privateKey: process.env.REFRESH_TOKEN_PRIVATE,
               expiresIn: process.env.REFRESH_TOKEN_EXPIRE,
           },
       ),
@@ -81,9 +77,9 @@ export class JwtService {
     return {salt:null, password:null};
   }
 
-  public async verify(token: string,algorithm:Algorithm ="RS256",publicKey:string): Promise<unknown> {
+  public async verify(token: string): Promise<unknown> {
     try {
-      return this.jwt.verifyAsync(token,{algorithms:[algorithm],publicKey});
+      return this.jwt.verifyAsync(token);
     } catch (err) {}
   }
 }

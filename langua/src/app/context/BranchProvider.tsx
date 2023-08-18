@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react'
-import React from 'react'
+import React, { Suspense } from 'react'
+import Loading from '../loading';
 
 interface BranchProvdierProps
 {
@@ -12,7 +13,7 @@ const BranchProvdier:React.FC<BranchProvdierProps> = ({auth,authorized}) =>
   const { data: session, status } = useSession();
 
   return (
-     !session ? authorized : auth
+    status !== "loading" ? (session ? authorized : auth) :<Loading/> 
   )
 }
 

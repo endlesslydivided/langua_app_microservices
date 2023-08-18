@@ -1,13 +1,14 @@
 "use client"
 import { ThemeProvider, alpha, createTheme, getContrastRatio } from "@mui/material";
 import { Inter } from "next/font/google";
-import React from "react";
-import { ToastContainer } from "react-toastify";
+import React, { Suspense } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import AuthProvider from "./context/AuthProvider";
 import BranchProvdier from "./context/BranchProvider";
 import ToastProvider from "./context/ToastProvider";
 import "./globals.scss";
+import { Metadata } from "next";
+import Loading from "./loading";
  //add this line
 
 
@@ -16,9 +17,6 @@ const greenMain = alpha(greenBase, 0.7);
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Langua",
-};
 
 const theme = createTheme({
  typography:
@@ -50,7 +48,7 @@ export default function RootLayout({
           <ToastProvider>
             <ErrorBoundary>
               <AuthProvider>
-                <BranchProvdier auth={auth} authorized={authorized}/>
+                  <BranchProvdier auth={auth} authorized={authorized}/>
               </AuthProvider>
             </ErrorBoundary>
           </ToastProvider>

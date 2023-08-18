@@ -1,12 +1,14 @@
 import { Args, Context, GraphQLExecutionContext, Mutation, Resolver } from '@nestjs/graphql';
 
-import { BadRequestException, HttpStatus } from '@nestjs/common';
+import { BadRequestException, HttpStatus, UseGuards } from '@nestjs/common';
 import { RefreshInput, SignInInput, SignUpInput } from '../inputs/auth.inputs';
 import { RefreshResponse, SignInResponse, SignOutResponse, SignUpResponse } from '../model/auth.model';
 import { User } from '../model/user.model';
 import { AuthService } from '../service/auth.service';
 import { Void } from '../../share/scalar/void.scalar';
 import { Request, Response } from 'express';
+import { RefreshGuard } from '../guard/refresh.guard';
+import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 
 @Resolver((of) => User)
 export class AuthResolver {
@@ -34,7 +36,7 @@ export class AuthResolver {
 
   @Mutation((returns) => SignInResponse,{name:'signIn'})
   async signIn(
-    @Context() context: GraphQLExecutionContext,
+    @Context() context: GraphQLExecutionContext & {req:Request},
     @Args('signIn') input: SignInInput)
   {
     try
@@ -46,7 +48,7 @@ export class AuthResolver {
         throw new BadRequestException(result.error)
       }
 
-      const response:Response = context.switchToHttp().getResponse<Response>();
+      const response: Response = context.req.res;
 
       response.cookie("accessToken",result.accessToken,
       {maxAge: Number(process.env.ACCESS_TOKEN_EXPIRE),httpOnly:true, secure:true, sameSite:"lax"});
@@ -55,7 +57,8 @@ export class AuthResolver {
       {maxAge: Number(process.env.REFRESH_TOKEN_EXPIRE),httpOnly:true, secure:true, sameSite:"lax"});
 
       return {
-        accessToken: result.accessToken
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken
       }
     }
     catch(error)
@@ -65,7 +68,7 @@ export class AuthResolver {
   }
 
   @Mutation((returns) => RefreshResponse,{name:'refresh'})
-  @UseGuards(Refres)
+  @UseGuards(RefreshGuard)
   async refreshToken(
     @Context() context: GraphQLExecutionContext,
     @Args('refresh') input: RefreshInput)

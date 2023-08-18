@@ -63,7 +63,9 @@ type Mutation {
   createWord(createWord: CreateWordInput!): String!
   createWordToVocabulary(createWordToVocabulary: CreateWordToVocabularyInput!): String!
   deleteMaterialToVocabulary(id: String!): Void!
+  refresh(refresh: RefreshInput!): RefreshResponse!
   signIn(signIn: SignInInput!): SignInResponse!
+  signOut: SignOutResponse!
   signUp(signUp: SignUpInput!): SignUpResponse!
   updateMaterialToVocabulary(updateMaterialToVocabulary: UpdateMaterialToVocabularyInput!): Void!
   updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): Void!
@@ -119,10 +121,20 @@ type Query {
   findManyVocabularyStats(limit: Int! = 10, page: Int! = 0, userId: String!): PaginatedVocabularyStats!
   findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0): PaginatedWord!
   findManyWordsByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWord!
+  findMe: User!
   findOneMaterialById(id: String!): Material!
   findOneWordById(id: String!): Word!
   findUserById(id: String!): User!
   getOverallVocabularyStats(userId: String!): OverallVocabularyStats!
+}
+
+input RefreshInput {
+  refreshToken: String!
+}
+
+type RefreshResponse {
+  accessToken: String!
+  refershToken: String!
 }
 
 input SignInInput {
@@ -132,6 +144,11 @@ input SignInInput {
 
 type SignInResponse {
   accessToken: String!
+  refershToken: String!
+}
+
+type SignOutResponse {
+  status: String!
 }
 
 input SignUpInput {

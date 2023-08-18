@@ -1,4 +1,4 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, GraphQLExecutionContext, Query, Resolver } from '@nestjs/graphql';
 
 import { BadRequestException, HttpStatus, UseGuards } from '@nestjs/common';
 import { GraphQLString } from 'graphql';
@@ -10,6 +10,21 @@ import { UserService } from '../service/user.service';
 @Resolver((of) => User)
 export class UserResolver {
   constructor(private userService: UserService) {}
+
+  @Query((type) => User, { name: `findMe` })
+  @UseGuards(AuthGuard)
+  async findMe(@Context() context: GraphQLExecutionContext) {
+    const request:Request = context.switchToHttp().getRequest<Request>();
+
+    const result = await this.userService.findUserById({userId:request['user']});
+
+    if(result.status !== HttpStatus.OK)
+    {
+      throw new BadRequestException(result.error)
+    }
+
+    return result.user;
+  }
 
   @Query((type) => User, { name: `findUserById` })
   @UseGuards(AuthGuard)

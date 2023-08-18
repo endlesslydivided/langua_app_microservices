@@ -1,24 +1,18 @@
-import Image from "next/image";
+'use client'
+import { FIND_ME } from "@/lib/user/findMe";
+import { useQuery } from "@apollo/client";
 
-type User =
-  | {
-      name?: string | null | undefined;
-      email?: string | null | undefined;
-      image?: string | null | undefined;
-    }
-  | undefined;
+export default function UserCard() {
 
-type Props = {
-  user: User;
-  pagetype: string;
-};
+  const { loading, error, data:profile } = useQuery(FIND_ME);
 
-export default function Card({ user, pagetype }: Props) {
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
   //console.log(user)
 
-  const greeting = user?.name ? (
+  const greeting = profile?.name ? (
     <div className="flex flex-col items-center p-6 bg-white rounded-lg font-bold text-5xl text-black">
-      Hello {user?.name}!
+      Hello {profile}!
     </div>
   ) : null;
 
@@ -28,23 +22,10 @@ export default function Card({ user, pagetype }: Props) {
   //     </div>
   // ) : null
 
-  const userImage = user?.image ? (
-    <Image
-      className="border-4 border-black dark:border-slate-500 drop-shadow-xl shadow-black rounded-full mx-auto mt-8"
-      src={user?.image}
-      width={200}
-      height={200}
-      alt={user?.name ?? "Profile Pic"}
-      priority={true}
-    />
-  ) : null;
-
   return (
     <section className="flex flex-col gap-4">
       {greeting}
-      {/* {emailDisplay} */}
-      {userImage}
-      <p className="text-2xl text-center">{pagetype} Page!</p>
+      <p className="text-2xl text-center">Page!</p>
     </section>
   );
 }

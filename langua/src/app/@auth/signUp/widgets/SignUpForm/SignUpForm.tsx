@@ -1,3 +1,6 @@
+'use client'
+
+import { SignUpForm } from '@/app/@auth/types';
 import { MessageType, useNotify } from '@/hooks/useNotify';
 import signUpFetch from '@/lib/auth/signUp';
 import { registrationSchema } from '@/lib/validate';

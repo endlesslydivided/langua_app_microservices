@@ -1,15 +1,38 @@
 "use client"
-import AdbIcon from '@mui/icons-material/Adb';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Avatar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import PersonIcon from '@mui/icons-material/Person';
+import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import { signOut } from 'next-auth/react';
 import * as React from 'react';
+const pages = [{
+  key:  'Vocabulary',
+  handleOnClick: () => {}
+},
+{
+  key:  'Materials',
+  handleOnClick: () => {}
+},
+{
+  key:  'Stats',
+  handleOnClick: () => {}
+},
+];
 
-export const metadata = {
-  title: "Langua",
-};
+const sidePage = [{
+  key:  'Profile',
+  handleOnClick: () => {},
+  icon: <PersonIcon/>
+},
+{
+  key:  'Logout',
+  handleOnClick: () => { 
+    signOut({redirect:false});
 
-const pages = ['Vocabulary', 'Materials', 'Stats'];
-const settings = ['Profile', 'Logout'];
+  },
+  icon: <LogoutIcon/>
+},
+];
 
 export default  function AuthorizedLayout({
   children,
@@ -88,8 +111,8 @@ export default  function AuthorizedLayout({
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.key} onClick={() => page.handleOnClick()}>
+                  <Typography textAlign="center">{page.key}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -115,21 +138,32 @@ export default  function AuthorizedLayout({
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:'center' }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page.key}
+                onClick={() => page.handleOnClick()}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.key}
               </Button>
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+
+          <Box sx={{ flexGrow: 0,display: { xs: 'none', md: 'flex' }, justifyContent:'center' }}>
+
+          {sidePage.map((page) => (
+              <IconButton
+                key={page.key}
+                onClick={() => page.handleOnClick()}
+              >
+                {page.icon}
               </IconButton>
-            </Tooltip>
+            ))}
+          </Box>
+
+          <Box sx={{ flexGrow: 0,display: { xs: 'flex', md: 'none' }, }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <PersonIcon/>
+              </IconButton>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -146,9 +180,9 @@ export default  function AuthorizedLayout({
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {sidePage.map((page) => (
+                <MenuItem key={page.key} onClick={() => page.handleOnClick()}>
+                  <Typography textAlign="center">{page.key}</Typography>
                 </MenuItem>
               ))}
             </Menu>

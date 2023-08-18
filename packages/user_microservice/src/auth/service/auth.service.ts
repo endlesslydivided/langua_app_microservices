@@ -102,7 +102,7 @@ export class AuthService {
   public async validate({
     accessToken,
   }: ValidateRequestDto): Promise<auth.ValidateResponse> {
-    const decoded: User = (await this.jwtService.verify(accessToken,'RS256',process.env.ACCESS_TOKEN_PUBLIC)) as User;
+    const decoded: User = (await this.jwtService.verify(accessToken)) as User;
 
     if (!decoded) {
       return {
@@ -132,7 +132,7 @@ export class AuthService {
   public async refresh({
     refreshToken,
   }: RefreshRequestDto): Promise<auth.RefreshResponse> {
-    const decoded:User = await this.jwtService.verify(refreshToken,'RS256',process.env.REFRESH_TOKEN_PUBLIC) as User;
+    const decoded:User = await this.jwtService.verify(refreshToken) as User;
 
 
     if (!decoded) {

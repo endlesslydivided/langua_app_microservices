@@ -1,9 +1,11 @@
-"use client";
 
 import Link from "next/link";
 import SignUpForm from "./widgets/SignUpForm/SignUpForm";
-import { ToastContainer } from "react-toastify";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Langua | Auth",
+};
 
 export default function SignUpPage(props: any) {
   return (

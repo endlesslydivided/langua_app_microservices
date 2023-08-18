@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Metadata } from '@grpc/grpc-js';
 
 export const AUTH_SERVICE_NAME = 'AuthService'
+export const AUTH_PACKAGE_NAME = 'auth'
 
 export namespace auth {
     export interface AuthService {

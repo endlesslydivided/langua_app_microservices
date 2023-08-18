@@ -1,3 +1,5 @@
+import { SignUpForm } from "@/app/@auth/types";
+import { SignUpInput } from "@/app/api/auth/[...nextauth]/types";
 import { getClient } from "@/lib/apollo-client";
 import { gql } from "@apollo/client";
 

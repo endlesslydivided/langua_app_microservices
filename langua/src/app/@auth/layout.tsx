@@ -1,13 +1,12 @@
-"use client"
-
 import Image from "next/image";
 
 import bg from "@/assets/abstractBG/blackWhiteLines.gif";
-import { SnackbarProvider } from "notistack";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Langua | Auth",
 };
+
 
 export default function AuthLayout({
   children,

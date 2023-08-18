@@ -3,8 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getClient } from "@/lib/apollo-client";
 import { gql } from "@apollo/client";
-
-
+import { SignInInput } from "./types";
 
 const SIGN_IN = gql`
   mutation SignIn($signIn: SignInInput!) {
@@ -13,6 +12,7 @@ const SIGN_IN = gql`
     }
   }
 `;
+
 export const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -35,7 +35,7 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials: SignInInput | any,request) {
-        const { data } = await getClient().mutate<any, any>({
+        const {data,errors}:any = await getClient().mutate<any, any>({
           mutation: SIGN_IN,
           variables: {
             signIn: {
@@ -45,21 +45,24 @@ export const options: NextAuthOptions = {
           },
         }).catch((error) =>
         {
-          throw error;
+          throw new Error(error)
         })
-
-        if (data.accessToken) {
-          return data.accessToken;
+        
+        const tokens = data.signIn;
+        
+        if (data && !errors) {
+          return tokens;
         } else {
-          return null;
+          throw new Error(JSON.stringify(data))
         }
       },
     }),
   ],
   pages: {
-    signIn: "/auth/signIn",
-    signOut: "/auth/signOut",
+    signIn: "/auth",
     verifyRequest: "/auth/verify-request", // (used for check email message)
     newUser: "/auth/new-user",
+    error: "/auth",
+
   },
 };

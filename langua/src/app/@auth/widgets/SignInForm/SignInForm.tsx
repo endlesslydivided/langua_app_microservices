@@ -10,6 +10,8 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
+import { SignInForm } from '../../types';
+import { FRONT_URI } from '@/consts/api';
 
 const SignInForm = () => {
 
@@ -18,7 +20,7 @@ const SignInForm = () => {
 
 
     const handleGoogleSignIn = async () => {
-        signIn("google", { callbackUrl: "http://localhost:3001" });
+        signIn("google", { callbackUrl: FRONT_URI });
     };
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -30,12 +32,11 @@ const SignInForm = () => {
     const onSubmit = async (values: SignInForm) => {
         try
         {
-            const callbackUrl = "http://localhost:3001";
+            const callbackUrl = FRONT_URI || "/";
             const res = await signIn("credentials", {
-                redirect: true,
+                redirect: false,
                 email: values.email,
                 password: values.password,
-                callbackUrl,
               });
               
               if (!res?.error) {
