@@ -9,8 +9,11 @@ import { LexicCategoryRepository } from '../repository/lexic-category.repository
 
 @Injectable()
 export class LexicCategoryService {
-  @Inject(LexicCategoryRepository)
-  private readonly lexicCategoryRepository: LexicCategoryRepository;
+
+  constructor(private lexicCategoryRepository: LexicCategoryRepository){
+    
+  }
+
 
   public async create(
     dto: CreateLexicCategoryRequestDto,

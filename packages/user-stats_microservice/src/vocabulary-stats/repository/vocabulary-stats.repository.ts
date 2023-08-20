@@ -10,8 +10,10 @@ import {
 
 @Injectable()
 export class VocabularyStatsRepository {
-  @InjectModel(VocabularyStats.name)
-  private vocabularyStatsModel: Model<VocabularyStats>;
+  
+
+  constructor(@InjectModel(VocabularyStats.name) private vocabularyStatsModel: Model<VocabularyStats>
+  ){}
 
   async create(
     dto: CreateOrUpdateVocabularyStatsRequestDto,

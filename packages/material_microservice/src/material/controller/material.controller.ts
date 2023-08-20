@@ -15,8 +15,11 @@ import { MaterialService } from '../service/material.service';
 
 @Controller()
 export class MaterialController {
-  @Inject(MaterialService)
-  private readonly materialService: MaterialService;
+
+  constructor(private materialService: MaterialService){
+    
+  }
+
 
   @GrpcMethod(MATERIAL_SERVICE_NAME, 'CreateMaterial')
   private createMaterial(

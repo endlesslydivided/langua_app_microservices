@@ -10,8 +10,12 @@ import { VocabularyService } from '../service/vocabulary.service';
 
 @Controller()
 export class VocabularyController {
-  @Inject(VocabularyService)
-  private readonly service: VocabularyService;
+
+
+  constructor(private service: VocabularyService){
+    
+  }
+
 
   @GrpcMethod(LEXIC_SERVICE_NAME, 'createVocabulary')
   private createVocabulary(

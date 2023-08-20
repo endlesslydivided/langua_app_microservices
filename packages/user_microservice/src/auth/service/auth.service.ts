@@ -15,14 +15,14 @@ import { JwtService } from './jwt.service';
 
 @Injectable()
 export class AuthService {
-  @Inject(UserRepository)
-  private readonly userRepository: UserRepository;
 
-  @Inject(JwtService)
-  private readonly jwtService: JwtService;
+  constructor(private jwtService: JwtService,
+    private userRepository: UserRepository,
+    @InjectDataSource() private  dataSource: DataSource) {
+    
+  }
 
-  @InjectDataSource()
-  private readonly dataSource: DataSource;
+
 
   public async signUp(dto: SignUpRequestDto): Promise<auth.SignUpResponse> {
     const queryRunner: QueryRunner = this.dataSource.createQueryRunner();

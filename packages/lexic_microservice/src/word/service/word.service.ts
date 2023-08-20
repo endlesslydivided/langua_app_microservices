@@ -17,18 +17,16 @@ import { WordRepository } from '../repository/word.repository';
 
 @Injectable()
 export class WordService {
-  @Inject(WordRepository)
-  private readonly wordRepository: WordRepository;
 
-  @Inject(WordToVocabularyRepository)
-  private readonly wordToVocabularyRepository: WordToVocabularyRepository;
+  constructor( private wordRepository: WordRepository,
+               private wordToVocabularyRepository: WordToVocabularyRepository,
+               @Inject('USER_STATS_PACKAGE') private userStatsClient: ClientGrpc){
+    
+  }
+
 
   private userStatsService: userStats.UserStatsService;
 
-
-
-  @Inject('USER_STATS_PACKAGE')
-  private readonly userStatsClient: ClientGrpc;
 
   onModuleInit() {
     this.userStatsService = this.userStatsClient.getService<userStats.UserStatsService>('UserStatsService');

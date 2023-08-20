@@ -5,23 +5,18 @@ import * as bcrypt from 'bcryptjs';
 import { User } from '../entity/user.entity';
 import { UserRepository } from '../repository/user.repository';
 
-type Algorithm =
-    "HS256" | "HS384" | "HS512" |
-    "RS256" | "RS384" | "RS512" |
-    "ES256" | "ES384" | "ES512" |
-    "PS256" | "PS384" | "PS512" |
-    "none";
 
 type EncodedJWTData = { id: string; email: string };
 
 @Injectable()
 export class JwtService {
-  @Inject(UserRepository)
-  private readonly userRepository: UserRepository;
+
+
 
   private readonly jwt: Jwt;
 
-  constructor(jwt: Jwt) {
+  constructor(jwt: Jwt,
+    private userRepository: UserRepository) {
     this.jwt = jwt;
   }
 
@@ -32,8 +27,6 @@ export class JwtService {
   public async validateUser(decoded: EncodedJWTData | User): Promise<User> {
     return this.userRepository.findOneById(decoded.id);
   }
-
-  
 
   public async generateToken(user: User):Promise<{accessToken:string, refreshToken:string}> {
     const [accessToken, refreshToken] = await Promise.all([

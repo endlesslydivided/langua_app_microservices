@@ -11,8 +11,11 @@ import {
 
 @Injectable()
 export class MaterialToVocabularyRepository {
-  @InjectModel(MaterialToVocabulary.name)
-  private materialToVocabularyModel: Model<MaterialToVocabulary>;
+
+  constructor( @InjectModel(MaterialToVocabulary.name) private materialToVocabularyModel: Model<MaterialToVocabulary>){
+    
+  }
+
 
   async create(
     dto: CreateMaterialToVocabularyRequestDto

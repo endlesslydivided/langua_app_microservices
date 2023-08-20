@@ -10,8 +10,11 @@ import { UserService } from '../service/user.service';
 
 @Controller()
 export class UserController {
-  @Inject(UserService)
-  private readonly service: UserService;
+
+
+  constructor(private service: UserService){
+
+  }
 
   @GrpcMethod(AUTH_SERVICE_NAME, 'FindManyUsers')
   private findManyUsers(

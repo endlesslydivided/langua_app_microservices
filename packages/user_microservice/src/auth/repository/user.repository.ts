@@ -10,14 +10,14 @@ import { UserContacts } from '../entity/userCredentials.entity';
 
 @Injectable()
 export class UserRepository {
-  @InjectRepository(User)
-  private readonly userRepository: Repository<User>;
+ 
 
-  @InjectRepository(UserContacts)
-  private readonly userContactsRepository: Repository<UserContacts>;
+  constructor(@InjectRepository(User) private userRepository: Repository<User>,           
+              @InjectRepository(UserContacts) private userContactsRepository: Repository<UserContacts>,            
+              @InjectRepository(UserCredentials) private userCredentialsRepository: Repository<UserCredentials>,){
+    
+  }
 
-  @InjectRepository(UserCredentials)
-  private readonly userCredentialsRepository: Repository<UserCredentials>;
 
   createUserEntity(
     dto: SignUpRequestDto,

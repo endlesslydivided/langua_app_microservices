@@ -19,16 +19,15 @@ import { MaterialRepository } from '../repository/material.repository';
 
 @Injectable()
 export class MaterialService {
-  @Inject(MaterialRepository)
-  private readonly materialRepository: MaterialRepository;
-
-  @Inject(MaterialToVocabularyRepository)
-  private readonly materialToVocabularyRepository: MaterialToVocabularyRepository;
 
   private userStatsService: userStats.UserStatsService;
+  
+  constructor( @Inject("USER_STATS_PACKAGE") private userStatsClient: ClientGrpc,
+  private materialRepository: MaterialRepository,
+  private materialToVocabularyRepository: MaterialToVocabularyRepository){
+    
+  }
 
-  @Inject("USER_STATS_PACKAGE")
-  private userStatsClient: ClientGrpc;
 
   onModuleInit() {
     this.userStatsService = this.userStatsClient.getService<userStats.UserStatsService>('UserStatsService');

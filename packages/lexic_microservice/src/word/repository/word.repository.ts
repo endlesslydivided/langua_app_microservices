@@ -49,8 +49,12 @@ const wordWithLexicCategoryLookup = {
 
 @Injectable()
 export class WordRepository {
-  @InjectModel(Word.name)
-  private wordModel: Model<Word>;
+
+
+  constructor( @InjectModel(Word.name) private wordModel: Model<Word>){
+    
+  }
+
 
   async create(dto: CreateWordRequestDto): Promise<WordDocument> {
     const word = new this.wordModel({

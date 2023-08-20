@@ -8,8 +8,11 @@ import { Material, MaterialDocument } from '../schema/material.schema';
 
 @Injectable()
 export class MaterialRepository {
-  @InjectModel(Material.name)
-  private materialModel: Model<Material>;
+
+  constructor(@InjectModel(Material.name) private materialModel: Model<Material>){
+    
+  }
+
 
   async create(dto: CreateMaterialRequestDto): Promise<MaterialDocument> {
     const material = new this.materialModel(dto);

@@ -14,8 +14,11 @@ import { WordService } from '../service/word.service';
 
 @Controller()
 export class WordController {
-  @Inject(WordService)
-  private readonly service: WordService;
+
+  constructor(private service: WordService){
+    
+  }
+
 
   @GrpcMethod(LEXIC_SERVICE_NAME, 'createWord')
   private createWord(

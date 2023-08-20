@@ -9,8 +9,12 @@ import { VocabularyRepository } from '../repository/vocabulary.repository';
 
 @Injectable()
 export class VocabularyService {
-  @Inject(VocabularyRepository)
-  private readonly vocabularyRepository: VocabularyRepository;
+
+
+  constructor(private vocabularyRepository: VocabularyRepository){
+    
+  }
+
 
   public async create(
     dto: CreateVocabularyRequestDto,

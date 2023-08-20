@@ -10,8 +10,11 @@ import { LexicCategoryService } from '../service/lexic-category.service';
 
 @Controller()
 export class LexicCategoryController {
-  @Inject(LexicCategoryService)
-  private readonly service: LexicCategoryService;
+
+  constructor(private service: LexicCategoryService){
+    
+  }
+
 
   @GrpcMethod(LEXIC_SERVICE_NAME, 'createLexicCategory')
   private createLexicCategory(

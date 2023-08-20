@@ -10,8 +10,11 @@ import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller()
 export class VocabularyStatsController {
-  @Inject(VocabularyStatsService)
-  private readonly service: VocabularyStatsService;
+
+  constructor(private  service: VocabularyStatsService)
+  {
+
+  }
 
   @GrpcMethod(USER_STATS_SERVICE_NAME, 'CreateOrUpdateVocabularyStats')
   private createOrUpdateVocabularyStats(

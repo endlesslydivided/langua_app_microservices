@@ -10,8 +10,12 @@ import {
 
 @Injectable()
 export class WordToVocabularyRepository {
-  @InjectModel(WordToVocabulary.name)
-  private wordToVocabularyModel: Model<WordToVocabulary>;
+
+
+  constructor(@InjectModel(WordToVocabulary.name) private wordToVocabularyModel: Model<WordToVocabulary>){
+    
+  }
+
 
   async createWordToVocabulary(
     dto: CreateWordToVocabularyRequestDto,

@@ -2,9 +2,8 @@ import {
   CanActivate,
   ExecutionContext,
   HttpStatus,
-  Inject,
   Injectable,
-  UnauthorizedException,
+  UnauthorizedException
 } from '@nestjs/common';
 import { Request } from 'express';
 
@@ -14,15 +13,17 @@ import { AuthService } from '../service/auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  @Inject(AuthService)
-  public readonly service: AuthService;
+  
+  constructor(private service: AuthService) {
+    
+  }
 
-  public async canActivate(ctx: ExecutionContext): Promise<boolean> | never {
+  public async canActivate(ctx: ExecutionContext) {
     const req: Request = ctx.switchToHttp().getNext().req;
     const accessToken: string = req['accessToken'];
 
     if (!accessToken) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Access token is not provided");
     }
 
     const { status, userId }: auth.ValidateResponse = await this.service.validate(accessToken);
@@ -30,7 +31,7 @@ export class AuthGuard implements CanActivate {
     req['user'] = userId;
 
     if (status !== HttpStatus.OK) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Validation is not passed");
     }
 
     return true;

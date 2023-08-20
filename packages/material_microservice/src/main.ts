@@ -5,7 +5,7 @@ import { join } from 'path';
 
 import { AppModule } from './app.module';
 import { MATERIAL_PACKAGE_NAME } from './material.pb';
-import { HttpExceptionFilter } from './share/filter/http-exception.filter';
+import { AllExceptionsFilter } from './share/filter/all-exception.filter';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -25,7 +25,7 @@ async function bootstrap(): Promise<void> {
     },
   );
 
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   await app.listen();

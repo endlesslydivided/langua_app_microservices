@@ -9,8 +9,12 @@ import { VocabularyStatsRepository } from '../repository/vocabulary-stats.reposi
 
 @Injectable()
 export class VocabularyStatsService {
-  @Inject(VocabularyStatsRepository)
-  private readonly vocabularyStatsRepository: VocabularyStatsRepository;
+  
+
+  constructor(private vocabularyStatsRepository: VocabularyStatsRepository)
+  {
+
+  }
 
   public async createOrUpdate(
     dto: CreateOrUpdateVocabularyStatsRequestDto,

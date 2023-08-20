@@ -11,8 +11,11 @@ import {
 
 @Injectable()
 export class LexicCategoryRepository {
-  @InjectModel(LexicCategory.name)
-  private lexicCategoryModel: Model<LexicCategory>;
+
+  constructor(@InjectModel(LexicCategory.name) private lexicCategoryModel: Model<LexicCategory>){
+    
+  }
+
 
   async create(
     dto: CreateLexicCategoryRequestDto,

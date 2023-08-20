@@ -8,8 +8,11 @@ import { Vocabulary, VocabularyDocument } from '../schema/vocabulary.schema';
 
 @Injectable()
 export class VocabularyRepository {
-  @InjectModel(Vocabulary.name)
-  private vocabularyModel: Model<Vocabulary>;
+
+  constructor( @InjectModel(Vocabulary.name) private vocabularyModel: Model<Vocabulary>){
+    
+  }
+
 
   async create(dto: CreateVocabularyRequestDto): Promise<VocabularyDocument> {
     const vocabulary = new this.vocabularyModel(dto);

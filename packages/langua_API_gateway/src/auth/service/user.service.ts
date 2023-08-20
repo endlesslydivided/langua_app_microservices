@@ -6,21 +6,22 @@ import { auth, AUTH_SERVICE_NAME } from '../../langua_proto/auth.pb';
 
 @Injectable()
 export class UserService {
-  private authServiceClient: auth.AuthService;
+  private userServiceClient: auth.AuthService;
 
-  @Inject(AUTH_SERVICE_NAME)
-  private readonly client: ClientGrpc;
+  constructor(@Inject(AUTH_SERVICE_NAME) private  client: ClientGrpc) {
+    
+  }
 
   public onModuleInit(): void {
-    this.authServiceClient =
+    this.userServiceClient =
       this.client.getService<auth.AuthService>(AUTH_SERVICE_NAME);
   }
 
   public async findUserById(data: auth.FindUserByIdRequest): Promise<auth.FindUserByIdResponse> {
-    return firstValueFrom(this.authServiceClient.findUserById(data));
+    return firstValueFrom(this.userServiceClient.findUserById(data));
   }
 
   public async findManyUsers(data: auth.FindManyUsersRequest): Promise<auth.FindManyUsersResponse> {
-    return firstValueFrom(this.authServiceClient.findManyUsers(data));
+    return firstValueFrom(this.userServiceClient.findManyUsers(data));
   }
 }
