@@ -1,38 +1,14 @@
 "use client"
+import signOut from '@/lib/auth/signOut';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
 import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
-import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import * as React from 'react';
-const pages = [{
-  key:  'Vocabulary',
-  handleOnClick: () => {}
-},
-{
-  key:  'Materials',
-  handleOnClick: () => {}
-},
-{
-  key:  'Stats',
-  handleOnClick: () => {}
-},
-];
+import { AuthContext } from '../context/AuthProvider';
+import { useContext } from 'react';
 
-const sidePage = [{
-  key:  'Profile',
-  handleOnClick: () => {},
-  icon: <PersonIcon/>
-},
-{
-  key:  'Logout',
-  handleOnClick: () => { 
-    signOut({redirect:false});
-
-  },
-  icon: <LogoutIcon/>
-},
-];
 
 export default  function AuthorizedLayout({
   children,
@@ -42,6 +18,42 @@ export default  function AuthorizedLayout({
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const router = useRouter();
+  const {logOut} = useContext(AuthContext);
+
+  const pages = [{
+    key:  'Vocabulary',
+    handleOnClick: () => {
+      router.push('/vocabulary')
+    }
+  },
+  {
+    key:  'Materials',
+     handleOnClick: () => {
+      router.push('/materials')
+    }
+  },
+  {
+    key:  'Stats',
+     handleOnClick: () => {
+      router.push('/stats')
+    }
+  },
+  ];
+  
+  const sidePage = [{
+    key:  'Profile',
+    handleOnClick: () => {},
+    icon: <PersonIcon/>
+  },
+  {
+    key:  'Logout',
+    handleOnClick: () => { 
+      logOut();
+    },
+    icon: <LogoutIcon/>
+  },
+  ];
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -60,6 +72,7 @@ export default  function AuthorizedLayout({
 
   
   return (
+    <>
       <AppBar position="static" className="rounded-b-lg">
         <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -67,9 +80,10 @@ export default  function AuthorizedLayout({
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={() => router.push('/')}
             sx={{
               mr: 2,
+              cursor:"pointer",
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -188,7 +202,10 @@ export default  function AuthorizedLayout({
             </Menu>
           </Box>
         </Toolbar>
-      </Container>
+
+        </Container>
       </AppBar>
+      {children}
+    </>
   );
 }

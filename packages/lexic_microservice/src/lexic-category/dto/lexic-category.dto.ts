@@ -37,3 +37,14 @@ export class FindManyLexicCategoriesByCreatorIdRequestDto
   @Type(() => PageFilters)
   public readonly pageFilters: PageFilters;
 }
+
+export class FindManyLexicCategoriesRequestDto
+  implements lexic.FindManyLexicCategoriesRequest
+{
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => PageFilters)
+  public readonly pageFilters: PageFilters;
+}

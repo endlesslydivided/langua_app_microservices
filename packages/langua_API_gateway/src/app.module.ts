@@ -8,8 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { LexicModule } from './lexic/lexic.module';
 import { MaterialModule } from './material/material.module';
 import { UserStatsModule } from './user-stats/user-stats.module';
-import { RefreshMiddleware } from './auth/middleware/refresh.middleware';
+import { RefreshTokenMiddleware } from './auth/middleware/refresh.middleware';
 import { Void } from './share/scalar/void.scalar';
+import { AccessTokenMiddleware } from './auth/middleware/accessToken.middleware';
 
 @Module({
   imports: [
@@ -17,9 +18,15 @@ import { Void } from './share/scalar/void.scalar';
       envFilePath: '.env',
       isGlobal: true,
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRoot({
+      cors: {
+        credentials: true,
+        origin: true
+      },
       driver: ApolloDriver,
-      
+      context:async ({ req, res }) => {
+        return { res };
+      },
       playground: true,
       autoSchemaFile: {
         path: join(process.cwd(), 'src/schema.gql')
@@ -40,7 +47,9 @@ import { Void } from './share/scalar/void.scalar';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-    .apply(RefreshMiddleware)
+    .apply(RefreshTokenMiddleware,AccessTokenMiddleware)
     .forRoutes('/graphql');
+
+    
   }
 }

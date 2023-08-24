@@ -45,4 +45,24 @@ export class LexicCategoryRepository {
 
     return [lexicCategories, count];
   }
+
+  async findManyAndCount(
+    filters: PageFilters,
+  ): Promise<[LexicCategoryDocument[], number]> {
+
+
+    const lexicCategories = await this.lexicCategoryModel
+      .find(
+        {},{},
+        {
+          skip: filters.limit * filters.page,
+          limit: filters.limit,
+        },
+      )
+      .exec();
+
+    const count = await this.lexicCategoryModel.count().exec();
+
+    return [lexicCategories, count];
+  }
 }

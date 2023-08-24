@@ -8,4 +8,9 @@ export class FindManyLexicCategoriesByCreatorIdArgs extends PaginationArgs {
   creatorId?: string;
 }
 
+@ArgsType()
+export class FindManyLexicCategories extends PaginationArgs {
+
+}
+
 

@@ -20,7 +20,7 @@ export class UserService {
     return {
       status: HttpStatus.OK,
       error: null,
-      user: { ...user, birthday: user.birthday.toISOString() },
+      user: { ...user, birthday: user.birthday?.toISOString() },
     };
   }
 

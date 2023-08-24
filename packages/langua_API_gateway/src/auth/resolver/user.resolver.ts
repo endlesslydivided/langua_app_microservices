@@ -13,8 +13,8 @@ export class UserResolver {
 
   @Query((type) => User, { name: `findMe` })
   @UseGuards(AuthGuard)
-  async findMe(@Context() context: GraphQLExecutionContext) {
-    const request:Request = context.switchToHttp().getRequest<Request>();
+  async findMe(@Context() context: GraphQLExecutionContext & {req:Request, res:Response}) {
+    const request:Request = context.req;
 
     const result = await this.userService.findUserById({userId:request['user']});
 

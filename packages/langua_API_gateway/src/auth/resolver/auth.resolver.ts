@@ -36,7 +36,7 @@ export class AuthResolver {
 
   @Mutation((returns) => SignInResponse,{name:'signIn'})
   async signIn(
-    @Context() context: GraphQLExecutionContext & {req:Request},
+    @Context() context: GraphQLExecutionContext & {req:Request, res:Response},
     @Args('signIn') input: SignInInput)
   {
     try
@@ -48,13 +48,12 @@ export class AuthResolver {
         throw new BadRequestException(result.error)
       }
 
-      const response: Response = context.req.res;
 
-      response.cookie("accessToken",result.accessToken,
-      {maxAge: Number(process.env.ACCESS_TOKEN_EXPIRE),httpOnly:true, secure:true, sameSite:"lax"});
+      context.res.cookie("accessToken",result.accessToken,
+      {maxAge: Number(process.env.ACCESS_TOKEN_EXPIRE),secure:true, sameSite:"lax"});
 
-      response.cookie("refreshToken",result.refreshToken,
-      {maxAge: Number(process.env.REFRESH_TOKEN_EXPIRE),httpOnly:true, secure:true, sameSite:"lax"});
+      context.res.cookie("refreshToken",result.refreshToken,
+      {maxAge: Number(process.env.REFRESH_TOKEN_EXPIRE), secure:true, sameSite:"lax"});
 
       return {
         accessToken: result.accessToken,
@@ -70,28 +69,26 @@ export class AuthResolver {
   @Mutation((returns) => RefreshResponse,{name:'refresh'})
   @UseGuards(RefreshGuard)
   async refreshToken(
-    @Context() context: GraphQLExecutionContext,
-    @Args('refresh') input: RefreshInput)
+    @Context() context: GraphQLExecutionContext & {req:Request, res:Response},)
   {
     try
     {
-      const result = await this.authService.refresh(input.refreshToken);
+      const result = await this.authService.refresh(context.req['refreshToken']);
 
       if(result.status !== HttpStatus.OK)
       {
         throw new BadRequestException(result.error)
       }
 
-      const response:Response = context.switchToHttp().getResponse<Response>();
+      context.res.cookie("accessToken",result.accessToken,
+      {maxAge: Number(process.env.ACCESS_TOKEN_EXPIRE),secure:true, sameSite:"lax"});
 
-      response.cookie("accessToken",result.accessToken,
-      {maxAge: Number(process.env.ACCESS_TOKEN_EXPIRE),httpOnly:true, secure:true, sameSite:"lax"});
+      context.res.cookie("refreshToken",result.refreshToken,
+      {maxAge: Number(process.env.REFRESH_TOKEN_EXPIRE), secure:true, sameSite:"lax"});
 
-      response.cookie("refreshToken",result.refreshToken,
-      {maxAge: Number(process.env.REFRESH_TOKEN_EXPIRE),httpOnly:true, secure:true, sameSite:"lax"});
-
-      return {
-        accessToken: result.accessToken
+      return {    
+        accessToken: result.accessToken,
+        refreshToken: result.refreshToken
       }
     }
     catch(error)
@@ -102,16 +99,15 @@ export class AuthResolver {
 
   @Mutation((returns) => SignOutResponse,{name:'signOut'})
   async signOut(
-    @Context() context: GraphQLExecutionContext)
+    @Context() context: GraphQLExecutionContext & {req:Request, res:Response},)
   {
     try
     {
-      const response:Response = context.switchToHttp().getResponse<Response>();
 
-      response.cookie("accessToken",
+      context.res.cookie("accessToken",
       {maxAge: 0,httpOnly:true, secure:true, sameSite:"lax"});
 
-      response.cookie("refreshToken",
+      context.res.cookie("refreshToken",
       {maxAge: 0,httpOnly:true, secure:true, sameSite:"lax"});
 
       return {

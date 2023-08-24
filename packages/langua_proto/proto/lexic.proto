@@ -13,6 +13,7 @@ service LexicService{
 
     rpc CreateLexicCategory (CreateLexicCategoryRequest) returns (CreateLexicCategoryResponse) {}
     rpc FindManyLexicCategoriesByCreatorId (FindManyLexicCategoriesByCreatorIdRequest) returns (FindManyLexicCategoriesByCreatorIdResponse) {}
+    rpc FindManyLexicCategories (FindManyLexicCategoriesRequest) returns (FindManyLexicCategoriesResponse) {}
 
     rpc CreateVocabulary (CreateVocabularyRequest) returns (CreateVocabularyResponse) {}
     rpc FindManyVocabulariesByUserId (FindManyVocabulariesByUserIdRequest) returns (FindManyVocabulariesByUserIdResponse) {}
@@ -163,6 +164,27 @@ message FindManyLexicCategoriesByCreatorIdResponse {
     int32 status = 1;
     repeated string error = 2;
     FindManyLexicCategoriesByCreatorIdData data = 3;
+}
+
+//| FindManyLexicCategories
+message FindManyLexicCategoriesData{
+    message LexicCategory{
+        string id = 1;
+        string category_name = 2;
+        string creator_user_id = 3;
+    }
+    int32 count = 1;
+    repeated LexicCategory rows = 2;  
+}
+
+message FindManyLexicCategoriesRequest{
+    PageFilters page_filters = 2;
+}
+
+message FindManyLexicCategoriesResponse {
+    int32 status = 1;
+    repeated string error = 2;
+    FindManyLexicCategoriesData data = 3;
 }
 
 /// ------------------------ Vocabulary ------------------------

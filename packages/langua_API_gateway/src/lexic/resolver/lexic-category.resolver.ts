@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { BadRequestException, HttpStatus, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../../auth/guard/auth.guard';
-import { FindManyLexicCategoriesByCreatorIdArgs } from '../args/lexic-category.args';
+import { FindManyLexicCategories, FindManyLexicCategoriesByCreatorIdArgs } from '../args/lexic-category.args';
 import { CreateLexicCategoryInput } from '../inputs/lexic-category.inputs';
 import { PaginatedLexicCategory } from '../model/lexic-category.model';
 import { LexicCategoryService } from '../service/lexic-category.service';
@@ -37,6 +37,27 @@ export class LexicCategoryResolver {
     };
 
     const result = await this.lexicCategoryService.findManyLexicCategoriesByCreatorId(data);
+    
+    if(result.status !== HttpStatus.OK)
+    {
+      throw new BadRequestException(result.error)
+    }
+
+    return result.data; 
+  }
+
+  @Query((type) => PaginatedLexicCategory, { name: `findManyLexicCategories` })
+  @UseGuards(AuthGuard)
+  async findManyLexicCategories(@Args() args: FindManyLexicCategories) {
+    const { page, limit } = args;
+    const data = {
+      pageFilters: {
+        page,
+        limit,
+      },
+    };
+
+    const result = await this.lexicCategoryService.findManyLexicCategories(data);
     
     if(result.status !== HttpStatus.OK)
     {

@@ -1,15 +1,14 @@
-"use client"
+'use client'
+
 import { ThemeProvider, alpha, createTheme, getContrastRatio } from "@mui/material";
 import { Inter } from "next/font/google";
-import React, { Suspense } from "react";
-import ErrorBoundary from "./components/ErrorBoundary";
-import AuthProvider from "./context/AuthProvider";
-import BranchProvdier from "./context/BranchProvider";
-import ToastProvider from "./context/ToastProvider";
+import React from "react";
+
 import "./globals.scss";
-import { Metadata } from "next";
-import Loading from "./loading";
- //add this line
+import 'react-toastify/dist/ReactToastify.css';
+import ErrorBoundary from "@/components/ErrorBoundary/ErrorBoundary";
+import { ToastProvider, AuthProvider } from "@/components/context";
+import BranchProvdier from "@/components/context/BranchProvider";
 
 
 const greenBase = '#22bf44';
@@ -48,7 +47,7 @@ export default function RootLayout({
           <ToastProvider>
             <ErrorBoundary>
               <AuthProvider>
-                  <BranchProvdier auth={auth} authorized={authorized}/>
+                <BranchProvdier auth={auth} authorized={authorized}/>
               </AuthProvider>
             </ErrorBoundary>
           </ToastProvider>

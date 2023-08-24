@@ -5,6 +5,7 @@ import { lexic, LEXIC_SERVICE_NAME } from 'src/lexic.pb';
 import {
   CreateLexicCategoryRequestDto,
   FindManyLexicCategoriesByCreatorIdRequestDto,
+  FindManyLexicCategoriesRequestDto,
 } from '../dto/lexic-category.dto';
 import { LexicCategoryService } from '../service/lexic-category.service';
 
@@ -28,5 +29,12 @@ export class LexicCategoryController {
     payload: FindManyLexicCategoriesByCreatorIdRequestDto,
   ): Promise<lexic.FindManyLexicCategoriesByCreatorIdResponse> {
     return this.service.findManyAndCountByCreatorId(payload);
+  }
+
+  @GrpcMethod(LEXIC_SERVICE_NAME, 'findManyLexicCategories')
+  private findManyLexicCategories(
+    payload: FindManyLexicCategoriesRequestDto,
+  ): Promise<lexic.FindManyLexicCategoriesResponse> {
+    return this.service.findManyAndCount(payload);
   }
 }

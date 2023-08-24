@@ -8,7 +8,7 @@ export class SignInResponse{
     accessToken: string;
 
     @Field((type) => GraphQLString, { nullable: false })
-    refershToken: string;
+    refreshToken: string;
 }
 
 @ObjectType()
@@ -17,7 +17,7 @@ export class RefreshResponse{
     accessToken: string;
 
     @Field((type) => GraphQLString, { nullable: false })
-    refershToken: string;
+    refreshToken: string;
 }
 
 @ObjectType()

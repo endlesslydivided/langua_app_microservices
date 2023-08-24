@@ -4,6 +4,7 @@ import { lexic } from '../../lexic.pb';
 import {
   CreateLexicCategoryRequestDto,
   FindManyLexicCategoriesByCreatorIdRequestDto,
+  FindManyLexicCategoriesRequestDto,
 } from '../dto/lexic-category.dto';
 import { LexicCategoryRepository } from '../repository/lexic-category.repository';
 
@@ -31,6 +32,22 @@ export class LexicCategoryService {
   ): Promise<lexic.FindManyVocabulariesByUserIdResponse> {
     const data = await this.lexicCategoryRepository.findManyAndCountByCreatorId(
       dto.creatorId,
+      dto.pageFilters,
+    );
+    return {
+      status: HttpStatus.OK,
+      error: null,
+      data: {
+        rows: data[0],
+        count: data[1],
+      },
+    };
+  }
+
+  public async findManyAndCount(
+    dto: FindManyLexicCategoriesRequestDto,
+  ): Promise<lexic.FindManyVocabulariesByUserIdResponse> {
+    const data = await this.lexicCategoryRepository.findManyAndCount(
       dto.pageFilters,
     );
     return {

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import AuthLayout from "./layout";
-import SignInForm from "./widgets/SignInForm/SignInForm";
 import { Metadata } from "next";
+import { SignInForm } from "@/widgets/Forms/SignInForm";
 
 export const metadata: Metadata = {
   title: "Langua | Auth",

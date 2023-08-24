@@ -31,5 +31,13 @@ export class LexicCategoryService {
     );
   }
 
+  public async findManyLexicCategories(
+    data: lexic.FindManyLexicCategoriesRequest,
+  ): Promise<lexic.FindManyLexicCategoriesResponse> {
+    return firstValueFrom(
+      this.lexicServiceClient.findManyLexicCategories(data),
+    );
+  }
+
 
 }

@@ -50,6 +50,12 @@ export namespace lexic {
       metadata?: Metadata,
       ...rest: any[]
     ): Observable<FindManyLexicCategoriesByCreatorIdResponse>;
+
+    findManyLexicCategories(
+      data: FindManyLexicCategoriesRequest,
+      metadata?: Metadata,
+      ...rest: any[]
+    ): Observable<FindManyLexicCategoriesResponse>;
     createVocabulary(
       data: CreateVocabularyRequest,
       metadata?: Metadata,
@@ -173,7 +179,6 @@ export namespace lexic {
     rows?: FindManyLexicCategoriesByCreatorIdData.LexicCategory[];
   }
   export namespace FindManyLexicCategoriesByCreatorIdData {
-    // | FindManyLexicCategoriesByCreatorId
     export interface LexicCategory {
       id?: string;
       categoryName?: string;
@@ -189,6 +194,26 @@ export namespace lexic {
     error?: string[];
     data?: lexic.FindManyLexicCategoriesByCreatorIdData;
   }
+    // | FindManyLexicCategories
+    export interface FindManyLexicCategoriesData {
+      count?: number;
+      rows?: FindManyLexicCategoriesData.LexicCategory[];
+    }
+    export namespace FindManyLexicCategoriesData {
+      export interface LexicCategory {
+        id?: string;
+        categoryName?: string;
+        creatorUserId?: string;
+      }
+    }
+    export interface FindManyLexicCategoriesRequest {
+      pageFilters?: lexic.PageFilters;
+    }
+    export interface FindManyLexicCategoriesResponse {
+      status?: number;
+      error?: string[];
+      data?: lexic.FindManyLexicCategoriesData;
+    }
   // | CreateVocabulary
   export interface CreateVocabularyRequest {
     userId?: string;

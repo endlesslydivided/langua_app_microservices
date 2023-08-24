@@ -19,10 +19,7 @@ async function bootstrap() {
 
   const config = app.get(ConfigService);
 
-  const corsOptions = {
-    origin: "http://localhost:3000",
-    credentials: true
-  };
+
 
   await app.listen(config.get('PORT') || 3000,() =>
   {
