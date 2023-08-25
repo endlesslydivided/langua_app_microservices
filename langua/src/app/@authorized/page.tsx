@@ -1,5 +1,5 @@
+import UserCard from "@/widgets/UserCard/UserCard";
 import { Metadata } from "next";
-import UserCard from "./components/UserCard/UserCard";
 
 export const metadata: Metadata = {
   title: "Langua",

@@ -8,6 +8,11 @@ const nextConfig = {
         protocol: "https",
         port: "",
       },
+      {
+        hostname: "random.imagecdn.app",
+        protocol: "https",
+        port: "",
+      },
     ],
   },
 };

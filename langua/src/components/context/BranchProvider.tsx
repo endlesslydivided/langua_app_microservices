@@ -1,6 +1,6 @@
 import useAuth from '@/share/hooks/useAuth';
 import React from 'react';
-import Loading from '../Loading/loading';
+import Loading from '../Loading/Loading';
 
 interface BranchProvdierProps
 {

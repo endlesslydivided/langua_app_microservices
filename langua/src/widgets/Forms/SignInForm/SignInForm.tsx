@@ -1,21 +1,24 @@
 'use client'
-import { FRONT_URI } from '@/consts/api';
-import { MessageType } from '@/consts/errorMessages';
-import { loginSchema } from '@/lib/validate';
+
+import { FRONT_URI } from '@/share/consts/api';
+import { MessageType } from '@/share/consts/errorMessages';
+import signIn from '@/share/fetch/auth/signIn';
+import useAuth from '@/share/hooks/useAuth';
+import { loginSchema } from '@/share/utils/validate';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { redirect, useRouter } from 'next/navigation';
-import React, { useContext, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { SignInForm } from '../../types';
-import signIn from '@/lib/auth/signIn';
-import { RedirectType } from 'next/dist/client/components/redirect';
-import { AuthContext } from '@/app/context/AuthProvider';
-import useAuth from '@/hooks/useAuth';
+
+export interface SignInForm {
+  email: string;
+  password: string;
+}
 
 const SignInForm = () => {
 

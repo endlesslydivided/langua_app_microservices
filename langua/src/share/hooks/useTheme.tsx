@@ -1,9 +1,9 @@
 import { AuthContext } from '@/components/context/AuthProvider';
 import React, { useContext } from 'react'
 
-const useAuth = () => {
+const useTheme = () => {
 
-    const context = useContext(AuthContext);
+    const context = useTheme(ThemeContext);
 
     if(!context)
     {

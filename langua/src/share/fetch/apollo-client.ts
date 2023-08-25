@@ -1,7 +1,6 @@
-import { GATEWAY_URI } from "@/consts/api";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { cookies } from "next/dist/client/components/headers";
+import { GATEWAY_URI } from "../consts/api";
 
 let client: ApolloClient<any> | null = null;
 

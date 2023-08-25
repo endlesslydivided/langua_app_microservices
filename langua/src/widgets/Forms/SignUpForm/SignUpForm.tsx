@@ -1,6 +1,5 @@
 'use client'
 
-import { SignUpForm } from '@/app/@auth/types';
 import { MessageType } from '@/share/consts/errorMessages';
 import signUp from '@/share/fetch/auth/signUp';
 import { registrationSchema } from '@/share/utils/validate';
@@ -13,6 +12,15 @@ import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'react-toastify';
+
+
+export interface SignUpForm {
+    email: string,
+    firstname: string,
+    surname: string,
+    password:string,
+    confirmPassword:string,
+}
 
 const SignUpForm = () => {
 

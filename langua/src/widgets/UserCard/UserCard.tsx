@@ -1,11 +1,12 @@
 'use client'
-import useUser from "@/hooks/useAuth";
-import findMeFetch from "@/lib/user/findMe";
 
-export default async function UserCard() {
+import useAuth from "@/share/hooks/useAuth";
 
 
-  const {user} = useUser();
+export default function UserCard() {
+
+
+  const {auth} = useAuth();
 
   
   // const { loading, error, data }: any = await findMeFetch();
@@ -28,7 +29,7 @@ export default async function UserCard() {
 
   return (
     <section className="flex flex-col gap-4">
-      {JSON.stringify(user)}
+      {JSON.stringify(auth)}
       <p className="text-2xl text-center">Page!</p>
     </section>
   );

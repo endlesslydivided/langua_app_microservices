@@ -23,7 +23,7 @@ export const initialFiltersState:Filters =
 const useFetch = ({fetch,errorCallback,params}:UseLoadingParams) => {
 
     const [loading,setLoading] = useState(false);
-    const [data,setData] = useState({});
+    const [data,setData] = useState<any[]>([]);
     
     const [filters,setFilters] = useState<Filters>(initialFiltersState);
     const [totalPages,setTotalPages] = useState<number>(0);
@@ -34,7 +34,7 @@ const useFetch = ({fetch,errorCallback,params}:UseLoadingParams) => {
         setLoading(true);
         fetch({...filters,...params}).then((result) =>
         {
-            setData(result);
+            setData([...result.rows]);
             setTotalPages(Math.ceil(result?.count / filters.limit) ?? 0);
             setCount(result?.count?? 0);
 

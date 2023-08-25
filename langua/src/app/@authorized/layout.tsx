@@ -1,13 +1,12 @@
 "use client"
-import signOut from '@/lib/auth/signOut';
+import useAuth from '@/share/hooks/useAuth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonIcon from '@mui/icons-material/Person';
-import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from "@mui/material";
+import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Tab, Tabs, Toolbar, Tooltip, Typography } from "@mui/material";
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import { AuthContext } from '../context/AuthProvider';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 
 export default  function AuthorizedLayout({
@@ -19,22 +18,26 @@ export default  function AuthorizedLayout({
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const router = useRouter();
-  const {logOut} = useContext(AuthContext);
+  const {logOut} = useAuth();
 
   const pages = [{
     key:  'Vocabulary',
+    path: '/vocabulary',
     handleOnClick: () => {
       router.push('/vocabulary')
     }
   },
   {
     key:  'Materials',
+    path: '/materials',
+
      handleOnClick: () => {
       router.push('/materials')
     }
   },
   {
     key:  'Stats',
+    path: '/stats',
      handleOnClick: () => {
       router.push('/stats')
     }
@@ -55,6 +58,9 @@ export default  function AuthorizedLayout({
   },
   ];
 
+  const [currentPage,setCurrentPage] = useState(pages.findIndex((i) => i.path === window.location.pathname));
+
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -73,7 +79,7 @@ export default  function AuthorizedLayout({
   
   return (
     <>
-      <AppBar position="static" className="rounded-b-lg">
+      <AppBar position="static">
         <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -150,15 +156,15 @@ export default  function AuthorizedLayout({
             LANGUA
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:'center' }}>
-            {pages.map((page) => (
-              <Button
-                key={page.key}
-                onClick={() => page.handleOnClick()}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.key}
-              </Button>
-            ))}
+          <Tabs value={currentPage} textColor="secondary"
+           sx={{'& .MuiTabs-indicator': {backgroundColor: (theme) => theme.palette.secondary.main,}}}>    
+              {pages.map((page,index) => (
+                <Tab
+                label={page.key}
+                onClick={page.handleOnClick} 
+                id={index.toString()}/>
+              ))}
+            </Tabs>
           </Box>
 
 
