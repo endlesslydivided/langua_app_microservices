@@ -78,13 +78,27 @@ export class UserRepository {
         createdAt: true,
         updatedAt: true,
         userContacts: {
+          id:true,
           phoneNumber: true,
           email: true,
         },
         userCredentials: {
+          id:true,
           nickname: true,
         },
       },
+    });
+  }
+
+  async findOneUserContactsById(id: string): Promise<UserContacts> {
+    return await this.userContactsRepository.findOne({
+      where: { id }
+    });
+  }
+
+  async findOneUserCredentialsById(id: string): Promise<UserCredentials> {
+    return await this.userCredentialsRepository.findOne({
+      where: { id }
     });
   }
 
@@ -117,6 +131,7 @@ export class UserRepository {
   async softDeleteUser(id: string): Promise<UpdateResult> {
     return await this.userRepository.softDelete(id);
   }
+
 
   async findManyAndCount(filters: PageFilters): Promise<[User[], number]> {
     return await this.userRepository.findAndCount({

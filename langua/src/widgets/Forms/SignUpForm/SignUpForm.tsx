@@ -7,7 +7,7 @@ import { registrationSchema } from '@/share/utils/validate';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Button, Grid, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -66,7 +66,7 @@ const SignUpForm = () => {
     });
 
     return (
-        <form className="flex flex-col col-span-2 gap-4" onSubmit={formik.handleSubmit}>
+        <form className="flex flex-col gap-5" onSubmit={formik.handleSubmit}>
 
             <TextField 
                 error={!!formik.errors.email && !!formik.touched.email }
@@ -74,7 +74,7 @@ const SignUpForm = () => {
                 {...formik.getFieldProps('email')}
                 type="text"
                 name="email"
-                placeholder="Email"
+                label="Email"
                 InputProps={{
                 endAdornment: <InputAdornment position="end">
                                 <AlternateEmailIcon/>
@@ -84,29 +84,34 @@ const SignUpForm = () => {
             ></TextField>
            
 
-            <div className="grid grid-cols-2 gap-5">
+            <Stack direction="row" spacing={2}>
+                    <TextField 
+                        fullWidth={true}
+                        error={!!formik.errors.firstname && !!formik.touched.firstname }
+                        helperText={formik.errors.firstname && formik.touched.firstname ? formik.errors.firstname : ''}
+                        {...formik.getFieldProps('firstname')}
+                        type="text"
+                        name="firstname"
+                        label="Firstname"
+                    ></TextField>
 
-                <TextField 
-                    error={!!formik.errors.firstname && !!formik.touched.firstname }
-                    helperText={formik.errors.firstname && formik.touched.firstname ? formik.errors.firstname : ''}
-                    {...formik.getFieldProps('firstname')}
-                    type="text"
-                    name="firstname"
-                    placeholder="Firstname"
-                ></TextField>
-                <TextField 
-                    error={!!formik.errors.surname && !!formik.touched.surname }
-                    helperText={formik.errors.surname && formik.touched.surname ? formik.errors.surname : ''}
-                    {...formik.getFieldProps('surname')}
-                    type="text"
-                    name="surname"
-                    placeholder="Surname"
-                ></TextField>
-            </div>
+                    <TextField 
+                        fullWidth={true}
+                        error={!!formik.errors.surname && !!formik.touched.surname }
+                        helperText={formik.errors.surname && formik.touched.surname ? formik.errors.surname : ''}
+                        {...formik.getFieldProps('surname')}
+                        type="text"
+                        name="surname"
+                        label="Surname"
+                    ></TextField>
+
+
+            </Stack>
 
           
-            <div className="grid grid-cols-2 gap-5">
+            <Stack direction="row" spacing={2}>
                 <TextField 
+                    fullWidth={true}
                     error={!!formik.errors.password && !!formik.touched.password }
                     helperText={formik.errors.password && formik.touched.password ? formik.errors.password : ''}
                     {...formik.getFieldProps('password')}
@@ -128,9 +133,9 @@ const SignUpForm = () => {
                     
                     label="Password"
                     name="password"
-                    placeholder="Password"       
                 />
                 <TextField 
+                    fullWidth={true}
                     error={!!formik.errors.confirmPassword && !!formik.touched.confirmPassword }
                     helperText={formik.errors.confirmPassword && formik.touched.confirmPassword ? formik.errors.confirmPassword : ''}
                     {...formik.getFieldProps('confirmPassword')}
@@ -152,13 +157,12 @@ const SignUpForm = () => {
                     
                     label="Confirm password"
                     name="confirmPassword"
-                    placeholder="Confrim password"       
                 />
-            </div>
+            </Stack>
 
             <Button 
             type="submit"
-            className="p-3 rounded-lg !bg-gradient-to-r !from-purple-500 !to-violet-500"
+            size='large'
             variant="contained"
             color='secondary'>
                 Register

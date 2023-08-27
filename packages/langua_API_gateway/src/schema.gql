@@ -68,6 +68,7 @@ type Mutation {
   signOut: SignOutResponse!
   signUp(signUp: SignUpInput!): SignUpResponse!
   updateMaterialToVocabulary(updateMaterialToVocabulary: UpdateMaterialToVocabularyInput!): Void!
+  updateUser(updateUser: UpdateUserInput!): UpdateUserReponse!
   updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): Void!
 }
 
@@ -175,6 +176,24 @@ input UpdateMaterialToVocabularyInput {
   id: String!
   isFinished: Boolean!
   userId: String!
+}
+
+input UpdateUserInput {
+  birthday: String
+  city: String
+  country: String
+  firstname: String
+  id: String!
+  nativeLanguage: String
+  nickname: String
+  password: String
+  phoneNumber: String
+  sex: String
+  surname: String
+}
+
+type UpdateUserReponse {
+  status: String!
 }
 
 input UpdateWordToVocabularyInput {

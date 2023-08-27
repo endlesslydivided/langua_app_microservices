@@ -5,6 +5,7 @@ import { auth, AUTH_SERVICE_NAME } from '../auth.pb';
 import {
   FindManyUsersRequestDto,
   FindUserByIdRequestDto,
+  UpdateUserDto,
 } from '../dto/user.dto';
 import { UserService } from '../service/user.service';
 
@@ -28,5 +29,12 @@ export class UserController {
     payload: FindUserByIdRequestDto,
   ): Promise<auth.FindUserByIdResponse> {
     return this.service.findOneById(payload);
+  }
+
+  @GrpcMethod(AUTH_SERVICE_NAME, 'UpdateUser')
+  private updateUser(
+    payload: UpdateUserDto,
+  ): Promise<auth.UpdateUserResponse> {
+    return this.service.updateUser(payload);
   }
 }

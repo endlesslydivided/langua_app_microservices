@@ -1,5 +1,6 @@
 'use client'
 
+import { User } from "@/model/user";
 import signOutFetch from "@/share/fetch/auth/signOut";
 import findMe from "@/share/fetch/user/findMe";
 import { createContext, useEffect, useState } from "react";
@@ -9,7 +10,7 @@ interface AuthContext
 {
   auth: {
     isAuthenticated: boolean,
-    user: object | null,
+    user: User | null,
     loading: boolean
   },
   fetchUser: ()  => void,

@@ -1,11 +1,12 @@
-import { Args, Context, GraphQLExecutionContext, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, GraphQLExecutionContext, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { BadRequestException, HttpStatus, UseGuards } from '@nestjs/common';
 import { GraphQLString } from 'graphql';
 import { AuthGuard } from '../../auth/guard/auth.guard';
 import { FindManyUsersArgs } from '../args/user.args';
-import { PaginatedUser, User } from '../model/user.model';
+import { PaginatedUser, UpdateUserReponse, User } from '../model/user.model';
 import { UserService } from '../service/user.service';
+import { UpdateUserInput } from '../inputs/user.inputs';
 
 @Resolver((of) => User)
 export class UserResolver {
@@ -55,6 +56,26 @@ export class UserResolver {
     }
 
     return result.data;
+  }
+
+  @Mutation((returns) => UpdateUserReponse,{name:'updateUser'})
+  async updateUser(@Args('updateUser') input: UpdateUserInput) {
+    try
+    {
+      const result = await this.userService.updateUser(input);
+
+      if(result.status !== HttpStatus.OK && result.status !== HttpStatus.CREATED)
+      {
+        throw new BadRequestException(result.error)
+      }
+      
+      return result;
+    }
+    catch(error)
+    {
+      throw new BadRequestException();
+    }
+   
   }
 
 }

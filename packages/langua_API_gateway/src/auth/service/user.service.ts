@@ -24,4 +24,8 @@ export class UserService {
   public async findManyUsers(data: auth.FindManyUsersRequest): Promise<auth.FindManyUsersResponse> {
     return firstValueFrom(this.userServiceClient.findManyUsers(data));
   }
+
+  public async updateUser(data: auth.UpdateUserRequest): Promise<auth.UpdateUserResponse> {
+    return firstValueFrom(this.userServiceClient.updateUser(data));
+  }
 }

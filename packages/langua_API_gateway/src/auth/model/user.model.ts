@@ -58,7 +58,11 @@ export class User extends IdentifiedModel {
 
 }
 
-
+@ObjectType()
+export class UpdateUserReponse{
+    @Field((type) => GraphQLString, { nullable: false })
+    status: string;
+}
 
 
 @ObjectType()

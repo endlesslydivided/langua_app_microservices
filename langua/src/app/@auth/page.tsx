@@ -1,9 +1,7 @@
-"use client";
-
+import { SignInForm } from "@/widgets/Forms/SignInForm";
+import { Metadata } from "next";
 import Link from "next/link";
 import AuthLayout from "./layout";
-import { Metadata } from "next";
-import { SignInForm } from "@/widgets/Forms/SignInForm";
 
 export const metadata: Metadata = {
   title: "Langua | Auth",
@@ -13,6 +11,7 @@ export default function SignInPage(props: any) {
  
 
   return (
+
     <AuthLayout>
       <section className="w-3/4 mx-auto flex flex-col gap-10">
         <div className="title">

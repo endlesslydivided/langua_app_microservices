@@ -47,6 +47,11 @@ export const baseFetch = async (fetch:BaseFetchParams) =>
             return fetchData;
         }
 
+        if(errors)
+        {
+            throw errors;
+        }
+
         return data;
     }
     catch(error: any)
@@ -58,8 +63,8 @@ export const baseFetch = async (fetch:BaseFetchParams) =>
         const reason = 
         error?.graphQLErrors?.[0]?.message ?? 
         error?.clienErrors?.[0]?.message ?? 
-        error?.networkError?.result.errors?.[0]?.message ??
-        error[0].message;
+        error?.networkError?.result?.errors?.[0]?.message ??
+        error?.[0]?.message;
 
         throw new InternalServerErrorException({
             message:'Some error occured on server',
@@ -74,7 +79,8 @@ const apolloFetch = async ({query,mutation,variables}: BaseFetchParams) =>
         const result = await getClient().query<any,any>({
             query,
             variables: variables ?? {},
-            errorPolicy: "all"
+            errorPolicy: "all",
+            fetchPolicy: "no-cache",
         });
 
         return result;
@@ -85,7 +91,8 @@ const apolloFetch = async ({query,mutation,variables}: BaseFetchParams) =>
         const result = await getClient().mutate<any,any>({
             mutation,
             variables: variables ?? {},
-            errorPolicy: "all"
+            errorPolicy: "all",
+            fetchPolicy: "no-cache",
 
         });
         return result;

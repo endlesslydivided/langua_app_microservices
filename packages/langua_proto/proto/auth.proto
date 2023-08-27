@@ -8,6 +8,7 @@ service AuthService {
   rpc Validate (ValidateRequest) returns (ValidateResponse) {}
   rpc Refresh (RefreshRequest) returns (RefreshResponse) {}
 
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {}
   rpc FindUserById (FindUserByIdRequest) returns (FindUserByIdResponse) {}
   rpc FindManyUsers (FindManyUsersRequest) returns (FindManyUsersResponse) {}
 }
@@ -129,4 +130,25 @@ message FindManyUsersResponse {
   int32 status = 1;
   repeated string error = 2;
   FindManyUsersData data = 3;
+}
+
+//| UpdateUser
+
+message UpdateUserRequest {
+  string id = 1;
+  string password = 2;
+  string firstname = 3;
+  string surname = 4;
+  string sex = 5;
+  string birthday = 6;
+  string country = 7;
+  string city = 8;
+  string native_language = 9;
+  string nickname = 10;
+  string phone_number = 11;
+}
+
+message UpdateUserResponse {
+  int32 status = 1;
+  repeated string error = 2;
 }

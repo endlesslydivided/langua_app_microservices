@@ -41,7 +41,7 @@ const findMe = async () =>
           query:FIND_ME
       });
 
-      const user = data.findMe;
+      const user = data?.findMe;
 
       return user;
   }

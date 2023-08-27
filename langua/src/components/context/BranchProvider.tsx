@@ -5,16 +5,27 @@ import Loading from '../Loading/Loading';
 interface BranchProvdierProps
 {
   auth: React.ReactNode,
-  authorized: React.ReactNode
+  authorized: React.ReactNode,
+  finish: React.ReactNode,
+
 }
 
-const BranchProvdier:React.FC<BranchProvdierProps> = ({auth,authorized}) => 
+const BranchProvdier:React.FC<BranchProvdierProps> = ({auth,authorized,finish}) => 
 {
-  const {auth: user} = useAuth();
+  const {auth: profile} = useAuth();
 
-  return (
-     user.loading ? <Loading/> : user.isAuthenticated ? authorized : auth 
-  )
+
+  if(profile.loading)
+  {
+    return <Loading/>
+  }
+
+  if(profile.isAuthenticated)
+  {
+    return profile.user?.nativeLanguage ? authorized : finish
+  }
+
+  return auth;
 }
 
 export default BranchProvdier

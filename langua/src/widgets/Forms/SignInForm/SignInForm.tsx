@@ -75,7 +75,7 @@ const SignInForm = () => {
             {...formik.getFieldProps('email')}
             type="email"
             name="email"
-            placeholder="Email"
+            label="Email"
             
             InputProps={{
             endAdornment: <InputAdornment position="end">
@@ -107,11 +107,10 @@ const SignInForm = () => {
             
             label="Password"
             name="password"
-            placeholder="Password"       
             />
           
             <LoadingButton 
-            className="p-3 rounded-lg !bg-gradient-to-r !from-purple-500 !to-violet-500"
+            size='large'
             variant="contained"
             loading={loading}
             type="submit"

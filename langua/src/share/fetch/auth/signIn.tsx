@@ -1,6 +1,6 @@
-import { SignInForm } from "@/app/@auth/types";
 import { gql } from "@apollo/client";
 import { getClient } from "../apollo-client";
+import { SignInForm } from "@/widgets/Forms/SignInForm/SignInForm";
 const SIGN_IN = gql`
   mutation SignIn($signIn: SignInInput!) {
     signIn(signIn: $signIn) {
@@ -27,7 +27,7 @@ const signIn = async (body:SignInForm) =>
         throw new Error(error)
     })
       
-    const tokens = data.signIn;
+    const tokens = data?.signIn;
     
     return tokens;
   }

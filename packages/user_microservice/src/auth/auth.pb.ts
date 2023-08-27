@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { Metadata } from '@grpc/grpc-js';
 
 export const AUTH_SERVICE_NAME = 'AuthService'
+export const AUTH_PACKAGE_NAME = 'auth'
 
 export namespace auth {
     export interface AuthService {
@@ -28,7 +29,12 @@ export namespace auth {
             data: RefreshRequest,
             metadata?: Metadata,
             ...rest: any[]
-        ): Observable<RefreshResponse>;
+        ): Observable<RefreshResponse>;      
+        updateUser(
+            data: UpdateUserRequest,
+            metadata?: Metadata,
+            ...rest: any[]
+        ): Observable<UpdateUserResponse>;
         findUserById(
             data: FindUserByIdRequest,
             metadata?: Metadata,
@@ -126,6 +132,25 @@ export namespace auth {
         status?: number;
         error?: string[];
         data?: auth.FindManyUsersData;
+    }
+
+
+    export interface UpdateUserRequest {
+        id?: string;
+        password?: string;
+        firstname?: string;
+        surname?: string;
+        sex?: string;
+        birthday?: string;
+        country?: string;
+        city?: string;
+        nativeLanguage?: string;
+        nickname?: string;
+        phoneNumber?: string;
+    }
+    export interface UpdateUserResponse {
+        status?: number;
+        error?: string[];
     }
 }
 
