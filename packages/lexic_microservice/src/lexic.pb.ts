@@ -75,7 +75,9 @@ export namespace lexic {
   export interface CreateWordRequest {
     word?: string;
     transcription?: string;
-    language?: string;
+    translation?: string;
+    language?:string;
+    nativeWordLanguage?:string;
     lexicCategoryId?: string;
   }
   export interface CreateWordResponse {
@@ -97,7 +99,9 @@ export namespace lexic {
       id?: string;
       word?: string;
       transcription?: string;
-      language?: string;
+      translation?: string;
+      language?:string;
+      nativeWordLanguage?:string;
       lexicCategories?: Word.LexicCategory[];
       wordToVocabulary?: Word.WordToVocabulary[];
     }
@@ -106,6 +110,8 @@ export namespace lexic {
         id?: string;
         categoryName?: string;
         creatorUserId?: string;
+        language?:string;
+        nativeCategoryLanguage?:string;
       }
       export interface WordToVocabulary {
         id?: string;
@@ -167,6 +173,8 @@ export namespace lexic {
   export interface CreateLexicCategoryRequest {
     categoryName?: string;
     creatorUserId?: string;
+    language?:string;
+    nativeCategoryLanguage?:string;
   }
   export interface CreateLexicCategoryResponse {
     status?: number;
@@ -183,11 +191,15 @@ export namespace lexic {
       id?: string;
       categoryName?: string;
       creatorUserId?: string;
+      language?:string;
+      nativeCategoryLanguage?:string;
     }
   }
   export interface FindManyLexicCategoriesByCreatorIdRequest {
     creatorId?: string;
     pageFilters?: lexic.PageFilters;
+    language?:string;
+    nativeCategoryLanguage?:string;
   }
   export interface FindManyLexicCategoriesByCreatorIdResponse {
     status?: number;
@@ -204,10 +216,14 @@ export namespace lexic {
         id?: string;
         categoryName?: string;
         creatorUserId?: string;
+        language?:string;
+        nativeCategoryLanguage?:string;
       }
     }
     export interface FindManyLexicCategoriesRequest {
       pageFilters?: lexic.PageFilters;
+      language?:string;
+      nativeCategoryLanguage?:string;
     }
     export interface FindManyLexicCategoriesResponse {
       status?: number;

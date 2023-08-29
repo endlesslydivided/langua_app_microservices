@@ -15,7 +15,13 @@ export class Word extends IdentifiedModel {
   transcription: string;
 
   @Field((type) => GraphQLString, { nullable: true })
+  translation: string;
+
+  @Field((type) => GraphQLString, { nullable: true })
   language: string;
+
+  @Field((type) => GraphQLString, { nullable: true })
+  nativeWordLanguage: string;
 
   @Field((type) => [WordToVocabulary],{ nullable: true })
   wordToVocabulary?: WordToVocabulary[];

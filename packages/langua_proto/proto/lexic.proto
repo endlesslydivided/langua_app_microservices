@@ -31,7 +31,9 @@ message CreateWordRequest{
     string word = 1;
     optional string transcription = 2;
     string language = 3;
-    optional string lexic_category_id = 4;
+    string translation = 4;
+    string native_word_language = 5;
+    optional string lexic_category_id = 6;
 }
 
 message CreateWordResponse {
@@ -62,8 +64,10 @@ message FindOneWordByIdResponse {
         string word = 2;
         optional string transcription = 3;
         string language = 4;
-        repeated LexicCategory lexic_categories = 5; 
-        repeated WordToVocabulary word_to_vocabulary = 6;
+        string translation = 5;
+        string native_word_language = 6;
+        repeated LexicCategory lexic_categories = 7; 
+        repeated WordToVocabulary word_to_vocabulary = 8;
     }
     int32 status = 1;
     repeated string error = 2;
@@ -136,6 +140,8 @@ message UpdateWordToVocabularyResponse {
 message CreateLexicCategoryRequest{
     string category_name = 1;
     string creator_user_id = 2;
+    string language = 3;
+    string native_category_language = 4;
 }
 
 message CreateLexicCategoryResponse {
@@ -150,6 +156,8 @@ message FindManyLexicCategoriesByCreatorIdData{
         string id = 1;
         string category_name = 2;
         string creator_user_id = 3;
+        string language = 4;
+        string native_category_language = 5;
     }
     int32 count = 1;
     repeated LexicCategory rows = 2;  
@@ -158,6 +166,9 @@ message FindManyLexicCategoriesByCreatorIdData{
 message FindManyLexicCategoriesByCreatorIdRequest{
     string creator_id = 1;
     PageFilters page_filters = 2;
+    string language = 3;
+    string native_category_language = 4;
+
 }
 
 message FindManyLexicCategoriesByCreatorIdResponse {
@@ -172,13 +183,17 @@ message FindManyLexicCategoriesData{
         string id = 1;
         string category_name = 2;
         string creator_user_id = 3;
+        string language = 4;
+        string native_category_language = 5;
     }
     int32 count = 1;
     repeated LexicCategory rows = 2;  
 }
 
 message FindManyLexicCategoriesRequest{
-    PageFilters page_filters = 2;
+    string language = 1;
+    string native_category_language = 2;
+    PageFilters page_filters = 3;
 }
 
 message FindManyLexicCategoriesResponse {

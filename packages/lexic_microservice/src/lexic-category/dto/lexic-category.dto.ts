@@ -22,6 +22,12 @@ export class CreateLexicCategoryRequestDto
 
   @IsString()
   public readonly creatorUserId: string;
+
+  @IsString()
+  public readonly language: string;
+  
+  @IsString()
+  public readonly nativeCategoryLanguage: string;
 }
 
 export class FindManyLexicCategoriesByCreatorIdRequestDto
@@ -29,6 +35,12 @@ export class FindManyLexicCategoriesByCreatorIdRequestDto
 {
   @IsString()
   public readonly creatorId: string;
+
+  @IsString()
+  public readonly language: string;
+  
+  @IsString()
+  public readonly nativeCategoryLanguage: string;
 
   @IsDefined()
   @IsNotEmptyObject()
@@ -41,6 +53,13 @@ export class FindManyLexicCategoriesByCreatorIdRequestDto
 export class FindManyLexicCategoriesRequestDto
   implements lexic.FindManyLexicCategoriesRequest
 {
+
+  @IsString()
+  public readonly language: string;
+  
+  @IsString()
+  public readonly nativeCategoryLanguage: string;
+  
   @IsDefined()
   @IsNotEmptyObject()
   @IsObject()

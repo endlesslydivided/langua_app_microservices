@@ -27,8 +27,10 @@ export class LexicCategoryResolver {
   @Query((type) => PaginatedLexicCategory, { name: `findManyLexicCategoriesByCreatorId` })
   @UseGuards(AuthGuard)
   async findManyLexicCategoriesByCreatorId(@Args() args: FindManyLexicCategoriesByCreatorIdArgs) {
-    const { creatorId, page, limit } = args;
+    const { creatorId, page, limit,language,nativeCategoryLanguage  } = args;
     const data = {
+      language,
+      nativeCategoryLanguage,
       creatorId,
       pageFilters: {
         page,
@@ -49,8 +51,10 @@ export class LexicCategoryResolver {
   @Query((type) => PaginatedLexicCategory, { name: `findManyLexicCategories` })
   @UseGuards(AuthGuard)
   async findManyLexicCategories(@Args() args: FindManyLexicCategories) {
-    const { page, limit } = args;
+    const { page, limit,language,nativeCategoryLanguage } = args;
     const data = {
+      language,
+      nativeCategoryLanguage,
       pageFilters: {
         page,
         limit,

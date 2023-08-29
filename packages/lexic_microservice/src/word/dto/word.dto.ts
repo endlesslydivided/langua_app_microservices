@@ -29,6 +29,12 @@ export class CreateWordRequestDto implements lexic.CreateWordRequest {
   public readonly language: string;
 
   @IsString()
+  public readonly nativeWordLanguage: string;
+
+  @IsString()
+  public readonly translation: string;
+
+  @IsString()
   public readonly lexicCategoryId: string;
 }
 

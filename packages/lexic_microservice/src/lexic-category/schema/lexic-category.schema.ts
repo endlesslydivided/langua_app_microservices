@@ -10,6 +10,12 @@ export class LexicCategory {
 
   @Prop()
   creatorUserId: string;
+
+  @Prop()
+  language: string;
+
+  @Prop()
+  nativeCategoryLanguage: string;
 }
 
 export const LexicCategorySchema = SchemaFactory.createForClass(LexicCategory);

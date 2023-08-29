@@ -16,7 +16,7 @@ type Filters = {
 
 export const initialFiltersState:Filters = 
 {
-    page: 0,
+    page: 1,
     limit: 10
 }
 
@@ -29,10 +29,10 @@ const useFetch = ({fetch,errorCallback,params}:UseLoadingParams) => {
     const [totalPages,setTotalPages] = useState<number>(0);
     const [count,setCount] = useState<number>(0);
 
-    useEffect(() =>
+    const initFetch = () =>
     {
         setLoading(true);
-        fetch({...filters,...params}).then((result) =>
+        fetch({...filters,page:filters.page - 1,...params}).then((result) =>
         {
             setData([...result.rows]);
             setTotalPages(Math.ceil(result?.count / filters.limit) ?? 0);
@@ -44,15 +44,27 @@ const useFetch = ({fetch,errorCallback,params}:UseLoadingParams) => {
             {
                 errorCallback(error);
             }
-            toast(error.message,{autoClose:5000,type:'success'});
+            toast(error.reason,{autoClose:5000,type:'error'});
         })
         .finally(() => {
             setLoading(false);
         });
+    }
+
+    useEffect(() =>
+    {
+        initFetch();
     },[filters])
 
 
-    return {loading,data,setData,filters,setFilters,totalPages,count};
+    return {
+        loading,
+        data,setData,
+        filters,setFilters,
+        totalPages,
+        count,
+        initFetch
+    };
 }
 
 export default useFetch;

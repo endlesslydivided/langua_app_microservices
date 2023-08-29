@@ -26,9 +26,11 @@ export class LexicCategoryRepository {
 
   async findManyAndCountByCreatorId(
     creatorUserId: string,
+    language: string,
+    nativeCategoryLanguage: string,
     filters: PageFilters,
   ): Promise<[LexicCategoryDocument[], number]> {
-    const clause = { creatorUserId };
+    const clause = { creatorUserId,nativeCategoryLanguage,language };
 
     const lexicCategories = await this.lexicCategoryModel
       .find(
@@ -47,13 +49,17 @@ export class LexicCategoryRepository {
   }
 
   async findManyAndCount(
+    language: string,
+    nativeCategoryLanguage: string,
     filters: PageFilters,
   ): Promise<[LexicCategoryDocument[], number]> {
+
+    const clause = { nativeCategoryLanguage,language };
 
 
     const lexicCategories = await this.lexicCategoryModel
       .find(
-        {},{},
+        clause,{},
         {
           skip: filters.limit * filters.page,
           limit: filters.limit,
@@ -61,7 +67,7 @@ export class LexicCategoryRepository {
       )
       .exec();
 
-    const count = await this.lexicCategoryModel.count().exec();
+    const count = await this.lexicCategoryModel.count(clause).exec();
 
     return [lexicCategories, count];
   }

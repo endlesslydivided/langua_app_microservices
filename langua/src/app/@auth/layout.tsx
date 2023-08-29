@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 import bg from "@/assets/abstractBG/blackWhiteLines.gif";
-import { Metadata } from "next";
 
 
 export default function AuthLayout({

@@ -1,7 +1,7 @@
 
 import Link from "next/link";
 import { Metadata } from "next";
-import { SignUpForm } from "@/widgets/Forms/SignUpForm";
+import SignUpForm from "@/modules/auth/widgets/Forms/SignUpForm";
 
 export const metadata: Metadata = {
   title: "Langua | Auth",

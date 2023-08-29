@@ -32,6 +32,8 @@ export class LexicCategoryService {
   ): Promise<lexic.FindManyVocabulariesByUserIdResponse> {
     const data = await this.lexicCategoryRepository.findManyAndCountByCreatorId(
       dto.creatorId,
+      dto.language,
+      dto.nativeCategoryLanguage,
       dto.pageFilters,
     );
     return {
@@ -48,6 +50,8 @@ export class LexicCategoryService {
     dto: FindManyLexicCategoriesRequestDto,
   ): Promise<lexic.FindManyVocabulariesByUserIdResponse> {
     const data = await this.lexicCategoryRepository.findManyAndCount(
+      dto.language,
+      dto.nativeCategoryLanguage,
       dto.pageFilters,
     );
     return {

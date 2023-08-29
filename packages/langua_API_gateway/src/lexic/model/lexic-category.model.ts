@@ -12,6 +12,12 @@ export class LexicCategory extends IdentifiedModel {
   @Field((type) => GraphQLString, { nullable: true })
   creatorUserId: string;
 
+  @Field((type) => GraphQLString, { nullable: false })
+  language: string;
+
+  @Field((type) => GraphQLString, { nullable: false })
+  nativeCategoryLanguage: string;
+
 }
 
 @ObjectType()

@@ -1,4 +1,4 @@
-import UserCard from "@/widgets/UserCard/UserCard";
+import UserCard from "@/modules/auth/widgets/Cards/UserCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export default function Page(){
 
   return (
 
-      <section className="flex flex-col gap-6">
+      <section className="">
         <UserCard/>
       </section>
   );

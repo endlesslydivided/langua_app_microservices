@@ -5,6 +5,8 @@
 input CreateLexicCategoryInput {
   categoryName: String!
   creatorUserId: String!
+  language: String!
+  nativeCategoryLanguage: String!
 }
 
 input CreateMaterialInput {
@@ -28,7 +30,9 @@ input CreateVocabularyInput {
 input CreateWordInput {
   language: String!
   lexicCategoryId: String!
+  nativeWordLanguage: String!
   transcription: String!
+  translation: String!
   word: String!
 }
 
@@ -42,6 +46,8 @@ type LexicCategory {
   createdAt: Timestamp
   creatorUserId: String
   id: ID
+  language: String!
+  nativeCategoryLanguage: String!
   updatedAt: Timestamp
 }
 
@@ -114,8 +120,8 @@ type PaginatedWord {
 }
 
 type Query {
-  findManyLexicCategories(limit: Int! = 10, page: Int! = 0): PaginatedLexicCategory!
-  findManyLexicCategoriesByCreatorId(creatorId: String!, limit: Int! = 10, page: Int! = 0): PaginatedLexicCategory!
+  findManyLexicCategories(language: String!, limit: Int! = 10, nativeCategoryLanguage: String!, page: Int! = 0): PaginatedLexicCategory!
+  findManyLexicCategoriesByCreatorId(creatorId: String!, language: String!, limit: Int! = 10, nativeCategoryLanguage: String!, page: Int! = 0): PaginatedLexicCategory!
   findManyMaterialsByCreatorId(creatorId: String!, limit: Int! = 10, page: Int! = 0): PaginatedMaterial!
   findManyMaterialsByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedMaterial!
   findManyUsers(limit: Int! = 10, page: Int! = 0): PaginatedUser!
@@ -261,7 +267,9 @@ type Word {
   id: ID
   language: String
   lexicCategories: [LexicCategory!]
+  nativeWordLanguage: String
   transcription: String
+  translation: String
   updatedAt: Timestamp
   word: String
   wordToVocabulary: [WordToVocabulary!]

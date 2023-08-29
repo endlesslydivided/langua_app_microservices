@@ -1,16 +1,16 @@
-import { AuthContext } from '@/components/context/AuthProvider';
-import React, { useContext } from 'react'
+import { useTheme } from "@mui/material";
 
-const useTheme = () => {
 
-    const context = useTheme(ThemeContext);
+const useMUITheme = () => {
+
+    const context = useTheme();
 
     if(!context)
     {
-        throw Error('Auth context is null')
+        throw Error('Theme context is null')
     }
 
     return context;
 }
 
-export default useAuth
+export default useTheme

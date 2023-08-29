@@ -15,7 +15,13 @@ export class Word {
   transcription: string;
 
   @Prop()
+  translation: string;
+
+  @Prop()
   language: string;
+
+  @Prop()
+  nativeWordLanguage: string;
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'LexicCategories' })
   lexicCategories: LexicCategory[];
