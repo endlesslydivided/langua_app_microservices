@@ -9,9 +9,6 @@ export interface AllCategoriesPageProps {}
 
 export default function AllCategoriesPage(props: AllCategoriesPageProps) {
  
-  
-  
-
   return (
         <AllLexicCategoriesCard/>
   );

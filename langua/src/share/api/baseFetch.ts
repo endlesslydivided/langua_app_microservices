@@ -61,9 +61,10 @@ export const baseFetch = async (fetch:BaseFetchParams) =>
             throw error;
         }
         const reason = 
-        error?.graphQLErrors?.[0]?.message ?? 
-        error?.clienErrors?.[0]?.message ?? 
-        error?.networkError?.result?.errors?.[0]?.message ??
+        error?.[0]?.extensions?.originalError?.message?.[0] ??
+        error.graphQLErrors?.[0]?.message ?? 
+        error.clienErrors?.[0]?.message ?? 
+        error.networkError?.result?.errors?.[0]?.message ??
         error?.[0]?.message;
 
         throw new InternalServerErrorException({

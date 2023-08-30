@@ -1,4 +1,4 @@
-import VocabulariesChoiceCard from "@/modules/auth/widgets/Cards/VocabulariesChoiceCard";
+import VocabulariesChoiceCard from "@/modules/vocabularies/widgets/Cards/VocabulariesChoiceCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

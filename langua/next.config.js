@@ -2,18 +2,7 @@
 
 const nextConfig = {
   images: {
-    remotePatterns: [
-      {
-        hostname: "lh3.googleusercontent.com",
-        protocol: "https",
-        port: "",
-      },
-      {
-        hostname: "random.imagecdn.app",
-        protocol: "https",
-        port: "",
-      },
-    ],
+    domains:['flagcdn.com']
   },
 };
 

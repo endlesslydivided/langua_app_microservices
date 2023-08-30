@@ -1,10 +1,11 @@
 import useAuth from '@/share/hooks/useAuth';
 import { ExitToApp, Person } from '@mui/icons-material';
-import { Box, Divider, IconButton, ListItemIcon, MenuItem, Popover, Stack, Theme, Typography } from '@mui/material';
+import { Avatar, Box, Divider, IconButton, ListItemIcon, MenuItem, Popover, Stack, Theme, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { identicon } from '@/share/utils/createIdenticon';
 
 
 export default function AccountPopover() {
@@ -48,7 +49,7 @@ export default function AccountPopover() {
                 onClick={handleOpen}
                 sx={{p: 0, ...iconButtonSx}}
             >
-                <AccountBoxIcon/>
+                <Avatar src={identicon(user.user?.userContacts?.email)}alt="photoURL"/>
             </IconButton>
 
             <Popover open={Boolean(open)} anchorEl={open} onClose={handleClose}

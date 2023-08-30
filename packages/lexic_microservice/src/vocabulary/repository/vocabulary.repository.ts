@@ -9,14 +9,22 @@ import { Vocabulary, VocabularyDocument } from '../schema/vocabulary.schema';
 @Injectable()
 export class VocabularyRepository {
 
-  constructor( @InjectModel(Vocabulary.name) private vocabularyModel: Model<Vocabulary>){
+  constructor(@InjectModel(Vocabulary.name) private vocabularyModel: Model<Vocabulary>){
     
   }
 
 
   async create(dto: CreateVocabularyRequestDto): Promise<VocabularyDocument> {
-    const vocabulary = new this.vocabularyModel(dto);
-    return vocabulary.save();
+
+    let vocabulary = await this.vocabularyModel.findOne({userId:dto.userId,language:dto.language,vocabularyNativeLanguage:dto.vocabularyNativeLanguage});
+
+    if(vocabulary)
+    {
+      return vocabulary;
+    }
+
+    let newVocabulary = new this.vocabularyModel(dto);
+    return newVocabulary.save();
   }
 
   async findOneById(id: string): Promise<VocabularyDocument> {

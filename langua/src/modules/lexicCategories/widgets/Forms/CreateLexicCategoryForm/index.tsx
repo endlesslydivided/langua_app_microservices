@@ -37,9 +37,9 @@ const CreateLexicCategoryForm:React.FC<CreateLexicCategoryProps> = ({creationCal
             const data = await createLexicCategory(values);
             creationCallback();
         }
-        catch(error)
+        catch(error:any)
         {
-            toast(MessageType.SERVER_ERROR, {autoClose: 10000, type: "error" });
+            toast(error.reason ?? MessageType.SERVER_ERROR, {autoClose: 10000, type: "error" });
         }
 
     };
@@ -67,7 +67,7 @@ const CreateLexicCategoryForm:React.FC<CreateLexicCategoryProps> = ({creationCal
                 type="text"
                 name="categoryName"
                 label="Category name"
-            
+                
             ></TextField>
         
         <Button 

@@ -6,6 +6,7 @@ import {FC} from 'react';
 import AccountPopover from './AccountPopover';
 import {Menu} from '@mui/icons-material';
 import { bgBlur, darkGlass, whiteGlass } from '@/share/utils/cssStyles';
+import CurrentLanguagePopover from './CurrentLanguagePopover';
 
 
 const NAV_WIDTH = 280;
@@ -13,7 +14,7 @@ const HEADER_MOBILE = 64;
 const HEADER_DESKTOP = 64;
 
 export const StyledRoot = styled(AppBar)(({theme}) => ({
-    ...bgBlur({color: theme.palette.primary.light,opacity:0.6,blur:10}),
+    ...bgBlur({color: theme.palette.primary.light,opacity:0.9,blur:5}),
     ...darkGlass,
     borderRadius:'0px 0px 30px 0px',
     [theme.breakpoints.up('lg')]:
@@ -43,11 +44,13 @@ const Header: FC<IHeaderProps> = ({onOpenNav}) => {
                 <IconButton onClick={onOpenNav} sx={{mr: 1, color: 'text.primary', display: {lg: 'none'}}}>
                     <Menu/>
                 </IconButton>
+                <Stack direction="row" alignItems="center" spacing={{xs: 0.5, sm: 1}}>
+                    <CurrentLanguagePopover/>
+                </Stack>
 
                 <Box sx={{flexGrow: 1}}/>
 
                 <Stack direction="row" alignItems="center" spacing={{xs: 0.5, sm: 1}}>
-                    {/* <NotificationsPopover /> */}
                     <AccountPopover/>
                 </Stack>
             </StyledToolbar>

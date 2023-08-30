@@ -1,12 +1,14 @@
 'use client'
 
-import { Box, Drawer, Typography } from '@mui/material';
+import { Avatar, Box, Drawer, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import { FC, useEffect } from 'react';
 import useAuth from '@/share/hooks/useAuth';
 import NavSection from '../../NavSection';
 import Scrollbar from '../../Scrollbar';
 import useResponsive from '@/share/hooks/useResponsive';
+import { identicon } from '@/share/utils/createIdenticon';
+import { useRouter } from 'next/navigation';
 
 
 const NAV_WIDTH = 280;
@@ -28,7 +30,7 @@ const Nav: FC<INavProps> = ({openNav, onCloseNav}) => {
 
     const {auth: user} = useAuth()
     const isDesktop = useResponsive({query:'up', start:'lg'});
-
+    const router = useRouter()
     const pathname = window.location;
 
     useEffect(() => {
@@ -45,12 +47,11 @@ const Nav: FC<INavProps> = ({openNav, onCloseNav}) => {
             </Box>
 
 
-            <Box sx={{cursor: 'pointer', mb: 2.5, mx: 2.5}} onClick={() => {}}>
+            <Box sx={{cursor: 'pointer', mb: 2.5, mx: 2.5}} onClick={() => {router.push('/')}}>
 
                 <StyledAccount>
 
-                    {/* <Avatar src={user?.photo?.path && process.env.REACT_APP_API_URL + user?.photo?.path}
-                            alt="photoURL"/> */}
+                    <Avatar src={identicon(user.user?.userContacts?.email)}alt="photoURL"/>
 
 
                     <Box sx={{ml: 2}}>

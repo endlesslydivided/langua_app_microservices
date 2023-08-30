@@ -23,7 +23,7 @@ import { useState } from 'react';
      overflow: 'auto',
      minHeight: '100%',
      paddingTop: APP_BAR_MOBILE + 24,
-     paddingBottom: theme.spacing(10),
+     paddingBottom: theme.spacing(3),
      [theme.breakpoints.up('lg')]: {
          paddingTop: APP_BAR_DESKTOP,
          paddingLeft: theme.spacing(2),

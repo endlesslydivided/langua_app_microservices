@@ -24,6 +24,13 @@ export class LexicCategoryRepository {
     return lexicCategory.save();
   }
 
+  async findOneByName(
+    categoryName:string,
+  ): Promise<LexicCategoryDocument> {
+    const lexicCategory = this.lexicCategoryModel.findOne({categoryName});
+    return lexicCategory;
+  }
+
   async findManyAndCountByCreatorId(
     creatorUserId: string,
     language: string,

@@ -22,7 +22,7 @@ const Scrollbar: FC<IScrollbarProps> = ({children, sx, ...other}) => {
 
     return (
         <StyledRootScrollbar>
-            <StyledScrollbar  clickOnTrack={false} sx={sx} {...other}>
+            <StyledScrollbar clickOnTrack={false} sx={sx} {...other}>
                 {children}
             </StyledScrollbar>
         </StyledRootScrollbar>

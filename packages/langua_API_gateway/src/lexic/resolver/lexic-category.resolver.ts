@@ -16,7 +16,7 @@ export class LexicCategoryResolver {
   async createLexicCategory(@Args('createLexicCategory') input: CreateLexicCategoryInput) {
     const result = await this.lexicCategoryService.createLexicCategory(input);
     
-     if(result.status !== HttpStatus.OK)
+    if(result.status !== HttpStatus.OK)
     {
       throw new BadRequestException(result.error)
     }

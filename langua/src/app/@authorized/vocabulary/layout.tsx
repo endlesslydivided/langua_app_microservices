@@ -1,9 +1,6 @@
 "use client"
 
-import Header from '@/share/components/Layout/header';
-import Nav from '@/share/components/Layout/nav';
 import TabsMenu from '@/share/components/TabsMenu';
-import { styled } from '@mui/material/styles';
 import * as React from 'react';
 import { useState } from 'react';
  
@@ -21,7 +18,12 @@ export default  function AuthorizedLayout({
     
   return (
     <>
-      <TabsMenu menuItems={menuItems} active={active} setActive={setActive}/>
+      <TabsMenu sx={{
+        zIndex:'2',
+        position:'sticky',
+        top:0,
+        bottom:'100%'
+      }} menuItems={menuItems} active={active} setActive={setActive}/>
       {
         active === 0 ? all : mine
       }

@@ -19,7 +19,17 @@ export class LexicCategoryService {
   public async create(
     dto: CreateLexicCategoryRequestDto,
   ): Promise<lexic.CreateLexicCategoryResponse> {
-    const lexicCategory = await this.lexicCategoryRepository.create(dto);
+    let lexicCategory = await this.lexicCategoryRepository.findOneByName(dto.categoryName);
+
+    if(lexicCategory)
+    {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        error: ['Category with such a name already exists'],
+      }
+    }
+    
+    lexicCategory = await this.lexicCategoryRepository.create(dto);
     return {
       status: HttpStatus.OK,
       error: null,
