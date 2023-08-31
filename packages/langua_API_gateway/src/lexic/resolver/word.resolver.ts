@@ -75,8 +75,9 @@ export class WordResolver {
   async findManyWordsByLexicCategoryId(
     @Args() args: FindManyWordsByLexicCategoryIdArgs,
   ) {
-    const { lexicCategoryId, page, limit } = args;
+    const { lexicCategoryId, page, limit,vocabularyId } = args;
     const data = {
+      vocabularyId,
       lexicCategoryId,
       pageFilters: {
         page,

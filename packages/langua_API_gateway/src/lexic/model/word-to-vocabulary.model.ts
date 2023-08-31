@@ -4,6 +4,10 @@ import { IdentifiedModel } from '../../share/model/identified.model';
 
 @ObjectType()
 export class WordToVocabulary extends IdentifiedModel {
+
+  @Field((type) => String, { nullable: true })
+  id: string;
+
   @Field((type) => String, { nullable: true })
   vocabularyId: string;
 

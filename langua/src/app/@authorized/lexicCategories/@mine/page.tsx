@@ -3,7 +3,7 @@ import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "Langua | My categories",
+  title: "Langua | Categories",
 };
 
 export interface MineCategoriesPageProps {}

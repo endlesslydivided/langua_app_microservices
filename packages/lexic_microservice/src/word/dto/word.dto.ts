@@ -60,6 +60,10 @@ export class FindManyWordsByVocabularyIdRequestDto
 export class FindManyWordsByLexicCategoryIdRequestDto
   implements lexic.FindManyWordsByLexicCategoryIdRequest
 {
+
+  @IsString()
+  public readonly vocabularyId: string;
+  
   @IsString()
   public readonly lexicCategoryId: string;
 

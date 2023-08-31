@@ -9,7 +9,7 @@ export const CREATE_WORD = gql`mutation CreateWord($createWord: CreateWordInput!
 }
 `
 
-const createWord = async ({language,lexicCategoryId,transcription,word}:CreateWordParams) =>
+const createWord = async ({language,lexicCategoryId,transcription,word,nativeWordLanguage,translation}:CreateWordParams) =>
 {
     try
     {
@@ -19,9 +19,11 @@ const createWord = async ({language,lexicCategoryId,transcription,word}:CreateWo
                 createWord:
                 {
                     language,
+                    translation,
                     lexicCategoryId,
                     transcription,
-                    word
+                    word,
+                    nativeWordLanguage
                 }
             }, 
         });

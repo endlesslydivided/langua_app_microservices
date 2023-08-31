@@ -1,6 +1,6 @@
 import { baseFetch } from "@/share/api/baseFetch";
 import { gql } from "@apollo/client";
-import { UpdateWordToVocabularyParamsateWordToVocabularyParams } from "../types/api";
+import { UpdateWordToVocabularyParams } from "../types/api";
 
 
 

@@ -141,6 +141,7 @@ export namespace lexic {
     rows?: FindOneWordByIdResponse.Word[];
   }
   export interface FindManyWordsByLexicCategoryIdRequest {
+    vocabularyId?:string;
     lexicCategoryId?: string;
     pageFilters?: lexic.PageFilters;
   }

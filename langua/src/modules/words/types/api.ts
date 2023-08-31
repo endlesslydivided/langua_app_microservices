@@ -1,9 +1,11 @@
 export interface CreateWordParams
 {
     language:string,
+    nativeWordLanguage:string,
     lexicCategoryId:string,
     transcription:string,
     word:string,
+    translation:string,
 }
 
 export interface FindOneWordById{
@@ -20,6 +22,7 @@ export interface FindManyWordsByVocabularyIdParams
 
 export interface FindManyWordsByLexicCategoryIdParams
 {
+  vocabularyId:string,
   lexicCategoryId:string,
   page:number,
   limit:number

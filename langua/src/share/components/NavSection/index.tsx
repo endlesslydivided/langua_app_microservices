@@ -20,12 +20,12 @@ const NavSection = ({}) => {
   
     const pages = [{
       key:  'Vocabulary',
-      path: '/vocabulary',
+      path: '/lexicCategories',
       handleOnClick: () => {
-        router.push('/vocabulary')
+        router.push('/lexicCategories')
       },
-      icon: <MenuBookIcon/>
-
+      icon: <MenuBookIcon/>,
+      disabled:false
     },
     {
       key:  'Materials',
@@ -34,7 +34,8 @@ const NavSection = ({}) => {
        handleOnClick: () => {
         router.push('/materials')
       },
-      icon: <LibraryBooksIcon/>
+      icon: <LibraryBooksIcon/>,
+      disabled:true
 
     },
     {
@@ -43,7 +44,8 @@ const NavSection = ({}) => {
        handleOnClick: () => {
         router.push('/stats')
       },
-      icon: <EmojiEventsIcon/>
+      icon: <EmojiEventsIcon/>,
+      disabled:false
 
     },
     ];
@@ -66,10 +68,10 @@ const NavSection = ({}) => {
 // ----------------------------------------------------------------------
 
 const NavItem: FC<INavItemProps> = ({item}) => {
-    const {path, key, handleOnClick,icon} = item;
+    const {path, key, handleOnClick,icon,disabled} = item;
 
     return (
-        <StyledNavItem  onClick={handleOnClick}
+        <StyledNavItem disabled={disabled} onClick={handleOnClick}
             sx={{
                 '&.active': {
                     color: 'text.primary',

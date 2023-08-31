@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { BaseException } from '../exceptions/base.exception';
 import { toast } from 'react-toastify';
+import { MessageType } from '../consts/errorMessages';
 
 type UseLoadingParams =
 {
@@ -44,7 +45,7 @@ const useFetch = ({fetch,errorCallback,params}:UseLoadingParams) => {
             {
                 errorCallback(error);
             }
-            toast(error.reason,{autoClose:5000,type:'error'});
+            toast(error.reason ?? MessageType.SERVER_ERROR,{autoClose:5000,type:'error'});
         })
         .finally(() => {
             setLoading(false);

@@ -2,7 +2,9 @@
 
 import Header from '@/share/components/Layout/header';
 import Nav from '@/share/components/Layout/nav';
+import TabsMenu from '@/share/components/TabsMenu';
 import { styled } from '@mui/material/styles';
+import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { useState } from 'react';
 
@@ -35,12 +37,18 @@ import { useState } from 'react';
  
 export default  function AuthorizedLayout({
   children,
+  myCategories
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode,
+  myCategories: React.ReactNode,
 }) {
 
+    const pathname = usePathname();
+
+    const menuItems = ['Vocabulary', 'My categories']
  
     const [open, setOpen] = useState(false);
+    const [active,setActive] = useState(0);
 
 
     return (
@@ -50,7 +58,23 @@ export default  function AuthorizedLayout({
             <Nav openNav={open} onCloseNav={() => setOpen(false)}/>
 
             <Main>
-                {children}
+                {
+                    pathname.match(/^\/(\w{0})$/g) ?
+                    <TabsMenu sx={{
+                        zIndex:'2',
+                        position:'sticky',
+                        top:0,
+                        bottom:'100%'
+                      }} menuItems={menuItems} active={active} setActive={setActive}/>
+                    :
+                    null
+                }
+                {
+                    pathname.match(/^\/(\w{0})$/g) ?
+                    active === 0 ? children : myCategories 
+                    : 
+                    children
+                }
             </Main>
         </StyledRoot>
     );

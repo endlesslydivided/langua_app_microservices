@@ -40,4 +40,8 @@ export class WordToVocabularyRepository {
   async findOneById(id: string): Promise<WordToVocabularyDocument> {
     return await this.wordToVocabularyModel.findById(id).exec();
   }
+
+  async findOneByFields(vocabularyId: string,wordId:String): Promise<WordToVocabularyDocument> {
+    return await this.wordToVocabularyModel.findOne({wordId,vocabularyId}).exec();
+  }
 }

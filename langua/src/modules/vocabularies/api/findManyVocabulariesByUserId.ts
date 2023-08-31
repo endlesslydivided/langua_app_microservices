@@ -17,6 +17,7 @@ query FindManyVocabulariesByUserId($limit: Int!, $page: Int!, $userId: String!) 
     ) {
         count
         rows {
+            id
             language
             userId
             vocabularyNativeLanguage

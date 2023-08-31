@@ -12,4 +12,7 @@ export class FindManyWordsByVocabularyIdArgs extends PaginationArgs {
 export class FindManyWordsByLexicCategoryIdArgs extends PaginationArgs {
   @Field({ nullable: false })
   lexicCategoryId?: string;
+
+  @Field({ nullable: false })
+  vocabularyId?: string;
 }

@@ -127,7 +127,7 @@ type Query {
   findManyUsers(limit: Int! = 10, page: Int! = 0): PaginatedUser!
   findManyVocabulariesByUserId(limit: Int! = 10, page: Int! = 0, userId: String!): PaginatedVocabulary!
   findManyVocabularyStats(limit: Int! = 10, page: Int! = 0, userId: String!): PaginatedVocabularyStats!
-  findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0): PaginatedWord!
+  findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWord!
   findManyWordsByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWord!
   findMe: User!
   findOneMaterialById(id: String!): Material!
@@ -264,7 +264,7 @@ scalar Void
 
 type Word {
   createdAt: Timestamp
-  id: ID
+  id: String
   language: String
   lexicCategories: [LexicCategory!]
   nativeWordLanguage: String
@@ -277,7 +277,7 @@ type Word {
 
 type WordToVocabulary {
   createdAt: Timestamp
-  id: ID
+  id: String
   isFinished: Boolean
   updatedAt: Timestamp
   vocabularyId: String

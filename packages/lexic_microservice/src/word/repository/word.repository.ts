@@ -22,17 +22,20 @@ const wordWithLexicCategoryProject = {
       },
     },
     language: true,
+    translation:true,
+    nativeWordLanguage:true,
     transcription: true,
     createdAt:true,
     updatedAt:true,
-    wordsToVocabularies:{
+    wordToVocabulary:{
       $map: {
-        input: '$wordToVocabularies',
+        input: '$wordsToVocabularies',
         as: 'wtv',
         in: {
           id: '$$wtv._id',
           wordId: '$$wtv.wordId',
           vocabularyId: '$$wtv.vocabularyId',
+          isFinished: '$$wtv.isFinished',
         },
       },
     }
@@ -118,10 +121,13 @@ export class WordRepository {
                         id: '$$wtv._id',
                         vocabularyId: '$$wtv.vocabularyId',
                         wordId: '$$wtv.wordId',
+                        isFinished: '$$wtv.isFinished',
                       },
                     },
                   },
                   language: true,
+                  translation:true,
+                  nativeWordLanguage:true,
                   createdAt:true,
                   updatedAt:true,
                   transcription: true,
@@ -140,6 +146,7 @@ export class WordRepository {
   }
 
   async findManyAndCountByLexicCategoryId(
+    vocabularyId: string,
     lexicCategoryId: string,
     filters: PageFilters,
   ): Promise<[WordDocument[], number]> {
@@ -161,6 +168,13 @@ export class WordRepository {
             from: 'words_to_vocabularies',
             localField: 'id',
             foreignField: 'wordId',
+            pipeline:[
+              {
+                $match:{
+                  vocabularyId
+                }
+              }
+            ],
             as: 'wordsToVocabularies',
           },
         },
@@ -192,6 +206,24 @@ export class WordRepository {
             _id: new mongoose.Types.ObjectId(id),
           },
         },
+        wordWithLexicCategoryProject,
+      ])
+      .exec();
+
+    return word[0];
+  }
+
+  async findOneByWord(lexicWord: string,lexicCategoryId:string): Promise<WordDocument> {
+    const word = await this.wordModel
+      .aggregate([
+        {
+          $match: {
+            word:lexicWord,
+            lexicCategories:new mongoose.Types.ObjectId(lexicCategoryId)
+          },
+        },      
+        wordWithLexicCategoryLookup,
+         
         wordWithLexicCategoryProject,
       ])
       .exec();

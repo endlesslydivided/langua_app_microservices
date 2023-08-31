@@ -15,6 +15,7 @@ export const FIND_MANY_LEXIC_CATEGORIES_BY_CREATOR_ID = gql`query FindManyLexicC
     ) {
         count
         rows {
+            id
             categoryName
             creatorUserId
         }

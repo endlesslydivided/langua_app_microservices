@@ -35,21 +35,45 @@ export class VocabularyRepository {
     userId: string,
     filters: PageFilters,
   ): Promise<[VocabularyDocument[], number]> {
-    const clause = { userId };
 
-    const vocabularies = await this.vocabularyModel
-      .find(
-        clause,
-        {},
+    const vocabularies = (await this.vocabularyModel
+      .aggregate([
         {
-          skip: filters.limit * filters.page,
-          limit: filters.limit,
+          $addFields: {
+            id: { $toString: '$_id' },
+          },
         },
-      )
-      .exec();
+        {
+          $match: {
+            'userId': userId,
+          },
+        },
+        {
+          $facet: {
+            metadata: [{ $count: 'count' }],
+            data: [
+              { $skip: filters.limit * filters.page },
+              { $limit: filters.limit },
+              {
+                $project: {
+                  id:true,
+                  userId:true,
+                  language:true,
+                  vocabularyNativeLanguage: true,
+                  createdAt:true,
+                  updatedAt:true,
+                },
+              },
+            ],
+          },
+        },
+      ])
+      .exec()) as unknown as {
+      data: VocabularyDocument[];
+      metadata: { count: number; page: number };
+    }[];
 
-    const count = await this.vocabularyModel.count(clause).exec();
 
-    return [vocabularies, count];
+    return [vocabularies[0]?.data, vocabularies[0].metadata[0]?.count];
   }
 }

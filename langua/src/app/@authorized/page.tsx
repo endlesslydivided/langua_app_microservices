@@ -1,4 +1,4 @@
-import UserCard from "@/modules/auth/widgets/Cards/UserCard";
+import VocabularyWordsListCard from "@/modules/words/widgets/Cards/VocabularyWordsListCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,10 +11,7 @@ export default function Page(){
   
 
   return (
-
-      <section className="">
-        <UserCard/>
-      </section>
+    <VocabularyWordsListCard/>   
   );
 }
 

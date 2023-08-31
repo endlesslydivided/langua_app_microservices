@@ -2,7 +2,7 @@ import AllLexicCategoriesCard from "@/modules/lexicCategories/widgets/Cards/AllL
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Langua | All categories",
+    title: "Langua | Categories",
   };
 
 export interface AllCategoriesPageProps {}

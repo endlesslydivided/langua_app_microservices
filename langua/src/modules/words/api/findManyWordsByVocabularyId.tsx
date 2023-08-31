@@ -22,14 +22,18 @@ const FIND_MANY_WORDS_BY_VOCABULARY_ID = gql`
     ) {
       count
       rows {
+        id
         language
         transcription
         word
+        translation
+        nativeWordLanguage
         lexicCategories {
           categoryName
           creatorUserId
         }
         wordToVocabulary {
+          id
           isFinished
           vocabularyId
           wordId

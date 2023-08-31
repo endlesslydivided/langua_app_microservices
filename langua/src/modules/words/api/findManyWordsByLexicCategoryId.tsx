@@ -4,20 +4,30 @@ import { FindManyWordsByLexicCategoryIdParams } from "../types/api";
 
 
 const FIND_MANY_WORDS_BY_LEXIC_CATEGORY_ID = gql`
-query FindManyWordsByLexicCategoryId($lexicCategoryId:String!,$limit: Int, $page: Int) {
+query FindManyWordsByLexicCategoryId($vocabularyId:String!,$lexicCategoryId:String!,$limit: Int, $page: Int) {
   findManyWordsByLexicCategoryId(
+      vocabularyId: $vocabularyId,
       lexicCategoryId: $lexicCategoryId
       limit: $limit
       page: $page
   ) {
       count
       rows {
+          id
           language
           transcription
           word
+          translation
+          nativeWordLanguage
           lexicCategories {
               categoryName
               creatorUserId
+          }
+          wordToVocabulary {
+            id
+            isFinished
+            vocabularyId
+            wordId
           }
       }
   }
@@ -25,16 +35,17 @@ query FindManyWordsByLexicCategoryId($lexicCategoryId:String!,$limit: Int, $page
 `;
 
 
-const findManyWordsByLexicCategoryId = async ({ lexicCategoryId,page,limit}:FindManyWordsByLexicCategoryIdParams) =>
+const findManyWordsByLexicCategoryId = async ({ lexicCategoryId,page,limit,vocabularyId}:FindManyWordsByLexicCategoryIdParams) =>
 {
     try
     {
         const { data, error } = await getClient().query({
             query: FIND_MANY_WORDS_BY_LEXIC_CATEGORY_ID,
             variables: {
-            lexicCategoryId,
-            page,
-            limit
+                vocabularyId,
+                lexicCategoryId,
+                page,
+                limit
             },
         });
     

@@ -9,6 +9,8 @@ const FIND_ONE_WORD_BY_ID = gql`query FindOneWordById($id:String!) {
       language
       transcription
       word
+      translation
+      nativeWordLanguage
   }
 }
 `;

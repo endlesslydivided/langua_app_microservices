@@ -35,7 +35,17 @@ export class WordService {
   public async create(
     dto: CreateWordRequestDto,
   ): Promise<lexic.CreateWordResponse> {
-    const word = await this.wordRepository.create(dto);
+
+    let word = await this.wordRepository.findOneByWord(dto.word,dto.lexicCategoryId);
+
+    if(word)
+    {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        error: ['Word already exists in this category']
+      };
+    }
+    word = await this.wordRepository.create(dto);
     return {
       status: HttpStatus.OK,
       error: null,
@@ -75,6 +85,7 @@ export class WordService {
     dto: FindManyWordsByLexicCategoryIdRequestDto,
   ): Promise<lexic.FindManyWordsByLexicCategoryIdResponse> {
     const data = await this.wordRepository.findManyAndCountByLexicCategoryId(
+      dto.vocabularyId,
       dto.lexicCategoryId,
       dto.pageFilters,
     );
@@ -91,8 +102,18 @@ export class WordService {
   public async createWordToVocabulary(
     dto: CreateWordToVocabularyRequestDto,
   ): Promise<lexic.CreateWordToVocabularyResponse> {
-    const wordToVocabulary =
-      await this.wordToVocabularyRepository.createWordToVocabulary(dto);
+
+    let wordToVocabulary = await this.wordToVocabularyRepository.findOneByFields(dto.vocabularyId,dto.wordId);
+
+    if(wordToVocabulary)
+    {
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        error: ['Word is already in your vocabulary']
+      };
+    }
+
+    wordToVocabulary = await this.wordToVocabularyRepository.createWordToVocabulary(dto);
     return {
       status: HttpStatus.OK,
       error: null,

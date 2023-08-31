@@ -98,8 +98,9 @@ message FindManyWordsByLexicCategoryIdData {
 }
 
 message FindManyWordsByLexicCategoryIdRequest{
-    string lexic_category_id = 1;
-    PageFilters page_filters = 2;
+    string vocabulary_id = 1;
+    string lexic_category_id = 2;
+    PageFilters page_filters = 3;
 }
 
 message FindManyWordsByLexicCategoryIdResponse {

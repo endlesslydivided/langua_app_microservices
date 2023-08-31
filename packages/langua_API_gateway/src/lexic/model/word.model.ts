@@ -9,6 +9,9 @@ import { WordToVocabulary } from './word-to-vocabulary.model';
 @ObjectType()
 export class Word extends IdentifiedModel {
   @Field((type) => GraphQLString, { nullable: true })
+  id: string;
+
+  @Field((type) => GraphQLString, { nullable: true })
   word: string;
 
   @Field((type) => GraphQLString, { nullable: true })
