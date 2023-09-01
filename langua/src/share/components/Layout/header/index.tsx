@@ -14,7 +14,9 @@ const HEADER_MOBILE = 64;
 const HEADER_DESKTOP = 64;
 
 export const StyledRoot = styled(AppBar)(({theme}) => ({
-    ...bgBlur({color: theme.palette.primary.light,opacity:0.9,blur:5}),
+    ...bgBlur({color: theme.palette.mode === 'light' ?
+     theme.palette.primary.light:
+     theme.palette.primary.contrastText,opacity:0.9,blur:5}),
     ...darkGlass,
     borderRadius:'0px 0px 30px 0px',
     [theme.breakpoints.up('lg')]:

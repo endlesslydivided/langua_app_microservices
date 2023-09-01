@@ -3,11 +3,20 @@ import { CacheProvider, ThemeProvider } from "@emotion/react";
 import { CssBaseline, createTheme } from "@mui/material";
 import { Inter } from "next/font/google";
 import { useServerInsertedHTML } from "next/navigation";
-import React, { createContext, useMemo, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import createCache from '@emotion/cache';
 
+
+interface IColorModeContext
+{
+  toggleColorMode:() => void;
+}
+
+
 const inter = Inter({ subsets: ["latin"] });
-const ColorModeContext = createContext<object | null>(null);
+export const ColorModeContext = createContext<IColorModeContext | null>({
+  toggleColorMode:() => {}
+});
 type PaletteMode = 'light' | 'dark';
 
 
@@ -15,27 +24,73 @@ const  ColorModeProvider = (props:any) => {
 
     const [mode, setMode] = useState<PaletteMode>("light");
 
+    useEffect(()=>
+    {
+      let colorMode = window.localStorage.getItem('theme') as PaletteMode;
+      if(colorMode)
+      {
+        let value = colorMode;
+        setMode(value);       
+      }
+      else
+      {
+        setMode('light');       
+      }
+    },[])
+
     const theme = React.useMemo(() => createTheme({
       components:
       {
+        MuiCardHeader: {
+          styleOverrides:{
+            root:({theme,ownerState}) =>
+            (
+              {
+                backgroundColor: theme.palette.primary.contrastText
+              }
+            )
+          }
+        },
+        MuiCardActions: {
+          styleOverrides:{
+            root:({theme,ownerState}) =>
+            (
+              {
+                backgroundColor: theme.palette.primary.contrastText
+              }
+            )
+          }
+        },
+        MuiContainer: {
+          styleOverrides:{
+            root:({theme,ownerState}) =>
+            (
+              {
+                backgroundColor: theme.palette.primary.contrastText,
+                
+              }
+            )
+          }
+        },
+        MuiTypography:
+        {
+          styleOverrides:{
+            root:({theme,ownerState}) =>
+            (
+              {
+                color: theme.palette.text.primary,
+
+              }
+            )
+          }
+        },
         MuiAppBar:
         {
           styleOverrides:{
             root:({theme,ownerState}) =>
             (
               {
-                
-              }
-            )
-          }
-        },
-        MuiContainer:
-        {
-          styleOverrides:{
-            root:({theme,ownerState}) =>
-            (
-              {
-                backgroundColor: theme.palette.mode === "light" ? "rgba(100,250,150,0.2)" : "green"
+              
               }
             )
           }
@@ -67,8 +122,13 @@ const  ColorModeProvider = (props:any) => {
     const colorMode = useMemo(
       () => ({
         toggleColorMode: () => {
+          localStorage.setItem('theme', mode === 'light' ? 'dark' : 'light');
+
           setMode((prevMode: PaletteMode) =>
-            prevMode === 'light' ? 'dark' : 'light',
+          {
+            const newMode = prevMode === 'light' ? 'dark' : 'light';
+            return newMode;
+          }
           );
         },
       }),

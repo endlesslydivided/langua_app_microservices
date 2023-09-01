@@ -36,20 +36,27 @@ const LexicCategoriesList:React.FC<LexicCategoriesListProps> = ({loading,data}) 
                 {data.map((item,index) =>
                 <>
                 <ListItem key={item.id}>
-                        <Card sx={{
+                        <Card sx={(theme) => ({
                             display:'flex',
-                            backgroundImage:` linear-gradient(
-                                to right,
+                            backgroundImage:
+                            `${
+                                theme.palette.mode === 'light' ? 
+                                `linear-gradient(to right,
                                 rgba(255, 255, 255, 1), 80%,
                                 rgba(255, 255, 255, 0.5)
-                                ), url(${randomBg(index).src})`,
+                                )` : 
+                                `linear-gradient(to right,
+                                rgba(0, 0, 0, 1), 80%,
+                                rgba(0, 0, 0, 0.5)
+                                )`
+                            }, url(${randomBg(index).src})`,
                             backgroundRepeat:'no-repeat',
                             backgroundSize:'20%',
                             backgroundPosition:'right',
                             width:'100%', 
                             padding:'20px',
                             ":hover":{filter:'brightness(0.95)'},
-                        }}>      
+                        })}>      
                             <ListItemText primary={item.categoryName}/>
                             <Box>
                                 <Button variant="contained" onClick={() => onClickViewHandler(item.id)} startIcon={<VisibilityIcon/>}>

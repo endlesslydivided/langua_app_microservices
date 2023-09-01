@@ -34,7 +34,10 @@ const VocabulariesListItem:FC<VocabulariesListItemProps> = ({index,value,array})
                 display: 'flex',
                 flexDirection:'row',
                 alignItems:'center',
-                backgroundColor: index % 2 !== 0 ? theme.palette.background.default : theme.palette.grey[100],
+                backgroundColor: 
+                theme.palette.mode === 'light' ?
+                index % 2 !== 0 ? theme.palette.background.default : theme.palette.grey[100]:
+                index % 2 !== 0 ? theme.palette.background.default : theme.palette.grey[800],
                 justifyContent:'space-between',
                 ":hover":{filter:'brightness(0.95)'},
             })}>  

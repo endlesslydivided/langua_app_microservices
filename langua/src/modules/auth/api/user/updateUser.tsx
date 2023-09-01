@@ -11,7 +11,7 @@ mutation UpdateUser($updateUser: UpdateUserInput!) {
 }`
 
 
-const updateUser = async (values:FinishRegisterForm & {id?:string}) =>
+const updateUser = async (values:{id?:string} & UpdateUserParams) =>
 {
 
   try

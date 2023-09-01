@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 
 const NAV_WIDTH = 280;
 
-const StyledAccount = styled('div')(({theme}) => ({
+export const StyledAccount = styled('div')(({theme}) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(2, 2.5),

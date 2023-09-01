@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import bg from "@/assets/abstractBG/blackWhiteLines.gif";
+import { Container, Typography } from "@mui/material";
 
 
 export default function AuthLayout({
@@ -10,13 +11,34 @@ export default function AuthLayout({
 }) {
   return (
       <main className="flex h-screen ">
-        <div className="m-auto bg-slate-50 w-full h-full grid lg:grid-cols-2">
+        <Container className="!p-0"  sx={{
+          margin:'auto',
+          width:'100%',
+          px:'0px',
+          minWidth:'100%',
+          maxWidth:'100%',
+          height:'100%',
+          display:'grid',
+          gridTemplateColumns: {
+            lg:'repeat(2, minmax(0, 1fr))'
+          }
+        }}>
           <div className="relative overflow-hidden flex flex-col justify-center">
-            <div className="text-center absolute z-10 w-full ">
-              <h1 className="text-white text-8xl font-bold pb-3">LANGUA</h1>
-              <p className="w-3/4 mx-auto text-2xl text-gray-200">
+            <div className="text-center  absolute z-10 w-full ">
+              <Typography variant='h1' sx={{
+                paddingBottom:'10px',
+                fontSize:'96px',
+                lineHeight: '1',
+                fontWeight:'700'
+             }}>LANGUA</Typography>
+              <Typography sx={{
+                width:'75%',
+                mx:'auto',
+                fontSize: '24px',
+                lineHeight: '32px',
+              }} variant='body1'>
                 Application to learn languages
-              </p>
+              </Typography>
             </div>
             <div className="filter brightness-50 h-full">
               <Image src={bg} alt={""} className="object-cover h-full w-full" />
@@ -25,7 +47,7 @@ export default function AuthLayout({
           <div className="right flex flex-col justify-evenly">
             <div className="text-center py-10">{children}</div>
           </div>
-        </div>
+        </Container>
       </main>
 
   );

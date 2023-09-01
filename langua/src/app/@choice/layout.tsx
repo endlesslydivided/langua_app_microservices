@@ -1,3 +1,4 @@
+'use client'
 import { Container } from "@mui/material";
 
 
@@ -8,11 +9,17 @@ export default function VocabularyLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex h-screen bg-slate-200">
 
-        <Container className="!flex items-center justify-center"> 
+        <Container sx={{
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'center',
+          height:'100vh',
+          width:'100%',
+          maxWidth:'100%',
+          minWidth:'100%'
+        }}> 
             {children}
         </Container>
-    </main>
   );
 }

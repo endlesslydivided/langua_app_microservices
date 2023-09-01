@@ -1,9 +1,10 @@
+'use client'
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
-import { InputAdornment, Stack, TextField } from '@mui/material';
+import { IconButton, InputAdornment, Stack, SxProps,TextField, Theme } from '@mui/material';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface EditTextFieldProps
 {
@@ -13,12 +14,15 @@ interface EditTextFieldProps
     validationSchema:  any | (() => any);
     type: React.InputHTMLAttributes<unknown>['type'];
     label:string;
-
+    sx?: SxProps<Theme>;
+    setInitialValues: React.Dispatch<React.SetStateAction<Record<string,string>>>
 }
 
-const EditTextField:React.FC<EditTextFieldProps> = ({initialValues,onSubmit,name,validationSchema,type,label}) => {
+const EditTextField:React.FC<EditTextFieldProps> = ({setInitialValues,initialValues,onSubmit,name,validationSchema,type,label,sx}) => {
 
-    const [editMode,setEditMode] = React.useState(false);
+    const [editMode,setEditMode] = useState(false);
+
+    const beforeEdition = {...initialValues};
 
     const form = useFormik({
         initialValues,
@@ -31,6 +35,12 @@ const EditTextField:React.FC<EditTextFieldProps> = ({initialValues,onSubmit,name
         setEditMode((p) => !p)
     }
 
+    const onClickCloseForm = () =>
+    {
+        onClickEditHandler();
+        setInitialValues((p) => ({...p,[name]:beforeEdition[name]}))
+    }
+
     const onSubmitEditionHandler =  async () =>
     {
         await form.submitForm();
@@ -41,15 +51,25 @@ const EditTextField:React.FC<EditTextFieldProps> = ({initialValues,onSubmit,name
         {
             editMode ? 
             <Stack direction={"row"}>
-                <CheckIcon color={'primary'} onClick={onSubmitEditionHandler}/>
-                <CloseIcon color={'error'} onClick={onClickEditHandler}/>
+                <IconButton>
+                    <CheckIcon color={'primary'} onClick={onSubmitEditionHandler}/>
+                </IconButton>
+                <IconButton>
+                    <CloseIcon color={'error'} onClick={() => onClickCloseForm()}/>
+                </IconButton>
+
             </Stack>
             :
-            <EditIcon onClick={onClickEditHandler}/>}
+            <IconButton>
+                <EditIcon onClick={onClickEditHandler}/>
+            </IconButton>
+
+            }
     </InputAdornment>
 
     return (
-    <TextField 
+    <TextField
+        sx={sx}
         error={!!form.errors?.[name] && !!form.touched?.[name] }
         helperText={(form.errors?.[name] && form.touched?.[name] ? form.errors?.[name] : '') as React.ReactNode}
         {...form.getFieldProps(name)}
@@ -57,7 +77,7 @@ const EditTextField:React.FC<EditTextFieldProps> = ({initialValues,onSubmit,name
         name={name}
         label={label}
         InputProps={{endAdornment}}
-
+        disabled={!editMode}
     ></TextField>
     )
 }

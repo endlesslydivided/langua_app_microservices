@@ -16,6 +16,15 @@ export const registrationSchema = Yup.object().shape({
     surname:  Yup.string().label('Surname').required().min(1).max(255).matches(/^\S*$/),
 })
 
+export const updateUserSchema = Yup.object().shape({
+    phoneNumber: Yup.string().label('Phone number').required(),
+    city: Yup.string().label('City').required().min(1).max(50),
+    country: Yup.string().label('Country').required().min(1).max(50),
+    nickname: Yup.string().label('Nickname').required().min(1).max(25).matches(/^\S*$/),
+    firstname: Yup.string().label('Firstname').required().min(1).max(255).matches(/^\S*$/),
+    surname:  Yup.string().label('Surname').required().min(1).max(255).matches(/^\S*$/),
+})
+
 
 export const finishRegisterSchema = Yup.object().shape({
     phoneNumber: Yup.string().label('Phone number').required(),

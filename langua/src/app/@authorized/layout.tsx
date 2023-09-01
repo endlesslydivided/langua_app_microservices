@@ -14,11 +14,13 @@ import { useState } from 'react';
  const APP_BAR_MOBILE = 60;
  const APP_BAR_DESKTOP = 78;
  
- const StyledRoot = styled('div')({
+ const StyledRoot = styled('div')(({theme}) => ({
      display: 'flex',
      minHeight: '100%',
+     height:'100vh',
      overflow: 'hidden',
- });
+     backgroundColor: theme.palette.background.default
+ }));
  
  const Main = styled('div')(({theme}) => ({
      flexGrow: 1,

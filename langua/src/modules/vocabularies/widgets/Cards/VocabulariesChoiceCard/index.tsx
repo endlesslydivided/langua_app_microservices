@@ -42,7 +42,6 @@ const VocabulariecChoiceCard = () => {
             <Box sx={{
                 position:'sticky',
                 top:'0', 
-                backgroundColor:'white',
                 width:'100%',
                 zIndex:'2'
             }}>
@@ -62,7 +61,6 @@ const VocabulariecChoiceCard = () => {
                 position:'sticky',
                 bottom:'0',
                 top:'100%',
-                backgroundColor:'white',
                 zIndex:'2'
             }} >
                 <Pagination size="large" shape="rounded" count={totalPages} 
