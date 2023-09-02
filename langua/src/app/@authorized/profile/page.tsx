@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   title: "Langua | Profile",
 };
 
-export interface ProfielPageProps {}
+export interface ProfilePageProps {}
 
-export default function ProfielPage(props: ProfielPageProps) {
+export default function ProfilePage(props: ProfilePageProps) {
  
   return (
     <ProfileCard/>   

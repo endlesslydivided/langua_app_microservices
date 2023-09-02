@@ -9,7 +9,8 @@ import Scrollbar from '../../Scrollbar';
 import useResponsive from '@/share/hooks/useResponsive';
 import { identicon } from '@/share/utils/createIdenticon';
 import { useRouter } from 'next/navigation';
-
+import bg from '../../../../assets/logo.png'
+import Image from 'next/image';
 
 const NAV_WIDTH = 280;
 
@@ -41,9 +42,8 @@ const Nav: FC<INavProps> = ({openNav, onCloseNav}) => {
 
     const renderContent = (
         <Scrollbar sx={{height: 1, '& .simplebar-content': {height: 1, display: 'flex', flexDirection: 'column'}}}>
-            <Box 
-                 sx={{cursor: 'pointer', px: 2.5, py: 1.5, display: 'inline-flex', justifyContent: 'center'}}>
-             {/* <Image  style={{maxWidth: '50%'}}/> */}
+            <Box sx={{cursor: 'pointer', px: 2.5, py: 3.5, display: 'inline-flex', justifyContent: 'center'}}>
+                <Image src={bg} alt="logo" style={{width:'75%'}} />
             </Box>
 
 

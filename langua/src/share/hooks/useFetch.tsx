@@ -24,7 +24,7 @@ export const initialFiltersState:Filters =
 const useFetch = ({fetch,errorCallback,params}:UseLoadingParams) => {
 
     const [loading,setLoading] = useState(false);
-    const [data,setData] = useState<any[]>([]);
+    const [data,setData] = useState<any[]| any>([]);
     
     const [filters,setFilters] = useState<Filters>(initialFiltersState);
     const [totalPages,setTotalPages] = useState<number>(0);

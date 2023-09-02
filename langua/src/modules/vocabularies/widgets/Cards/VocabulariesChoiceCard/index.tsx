@@ -35,7 +35,7 @@ const VocabulariecChoiceCard = () => {
         sx={{
             width:'75%',
             height:'75%',
-            px:'14px',
+            px:'0px',
             py:'0px',
             overflowY:'auto'
            }}>
@@ -51,7 +51,8 @@ const VocabulariecChoiceCard = () => {
             <CardContent sx={{
                 display:'flex',
                 justifyContent:'center',
-                p:'2px'
+                px:'15px',
+                py:'5px'
             }}>
                 <VocabulariesList loading={loading} data={data}/>
             </CardContent>

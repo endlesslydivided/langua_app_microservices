@@ -7,7 +7,7 @@ import { LexicCategory } from "@/modules/lexicCategories/types/model";
 import CirculearLoader from "@/share/components/CircularLoader";
 import { LEXIC_CATEGORIES_ID_ROUTE } from "@/share/consts/routes";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Box, Button, Card, List, ListItem, ListItemText } from "@mui/material";
+import { Box, Button, Card, List, ListItem, ListItemText, alpha } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 interface LexicCategoriesListProps
@@ -38,18 +38,11 @@ const LexicCategoriesList:React.FC<LexicCategoriesListProps> = ({loading,data}) 
                 <ListItem key={item.id}>
                         <Card sx={(theme) => ({
                             display:'flex',
-                            backgroundImage:
-                            `${
-                                theme.palette.mode === 'light' ? 
-                                `linear-gradient(to right,
-                                rgba(255, 255, 255, 1), 80%,
-                                rgba(255, 255, 255, 0.5)
-                                )` : 
-                                `linear-gradient(to right,
-                                rgba(0, 0, 0, 1), 80%,
-                                rgba(0, 0, 0, 0.5)
-                                )`
-                            }, url(${randomBg(index).src})`,
+                            backgroundImage: 
+                            `linear-gradient(to right,
+                                ${alpha(theme.palette.background.default,1)} 40%,
+                                ${alpha(theme.palette.background.default,0.5)})
+                            , url(${randomBg(index).src})`,
                             backgroundRepeat:'no-repeat',
                             backgroundSize:'20%',
                             backgroundPosition:'right',

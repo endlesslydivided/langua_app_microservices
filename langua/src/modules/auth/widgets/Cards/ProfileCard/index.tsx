@@ -8,7 +8,7 @@ import { identicon } from "@/share/utils/createIdenticon";
 import useColorMode from "@/share/hooks/useColorMode";
 
 
-export default function ProfileCard() {
+export default function getProfileCard() {
 
 
   const {auth} = useAuth();

@@ -46,7 +46,8 @@ const  ColorModeProvider = (props:any) => {
             root:({theme,ownerState}) =>
             (
               {
-                backgroundColor: theme.palette.primary.contrastText
+                backgroundColor: theme.palette.background.paper,
+                
               }
             )
           }
@@ -56,7 +57,8 @@ const  ColorModeProvider = (props:any) => {
             root:({theme,ownerState}) =>
             (
               {
-                backgroundColor: theme.palette.primary.contrastText
+                backgroundColor: theme.palette.background.paper,
+                
               }
             )
           }
