@@ -1,5 +1,5 @@
 export interface LexicCategory {
-    id:string;
+    id: string;
     categoryName: string;
     creatorUserId: string;
-  }
+}

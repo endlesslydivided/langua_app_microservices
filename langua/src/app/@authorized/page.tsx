@@ -1,16 +1,10 @@
-import VocabularyWordsListCard from "@/modules/words/widgets/Cards/VocabularyWordsListCard";
-import { Metadata } from "next";
+import VocabularyWordsListCard from '@/modules/words/widgets/Cards/VocabularyWordsListCard';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Langua",
+    title: 'Langua',
 };
 
-
-export default function Page(){
-
-  return (
-    <VocabularyWordsListCard/>   
-  );
+export default function Page() {
+    return <VocabularyWordsListCard />;
 }
-
-

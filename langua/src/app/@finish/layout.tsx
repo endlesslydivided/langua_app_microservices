@@ -1,18 +1,15 @@
-import { Container } from "@mui/material";
-
-
+import { Container } from '@mui/material';
 
 export default function FinishLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-      <main className="flex h-screen ">
-        <Container className="!flex items-center justify-center"> 
-            {children}
-        </Container>
-      </main>
-
-  );
+    return (
+        <main className="flex h-screen ">
+            <Container className="!flex items-center justify-center">
+                {children}
+            </Container>
+        </main>
+    );
 }

@@ -1,8 +1,9 @@
-import {styled} from '@mui/material/styles';
-import {ListItemButton, ListItemIcon} from '@mui/material';
+import { ListItemButton, ListItemIcon } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-
-export const StyledNavItem = styled((props: any) => <ListItemButton disableGutters {...props} />)(({theme}) => ({
+export const StyledNavItem = styled((props: any) => (
+    <ListItemButton disableGutters {...props} />
+))(({ theme }) => ({
     ...theme.typography.body2,
     height: 48,
     position: 'relative',

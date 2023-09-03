@@ -1,20 +1,21 @@
-"use client"
-import { useEffect } from 'react'
-import { redirect, useRouter } from 'next/navigation'
-import { RedirectType } from 'next/dist/client/components/redirect'
+'use client';
+
+import { RedirectType } from 'next/dist/client/components/redirect';
+import { redirect, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Error({
-  error,
-  reset,
+    error,
+    reset,
 }: {
-  error: Error & { digest?: string }
-  reset: () => void
+    error: Error & { digest?: string };
+    reset: () => void;
 }) {
-  const router = useRouter()
+    const router = useRouter();
 
-  useEffect(() => {
-    router.replace("/")
-  })
+    useEffect(() => {
+        router.replace('/');
+    });
 
-  return null
+    return null;
 }

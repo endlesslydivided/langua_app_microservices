@@ -1,6 +1,5 @@
 //@ts-nocheck
-
-import {alpha} from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 
 export function bgBlur(props) {
     const color = props?.color || '#000000';
@@ -45,7 +44,9 @@ export function bgGradient(props) {
 
     if (imgUrl) {
         return {
-            background: `linear-gradient(${direction}, ${startColor || color}, ${endColor || color}), url(${imgUrl})`,
+            background: `linear-gradient(${direction}, ${
+                startColor || color
+            }, ${endColor || color}), url(${imgUrl})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center',
@@ -100,17 +101,15 @@ export const hideScrollbarX = {
 };
 
 export const whiteGlass = {
-    ':before':
-        {
-            boxShadow: 'inset 0 0 2000px rgba(255, 255, 255, .5)',
-            filter: 'blur(10px)'
-        }
-}
+    ':before': {
+        boxShadow: 'inset 0 0 2000px rgba(255, 255, 255, .5)',
+        filter: 'blur(10px)',
+    },
+};
 
 export const darkGlass = {
-    ':before':
-        {
-            boxShadow: 'inset 0 0 2000px rgba(0, 0, 0, .5)',
-            filter: 'blur(10px)'
-        }
-}
+    ':before': {
+        boxShadow: 'inset 0 0 2000px rgba(0, 0, 0, .5)',
+        filter: 'blur(10px)',
+    },
+};

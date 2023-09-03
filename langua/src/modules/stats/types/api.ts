@@ -1,4 +1,3 @@
-export interface GetOverallVocabularyStatsParams
-{
-    userId:string;
+export interface GetOverallVocabularyStatsParams {
+    userId: string;
 }

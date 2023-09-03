@@ -1,10 +1,16 @@
 //@ts-nocheck
-
-import {Breakpoint, useTheme} from '@mui/material/styles';
+import { Breakpoint, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-
-export default function useResponsive({query, start, end} : {query:'up'|'down'|'between',start:Breakpoint,end?:Breakpoint}) {
+export default function useResponsive({
+    query,
+    start,
+    end,
+}: {
+    query: 'up' | 'down' | 'between';
+    start: Breakpoint;
+    end?: Breakpoint;
+}) {
     const theme = useTheme();
     const mediaUp = useMediaQuery(theme.breakpoints.up(start));
     const mediaDown = useMediaQuery(theme.breakpoints.down(start));

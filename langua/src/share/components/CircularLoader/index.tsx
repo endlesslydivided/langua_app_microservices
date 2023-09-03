@@ -1,11 +1,11 @@
-import { CircularProgress, LinearProgress } from '@mui/material'
+import { CircularProgress, LinearProgress } from '@mui/material';
 
 const CirculearLoader = () => {
-  return (
-    <div className="flex justify-center items-center h-full">
-        <CircularProgress />
-    </div>
-  )
-}
+    return (
+        <div className="flex justify-center items-center h-full">
+            <CircularProgress />
+        </div>
+    );
+};
 
-export default CirculearLoader
+export default CirculearLoader;
