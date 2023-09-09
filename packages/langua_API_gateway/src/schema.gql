@@ -1,0 +1,285 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateLexicCategoryInput {
+  categoryName: String!
+  creatorUserId: String!
+  language: String!
+  nativeCategoryLanguage: String!
+}
+
+input CreateMaterialInput {
+  creatorUserId: String!
+  language: String!
+  name: String!
+  textContent: String!
+}
+
+input CreateMaterialToVocabularyInput {
+  materialId: String!
+  vocabularyId: String!
+}
+
+input CreateVocabularyInput {
+  language: String!
+  userId: String!
+  vocabularyNativeLanguage: String!
+}
+
+input CreateWordInput {
+  language: String!
+  lexicCategoryId: String!
+  nativeWordLanguage: String!
+  transcription: String!
+  translation: String!
+  word: String!
+}
+
+input CreateWordToVocabularyInput {
+  vocabularyId: String!
+  wordId: String!
+}
+
+type LexicCategory {
+  categoryName: String
+  createdAt: Timestamp
+  creatorUserId: String
+  id: ID
+  language: String!
+  nativeCategoryLanguage: String!
+  updatedAt: Timestamp
+}
+
+type Material {
+  createdAt: Timestamp
+  creatorUserId: String
+  id: ID
+  language: String
+  name: String
+  textContent: String
+  updatedAt: Timestamp
+}
+
+type Mutation {
+  createLexicCategory(createLexicCategory: CreateLexicCategoryInput!): String!
+  createMaterial(createMaterial: CreateMaterialInput!): String!
+  createMaterialToVocabulary(createMaterialToVocabulary: CreateMaterialToVocabularyInput!): String!
+  createVocabulary(createVocabulary: CreateVocabularyInput!): String!
+  createWord(createWord: CreateWordInput!): String!
+  createWordToVocabulary(createWordToVocabulary: CreateWordToVocabularyInput!): String!
+  deleteMaterialToVocabulary(id: String!): Void!
+  refresh: RefreshResponse!
+  signIn(signIn: SignInInput!): SignInResponse!
+  signOut: SignOutResponse!
+  signUp(signUp: SignUpInput!): SignUpResponse!
+  updateMaterialToVocabulary(updateMaterialToVocabulary: UpdateMaterialToVocabularyInput!): Void!
+  updateUser(updateUser: UpdateUserInput!): UpdateUserReponse!
+  updateWordToVocabulary(updateWordToVocabulary: UpdateWordToVocabularyInput!): Void!
+}
+
+type OverallVocabularyStats {
+  createdAt: Timestamp
+  id: ID
+  totalLearnedMaterials: Int
+  totalLearnedWords: Int
+  totalStartedMaterials: Int
+  totalStartedWords: Int
+  updatedAt: Timestamp
+  userId: String!
+}
+
+type PaginatedLexicCategory {
+  count: Int
+  rows: [LexicCategory!]
+}
+
+type PaginatedMaterial {
+  count: Int
+  rows: [Material!]
+}
+
+type PaginatedUser {
+  count: Int
+  rows: [User!]
+}
+
+type PaginatedVocabulary {
+  count: Int
+  rows: [Vocabulary!]
+}
+
+type PaginatedVocabularyStats {
+  count: Int
+  rows: [VocabularyStats!]
+}
+
+type PaginatedWord {
+  count: Int
+  rows: [Word!]
+}
+
+type Query {
+  findManyLexicCategories(language: String!, limit: Int! = 10, nativeCategoryLanguage: String!, page: Int! = 0): PaginatedLexicCategory!
+  findManyLexicCategoriesByCreatorId(creatorId: String!, language: String!, limit: Int! = 10, nativeCategoryLanguage: String!, page: Int! = 0): PaginatedLexicCategory!
+  findManyMaterialsByCreatorId(creatorId: String!, limit: Int! = 10, page: Int! = 0): PaginatedMaterial!
+  findManyMaterialsByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedMaterial!
+  findManyUsers(limit: Int! = 10, page: Int! = 0): PaginatedUser!
+  findManyVocabulariesByUserId(limit: Int! = 10, page: Int! = 0, userId: String!): PaginatedVocabulary!
+  findManyVocabularyStats(limit: Int! = 10, page: Int! = 0, userId: String!): PaginatedVocabularyStats!
+  findManyWordsByLexicCategoryId(lexicCategoryId: String!, limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWord!
+  findManyWordsByVocabularyId(limit: Int! = 10, page: Int! = 0, vocabularyId: String!): PaginatedWord!
+  findMe: User!
+  findOneMaterialById(id: String!): Material!
+  findOneWordById(id: String!): Word!
+  findUserById(id: String!): User!
+  getOverallVocabularyStats(userId: String!): OverallVocabularyStats!
+}
+
+type RefreshResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+type SignInResponse {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type SignOutResponse {
+  status: String!
+}
+
+input SignUpInput {
+  birthday: String
+  city: String
+  country: String
+  email: String!
+  firstname: String!
+  nativeLanguage: String
+  nickname: String
+  password: String
+  phoneNumber: String
+  sex: String
+  surname: String!
+}
+
+type SignUpResponse {
+  status: String!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+input UpdateMaterialToVocabularyInput {
+  id: String!
+  isFinished: Boolean!
+  userId: String!
+}
+
+input UpdateUserInput {
+  birthday: String
+  city: String
+  country: String
+  firstname: String
+  id: String!
+  nativeLanguage: String
+  nickname: String
+  password: String
+  phoneNumber: String
+  sex: String
+  surname: String
+}
+
+type UpdateUserReponse {
+  status: String!
+}
+
+input UpdateWordToVocabularyInput {
+  id: String!
+  isFinished: Boolean!
+  userId: String!
+}
+
+type User {
+  birthday: String
+  city: String
+  country: String
+  createdAt: Timestamp
+  firstname: String
+  id: ID
+  nativeLanguage: String
+  password: String
+  sex: String
+  surname: String
+  updatedAt: Timestamp
+  userContacts: UserContacts
+  userCredentials: UserCredentials
+}
+
+type UserContacts {
+  createdAt: Timestamp
+  email: String
+  id: ID
+  phoneNumber: String
+  updatedAt: Timestamp
+}
+
+type UserCredentials {
+  createdAt: Timestamp
+  id: ID
+  nickname: String
+  updatedAt: Timestamp
+}
+
+type Vocabulary {
+  createdAt: Timestamp
+  id: ID
+  language: String
+  updatedAt: Timestamp
+  userId: String
+  vocabularyNativeLanguage: String
+}
+
+type VocabularyStats {
+  createdAt: Timestamp
+  id: ID
+  learnedMaterialsCount: Int
+  learnedWordsCount: Int
+  startedMaterialsCount: Int
+  startedWordsCount: Int
+  updatedAt: Timestamp
+  userId: String
+}
+
+"""Represents NULL values"""
+scalar Void
+
+type Word {
+  createdAt: Timestamp
+  id: String
+  language: String
+  lexicCategories: [LexicCategory!]
+  nativeWordLanguage: String
+  transcription: String
+  translation: String
+  updatedAt: Timestamp
+  word: String
+  wordToVocabulary: [WordToVocabulary!]
+}
+
+type WordToVocabulary {
+  createdAt: Timestamp
+  id: String
+  isFinished: Boolean
+  updatedAt: Timestamp
+  vocabularyId: String
+  wordId: String
+}

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: material-microservice-deployment
+  labels:
+    app: material-microservice
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: material-microservice
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        app: material-microservice
+        tier: service
+    spec:
+      containers:
+      - name: material-microservice
+        image: "endlesslydivided/langua_material_microservice:latest"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 50053
+        envFrom:
+         - configMapRef:
+            name: material-microservice.config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: material-microservice
+  labels:
+    app: material-microservice
+    tier: service
+spec:
+  type: NodePort
+  ports:
+  - port: 50053
+    targetPort: 50053 
+  clusterIP: 10.96.0.5
+  selector:
+    app: material-microservice

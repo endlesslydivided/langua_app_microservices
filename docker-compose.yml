@@ -1,0 +1,138 @@
+version: '3.0'
+
+services:
+ langua_user_micro_db:
+  build:
+   context: .
+   dockerfile: langua_user_db.dockerfile
+  container_name: langua_user_micro_db
+  image: postgres:15.1-alpine
+  environment:
+   POSTGRES_DB: ${POSTGRES_DB}
+   POSTGRES_USER: ${POSTGRES_USER}
+   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+   PG_DATA: /var/lib/postgresql/data
+  ports:
+   - 5432:5432
+  volumes:
+   - pgdata:/var/lib/postgresql/data
+  restart: always
+############################################################################
+ langua_lexic_micro_db:
+  build:
+   context: .
+   dockerfile: ./mongo/langua_lexic_micro_db.dockerfile
+  ports:
+   - 27017:27017
+  volumes:
+    - mongodb:/etc/data/db
+    - ./mongo/config:/etc/mongo
+  container_name: langua_lexic_micro_db
+  restart: always
+  image: mongo
+  command: --config /etc/mongo/mongod.conf
+  networks:
+   - mongo_net
+############################################################################
+ lexic_microservice:
+  container_name: lexic_microservice
+  build:
+   context: ./packages/lexic_microservice
+  env_file:
+   - ./packages/lexic_microservice/.env
+   - ./.env
+  volumes:
+   - ./packages/lexic_microservice:/packages/lexic_microservice
+   - /packages/lexic_microservice/node_modules
+  ports:
+   - 50052:50052
+  command: npm run start
+  depends_on:
+   - langua_lexic_micro_db
+  restart: always 
+  networks:
+   - mongo_net
+############################################################################
+ material_microservice:
+  container_name: material_microservice
+  build:
+   context: ./packages/material_microservice
+  env_file:
+   - ./packages/material_microservice/.env
+   - ./.env
+  volumes:
+   - ./packages/material_microservice:/packages/material_microservice
+   - /packages/material_microservice/node_modules
+  ports:
+   - 50053:50053
+  command: npm run start
+  depends_on:
+   - langua_lexic_micro_db
+  restart: always
+  networks:
+   - mongo_net
+############################################################################
+ user-stats_microservice:
+  container_name: user-stats_microservice
+  build:
+   context: ./packages/user-stats_microservice
+  env_file:
+   - ./packages/user-stats_microservice/.env
+   - ./.env
+  volumes:
+   - ./packages/user-stats_microservice:/packages/user-stats_microservice
+   - /packages/user-stats_microservice/node_modules
+  ports:
+   - 50054:50054
+  command: npm run start
+  depends_on:
+   - langua_lexic_micro_db
+  restart: always
+  networks:
+   - mongo_net
+############################################################################  
+ user_microservice:
+  container_name: user_microservice
+  build:
+   context: ./packages/user_microservice
+  env_file:
+   - ./packages/user_microservice/.env
+   - ./.env
+  volumes:
+   - ./packages/user_microservice:/packages/user_microservice
+   - /packages/user_microservice/node_modules
+  ports:
+   - 50051:50051
+  command: npm run start
+  depends_on:
+   - langua_user_micro_db
+  restart: always
+  environment:
+   POSTGRES_HOST: langua_user_micro_db
+############################################################################
+ langua_api_gateway:
+  container_name: langua_api_gateway
+  build:
+   context: ./packages/langua_api_gateway
+  env_file:
+   - ./packages/langua_api_gateway/.env
+   - ./.env
+  volumes:
+   - ./packages/langua_api_gateway:/packages/langua_api_gateway
+   - /packages/langua_api_gateway/node_modules
+  ports:
+   - 3000:3000
+  command: npm run start
+  depends_on:
+   - user_microservice
+   - user-stats_microservice
+   - material_microservice
+   - lexic_microservice
+  restart: always
+volumes:
+ pgdata:
+ mongodb:
+
+networks:
+ mongo_net:
+  driver: bridge

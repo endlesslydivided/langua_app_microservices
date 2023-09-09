@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-stats-microservice-deployment
+  labels:
+    app: user-stats-microservice
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  minReadySeconds: 5
+  selector:
+    matchLabels:
+      app: user-stats-microservice
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  template:
+    metadata:
+      labels:
+        app: user-stats-microservice
+        tier: service
+    spec:
+      containers:
+      - name: user-stats-microservice
+        image: "endlesslydivided/langua_user-stats_microservice:latest"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 50054
+        envFrom:
+        - configMapRef:
+           name: user-stats-microservice.config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-stats-microservice
+  labels:
+    app: user-stats-microservice
+    tier: service
+spec:
+  type: NodePort
+  ports:
+  - port: 50054
+    targetPort: 50054
+  clusterIP: 10.96.0.7
+  selector:
+    app: user-stats-microservice
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: user-stats_microservice
+#   labels:
+#     app: user-stats_microservice
+#     tier: backend
+# spec:
+#   backend:
+#     serviceName: user-stats_microservice
+#     servicePort: 50054

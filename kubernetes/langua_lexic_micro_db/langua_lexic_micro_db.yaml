@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: langua-lexic-micro-db-deployment
+ labels:
+  app: mongo
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   app: mongo
+ template:
+  metadata:
+   labels:
+    app: mongo
+  spec:
+   containers:
+   - name: langua-lexic-micro-db
+     image: mongo:5.0
+     ports:
+     - containerPort: 27017
+     envFrom:
+     - configMapRef:
+        name: langua-lexic-micro-db.config
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: langua-lexic-micro-db-service
+spec:
+ selector: 
+  app: mongo
+ clusterIP: 10.96.0.3
+ ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
